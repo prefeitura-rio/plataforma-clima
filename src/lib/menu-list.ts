@@ -10,6 +10,7 @@ type Submenu = {
   href: string;
   label: string;
   active: boolean;
+  submenus: any;
 };
 
 type Menu = {
@@ -43,12 +44,48 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "Produtos",
       menus: [
         {
-          href: "/satelite/CP",
+          href: "",
           label: "Satélite",
-          active: pathname.includes("/satelite/CP"),
+          active: pathname.includes("/satelite"),
           icon: Satellite,
-          submenus: []
+          submenus: [
+            {
+              href: "",
+              label: "GOES16",
+              active: pathname.includes("/satelite"),
+              submenus: [
+                {
+                  href: "/satelite/CP",
+                  label: "CP",
+                  active: pathname === "/satelite/CP"
+                },
+                {
+                  href: "/satelite/KI",
+                  label: "KI",
+                  active: pathname === "/satelite/KI"
+                },
+                {
+                  href: "/satelite/LI",
+                  label: "LI",
+                  active: pathname === "/satelite/LI"
+                },
+                {
+                  href: "/satelite/TT",
+                  label: "TT",
+                  active: pathname === "/satelite/TT"
+                },
+                {
+                  href: "/satelite/SI",
+                  label: "SI",
+                  active: pathname === "/satelite/SI"
+                },
+              
+              ]
+            }
+          ]
         },
+
+
         {
           href: "/radar",
           label: "Radar",
@@ -65,7 +102,8 @@ export function getMenuList(pathname: string): Group[] {
             {
               href: "/chuva",
               label: "Chovendo agora",
-              active: pathname === "/chuva"
+              active: pathname === "/chuva",
+              submenus: []
             }
           ]
         }
