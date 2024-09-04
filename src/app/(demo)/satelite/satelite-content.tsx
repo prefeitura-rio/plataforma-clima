@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { LineChartComponent } from "@/components/ui/line-chart";
-import Nav from "@/components/nav";
 
 interface SateliteContentProps {
   sateliteView: string;
@@ -33,7 +32,6 @@ export default function SateliteContent({ sateliteView, data }: SateliteContentP
 
   return (
     <Card className="rounded-lg border-none">
-      <Nav sateliteView={sateliteView} />
       <CardContent className="p-6">
         <div className="flex justify-center items-center min-h-[calc(100vh-64px-20px-24px-56px-48px)]">
           <div className="grid grid-cols-12 gap-4 w-full">

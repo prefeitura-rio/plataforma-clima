@@ -3,7 +3,8 @@ import {
   Radar,
   CloudRainWind,
   LayoutGrid,
-  LucideIcon
+  LucideIcon,
+  BarChartBigIcon
 } from "lucide-react";
 
 type Submenu = {
@@ -84,26 +85,85 @@ export function getMenuList(pathname: string): Group[] {
             }
           ]
         },
-
-
         {
-          href: "/radar",
+          href: "",
           label: "Radar",
           active: pathname.includes("/radar"),
           icon: Radar,
-          submenus: []
+          submenus: [
+            {
+              href: "",
+              label: "Mendanha",
+              active: pathname.includes("/radar"),
+              submenus: [
+                {
+                  href: "/radar/refletividade-horizontal",
+                  label: "Refletividade Horizontal",
+                  active: pathname === "/radar/refletividade-horizontal"
+                },
+                {
+                  href: "/radar/estimativa-de-chuva-atual-impa",
+                  label: "Estimativa de Chuva Atual (IMPA)",
+                  active: pathname === "/radar/estimativa-de-chuva-atual-impa"
+                },
+              ]
+            }
+          ]
         },
         {
           href: "",
-          label: "Chuva",
+          label: "Pluviômetros",
+          active: pathname.includes("/pluviometro"),
+          icon: BarChartBigIcon,
+          submenus: [
+            {
+              href: "",
+              label: "AlertaRio",
+              active: pathname.includes("/pluviometro"),
+              submenus: [
+                {
+                  href: "/pluviometro/estimativa-de-chuva-atual",
+                  label: "Estimativa de Chuva Atual",
+                  active: pathname === "/pluviometro/estimativa-de-chuva-atual"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          href: "",
+          label: "Previsão de Chuva",
           active: pathname.includes("/chuva"),
           icon: CloudRainWind,
           submenus: [
             {
               href: "/chuva",
-              label: "Chovendo agora",
+              label: "1h, 2h, 3h",
               active: pathname === "/chuva",
-              submenus: []
+              submenus: [
+                {
+                  href: "/chuva/satelite/rio-now-cast",
+                  label: "Satélite (RioNowCast)",
+                  active: pathname === "/chuva/satelite/rio-now-cast"
+                },
+                {
+                  href: "/chuva/pluv-est-met-radar/rio-now-cast",
+                  label: "Estimativa de Chuva Atual",
+                  active: pathname === "/chuva/pluv-est-met-radar/rio-now-cast"
+                }
+              ]
+            },
+            {
+              href: "/chuva",
+              label: "xy, yh, zh",
+              active: pathname === "/chuva",
+              submenus: [
+                {
+                  href: "/chuva/IMPA",
+                  label: "IMPA",
+                  active: pathname === "/chuva/IMPA"
+                }
+              ]
             }
           ]
         }

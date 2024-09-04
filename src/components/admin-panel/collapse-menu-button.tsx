@@ -40,13 +40,15 @@ interface CollapseMenuButtonProps {
   active: boolean;
   submenus: Submenu[];
   isOpen: boolean | undefined;
+  labelBold?: boolean;
 }
 export function CollapseMenuButton({
   icon: Icon,
   label,
   active,
   submenus,
-  isOpen
+  isOpen,
+  labelBold = true
 }: CollapseMenuButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive);
@@ -75,7 +77,8 @@ export function CollapseMenuButton({
                   "max-w-[150px] truncate",
                   isOpen
                     ? "translate-x-0 opacity-100"
-                    : "-translate-x-96 opacity-0"
+                    : "-translate-x-96 opacity-0",
+                  isCollapsed && "font-bold"
                 )}
               >
                 {label}
@@ -102,6 +105,7 @@ export function CollapseMenuButton({
           nestedSubmenus?.length > 0 ? (
             <CollapseMenuButton
               key={index}
+              labelBold={false}
               icon={Dot}
               label={label}
               active={active}
@@ -164,15 +168,39 @@ export function CollapseMenuButton({
           {label}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {submenus.map(({ href, label }, index) => (
-          <DropdownMenuItem key={index} asChild>
-            <Link className="cursor-pointer" href={href}>
-              <p className="max-w-[180px] truncate">{label}</p>
-            </Link>
-          </DropdownMenuItem>
+
+        {submenus.map(({ href, label, submenus: nestedSubmenus }, index) => (
+          nestedSubmenus?.length > 0 ? (
+            <DropdownMenuItem key={index} asChild>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="w-full justify-start h-10">
+                    <p className="max-w-[180px] truncate">{label}</p>
+                    <ChevronDown size={16} className="ml-auto" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="right" sideOffset={10} align="start">
+                  {nestedSubmenus.map(({ href, label }: any, nestedIndex: any) => (
+                    <DropdownMenuItem key={nestedIndex} asChild>
+                      <Link className="cursor-pointer" href={href}>
+                        <p className="max-w-[160px] truncate">{label}</p>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem key={index} asChild>
+              <Link className="cursor-pointer" href={href}>
+                <p className="max-w-[180px] truncate">{label}</p>
+              </Link>
+            </DropdownMenuItem>
+          )
         ))}
         <DropdownMenuArrow className="fill-border" />
       </DropdownMenuContent>
+
     </DropdownMenu>
   );
 }
