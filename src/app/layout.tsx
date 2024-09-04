@@ -11,7 +11,9 @@ export const metadata: Metadata = {
       ? `${process.env.APP_URL}`
       : process.env.VERCEL_URL
         ? `https://${process.env.VERCEL_URL}`
-        : `http://localhost:${process.env.PORT || 3000}`
+        : process.env.GITHUB_PAGES
+          ? `https://prefeitura-rio.github.io/plataforma-clima`
+          : `http://localhost:${process.env.PORT || 3000}`
   ),
 };
 

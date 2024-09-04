@@ -1,6 +1,7 @@
 {
   "name": "plataforma-clima",
   "version": "0.1.0",
+  "homepage": "https://prefeitura-rio.github.io/plataforma-clima",
   "private": true,
   "scripts": {
     "dev": "next dev",
