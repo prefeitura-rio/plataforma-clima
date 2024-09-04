@@ -1,5 +1,6 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import SateliteContent from "../satelite-content";
+import SateliteContent from "../../satelite-content";
+
 
 interface SateliteViewProps {
   params: {
@@ -11,8 +12,7 @@ export const revalidate = 60;
 
 export default async function SateliteView({ params }: SateliteViewProps) {
   const response = await fetch("https://rnc.dados.rio/GetData", {
-    cache: 'no-store',
-    next: { revalidate: 60 },
+    // cache: 'no-store',
   });
 
   const apiResponse = await response.json();

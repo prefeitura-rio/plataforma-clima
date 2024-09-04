@@ -47,38 +47,38 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: "",
           label: "Satélite",
-          active: pathname.includes("/satelite"),
+          active: pathname.includes("/satelite/goes16"),
           icon: Satellite,
           submenus: [
             {
               href: "",
               label: "GOES16",
-              active: pathname.includes("/satelite"),
+              active: pathname.includes("/satelite/goes16"),
               submenus: [
                 {
-                  href: "/satelite/CP",
+                  href: "/satelite/goes16/CP",
                   label: "CP",
-                  active: pathname === "/satelite/CP"
+                  active: pathname === "/satelite/goes16/CP"
                 },
                 {
-                  href: "/satelite/KI",
+                  href: "/satelite/goes16/KI",
                   label: "KI",
-                  active: pathname === "/satelite/KI"
+                  active: pathname === "/satelite/goes16/KI"
                 },
                 {
-                  href: "/satelite/LI",
+                  href: "/satelite/goes16/LI",
                   label: "LI",
-                  active: pathname === "/satelite/LI"
+                  active: pathname === "/satelite/goes16/LI"
                 },
                 {
-                  href: "/satelite/TT",
+                  href: "/satelite/goes16/TT",
                   label: "TT",
-                  active: pathname === "/satelite/TT"
+                  active: pathname === "/satelite/goes16/TT"
                 },
                 {
-                  href: "/satelite/SI",
+                  href: "/satelite/goes16/SI",
                   label: "SI",
-                  active: pathname === "/satelite/SI"
+                  active: pathname === "/satelite/goes16/SI"
                 },
               
               ]
@@ -94,17 +94,17 @@ export function getMenuList(pathname: string): Group[] {
             {
               href: "",
               label: "Mendanha",
-              active: pathname.includes("/radar"),
+              active: pathname.includes("/radar/mendanha"),
               submenus: [
                 {
-                  href: "/radar/refletividade-horizontal",
+                  href: "/radar/mendanha/refletividade-horizontal",
                   label: "Refletividade Horizontal",
-                  active: pathname === "/radar/refletividade-horizontal"
+                  active: pathname === "/radar/mendanha/refletividade-horizontal"
                 },
                 {
-                  href: "/radar/estimativa-de-chuva-atual-impa",
+                  href: "/radar/mendanha/estimativa-de-chuva-atual-impa",
                   label: "Estimativa de Chuva Atual (IMPA)",
-                  active: pathname === "/radar/estimativa-de-chuva-atual-impa"
+                  active: pathname === "/radar/mendanha/estimativa-de-chuva-atual-impa"
                 },
               ]
             }
@@ -113,18 +113,18 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: "",
           label: "Pluviômetros",
-          active: pathname.includes("/pluviometro"),
+          active: pathname.includes("/pluviometros"),
           icon: BarChartBigIcon,
           submenus: [
             {
               href: "",
               label: "AlertaRio",
-              active: pathname.includes("/pluviometro"),
+              active: pathname.includes("/pluviometros/alertario"),
               submenus: [
                 {
-                  href: "/pluviometro/estimativa-de-chuva-atual",
+                  href: "/pluviometros/alertario/estimativa-de-chuva-atual",
                   label: "Estimativa de Chuva Atual",
-                  active: pathname === "/pluviometro/estimativa-de-chuva-atual"
+                  active: pathname === "/pluviometros/alertario/estimativa-de-chuva-atual"
                 }
               ]
             }
@@ -133,35 +133,35 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: "",
           label: "Previsão de Chuva",
-          active: pathname.includes("/chuva"),
+          active: pathname.includes("/previsao-de-chuva"),
           icon: CloudRainWind,
           submenus: [
             {
-              href: "/chuva",
+              href: "/previsao-de-chuva/1h2h3h/",
               label: "1h, 2h, 3h",
-              active: pathname === "/chuva",
+              active: pathname === "/previsao-de-chuva/1h2h3h/",
               submenus: [
                 {
-                  href: "/chuva/satelite/rio-now-cast",
+                  href: "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast",
                   label: "Satélite (RioNowCast)",
-                  active: pathname === "/chuva/satelite/rio-now-cast"
+                  active: pathname === "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast"
                 },
                 {
-                  href: "/chuva/pluv-est-met-radar/rio-now-cast",
+                  href: "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast",
                   label: "Estimativa de Chuva Atual",
-                  active: pathname === "/chuva/pluv-est-met-radar/rio-now-cast"
+                  active: pathname === "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast"
                 }
               ]
             },
             {
-              href: "/chuva",
+              href: "/previsao-de-chuva",
               label: "xy, yh, zh",
-              active: pathname === "/chuva",
+              active: pathname === "/previsao-de-chuva",
               submenus: [
                 {
-                  href: "/chuva/IMPA",
+                  href: "/previsao-de-chuva/xyyhzh/IMPA",
                   label: "IMPA",
-                  active: pathname === "/chuva/IMPA"
+                  active: pathname === "/previsao-de-chuva/xyyhzh/IMPA"
                 }
               ]
             }
