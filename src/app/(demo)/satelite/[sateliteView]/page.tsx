@@ -1,4 +1,6 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import Link from "next/link";
 import SateliteContent from "../satelite-content";
 
 interface SateliteViewProps {
@@ -7,10 +9,18 @@ interface SateliteViewProps {
   };
 }
 
-// Dynamic page component
+// Add generateStaticParams function
+export async function generateStaticParams() {
+  const staticPaths = ['CP', 'KI', 'LI', 'SI', 'TT'];
+
+  return staticPaths.map((sateliteView) => ({
+    sateliteView,
+  }));
+}
+
 export default async function SateliteView({ params }: SateliteViewProps) {
   const response = await fetch("https://rnc.dados.rio/GetData", {
-    cache: 'no-store', // No caching, fresh data on every request
+    cache: 'no-store'
   });
   const apiResponse = await response.json();
 
@@ -19,16 +29,4 @@ export default async function SateliteView({ params }: SateliteViewProps) {
       <SateliteContent sateliteView={params.sateliteView} data={apiResponse} />
     </ContentLayout>
   );
-}
-
-// Generate static paths for predefined satellite views
-export async function generateStaticParams() {
-  // List of static satellite views
-  const satelliteViews = ['CP', 'KI', 'LI', 'SI', 'TT'];
-
-  return satelliteViews.map((view) => ({
-    params: {
-      sateliteView: view,
-    },
-  }));
 }
