@@ -47,42 +47,42 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: "",
           label: "Satélite",
-          active: pathname.includes("/satelite/goes16"),
+          active: pathname.includes("/satelite/"),
           icon: Satellite,
           submenus: [
-            {
-              href: "",
-              label: "GOES16",
-              active: pathname.includes("/satelite/goes16"),
-              submenus: [
+         
                 {
-                  href: "/satelite/goes16/CP",
+                  href: "/satelite/CP",
                   label: "CP",
-                  active: pathname === "/satelite/goes16/CP"
+                  active: pathname === "/satelite/CP",
+                  submenus: []
                 },
                 {
-                  href: "/satelite/goes16/KI",
+                  href: "/satelite/KI",
                   label: "KI",
-                  active: pathname === "/satelite/goes16/KI"
+                  active: pathname === "/satelite/KI",
+                  submenus: []
                 },
                 {
-                  href: "/satelite/goes16/LI",
+                  href: "/satelite/LI",
                   label: "LI",
-                  active: pathname === "/satelite/goes16/LI"
+                  active: pathname === "/satelite/LI",
+                  submenus: []
                 },
                 {
-                  href: "/satelite/goes16/TT",
+                  href: "/satelite/TT",
                   label: "TT",
-                  active: pathname === "/satelite/goes16/TT"
+                  active: pathname === "/satelite/TT",
+                  submenus: []
                 },
                 {
-                  href: "/satelite/goes16/SI",
+                  href: "/satelite/SI",
                   label: "SI",
-                  active: pathname === "/satelite/goes16/SI"
+                  active: pathname === "/satelite/SI",
+                  submenus: []
                 },
               
-              ]
-            }
+             
           ]
         },
         {
@@ -139,7 +139,7 @@ export function getMenuList(pathname: string): Group[] {
             {
               href: "/previsao-de-chuva/1h2h3h/",
               label: "1h, 2h, 3h",
-              active: pathname === "/previsao-de-chuva/1h2h3h/",
+              active: pathname.includes("/previsao-de-chuva/1h2h3h"),
               submenus: [
                 {
                   href: "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast",

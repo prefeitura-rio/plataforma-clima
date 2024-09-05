@@ -1,5 +1,5 @@
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import SateliteContent from "../../satelite-content";
+import SateliteContent from "../satelite-content";
 
 
 interface SateliteViewProps {

@@ -69,7 +69,7 @@ export function CollapseMenuButton({
         >
           <div className="w-full items-center flex justify-between">
             <div className="flex items-center">
-              <span className="mr-4">
+              <span className={cn("mr-3", (label !== "Satélite" && label !== "Radar" && label !== "Pluviômetros" && label !== "Previsão de Chuva") && "mr-2 ml-6")}>
                 <Icon size={18} />
               </span>
               <p
@@ -120,8 +120,8 @@ export function CollapseMenuButton({
               asChild
             >
               <Link href={href}>
-                <span className="mr-4 ">
-                  <Dot size={18} />
+                <span className={cn("mr-3 ml-10", (label === "CP" || label === "KI" || label === "LI" || label === "TT" || label === "SI") && "mr-2 ml-6")}>
+                  {/* <Dot size={18} /> */}
                 </span>
                 <p className="max-w-[170px] truncate">{label}</p>
               </Link>
