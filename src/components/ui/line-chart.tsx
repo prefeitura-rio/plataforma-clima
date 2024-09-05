@@ -49,7 +49,7 @@ export function LineChartComponent({ sateliteView, data }: LineChartComponentPro
     <Card>
       <CardHeader>
         <CardTitle>Gráfico de Linha - {sateliteView}</CardTitle>
-        <CardDescription>Referente a 00:00 a 00:00</CardDescription>
+        <CardDescription>Fonte: GOES16</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
