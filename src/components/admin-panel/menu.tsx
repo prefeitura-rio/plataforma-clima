@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Ellipsis, LogOut } from "lucide-react";
+import { Ellipsis, LogOut, Info } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -103,14 +103,43 @@ export function Menu({ isOpen }: MenuProps) {
               )}
             </li>
           ))}
-          {/* <li className="w-full grow flex items-end">
+          <li className="w-full grow flex items-end">
+            <TooltipProvider disableHoverableContent>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <Link href="/sobre" className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-center h-10 mt-5"
+                    >
+                      <span className={cn(isOpen === false ? "" : "mr-4")}>
+                        <Info size={18} />
+                      </span>
+                      <p
+                        className={cn(
+                          "whitespace-nowrap",
+                          isOpen === false ? "opacity-0 hidden" : "opacity-100"
+                        )}
+                      >
+                        Sobre
+                      </p>
+                    </Button>
+                  </Link>
+                </TooltipTrigger>
+                {isOpen === false && (
+                  <TooltipContent side="right">Sobre</TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
+          </li>
+          {/* <li className="w-full ">
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <Button
                     onClick={() => { }}
                     variant="outline"
-                    className="w-full justify-center h-10 mt-5"
+                    className="w-full justify-center h-10 mt-2"
                   >
                     <span className={cn(isOpen === false ? "" : "mr-4")}>
                       <LogOut size={18} />
