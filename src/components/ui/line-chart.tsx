@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
 import {
   Card,
@@ -18,37 +18,33 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-export const description = "A linear line chart"
+export const description = "A line chart with dots"
 
-
+const chartData = [
+  { month: "", desktop: 186, mobile: 80 },
+  { month: "", desktop: 305, mobile: 200 },
+  { month: "", desktop: 237, mobile: 120 },
+  { month: "", desktop: 73, mobile: 190 },
+  { month: "", desktop: 209, mobile: 130 },
+  { month: "", desktop: 214, mobile: 140 },
+]
 
 const chartConfig = {
   desktop: {
     label: "Desktop",
     color: "hsl(var(--chart-1))",
   },
+  mobile: {
+    label: "Mobile",
+    color: "hsl(var(--chart-2))",
+  },
 } satisfies ChartConfig
 
-interface LineChartComponentProps {
-  sateliteView: string;
-  data: any;
-};
-
-
-export function LineChartComponent({ sateliteView, data }: LineChartComponentProps) {
-  const chartData = [
-    { time: data.time, val: Number(data[sateliteView.toLowerCase()]["val"]) },
-    // { time: "February", desktop: 305 },
-    // { time: "March", desktop: 237 },
-    // { time: "April", desktop: 73 },
-    // { time: "May", desktop: 209 },
-    // { time: "June", desktop: 214 },
-  ]
-  console.log("val", chartData)
+export function LineChartComponent() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Gráfico de Linha - {sateliteView}</CardTitle>
+        <CardTitle>Gráfico de Linha </CardTitle>
         <CardDescription>Fonte: GOES16</CardDescription>
       </CardHeader>
       <CardContent>
@@ -57,7 +53,7 @@ export function LineChartComponent({ sateliteView, data }: LineChartComponentPro
             accessibilityLayer
             data={chartData}
             margin={{
-              left: -28,
+              left: 12,
               right: 12,
             }}
           >
@@ -67,23 +63,23 @@ export function LineChartComponent({ sateliteView, data }: LineChartComponentPro
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-            />
-            <YAxis
-              dataKey="val"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
+              tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
             <Line
-              dataKey="val"
-              type="linear"
+              dataKey="desktop"
+              type="natural"
               stroke="var(--color-desktop)"
               strokeWidth={2}
-              dot={false}
+              dot={{
+                fill: "var(--color-desktop)",
+              }}
+              activeDot={{
+                r: 6,
+              }}
             />
           </LineChart>
         </ChartContainer>
