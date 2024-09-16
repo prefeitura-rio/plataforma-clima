@@ -4,26 +4,11 @@ import LocationAggregatorMap from "@/components/satelite-map";
 import React, { useState, useEffect } from "react";
 import GraficoContent from "../grafico-content";
 import { SateliteLayout } from "@/components/admin-panel/satelite-layout";
-import {mockData} from "./mockData";
+import { mockData } from "./mockData";
+import HeatMap from "@/components/satelite-map";
 
 const SateliteView = () => {
   const [coordinates, setCoordinates] = useState([]);
-
-  useEffect(() => {
-    const getData = async () => {
-
-     
-
-      // Create an array of geo coordinates pairs
-      const coords = mockData.map((item) => [
-        item.longitude,
-        item.latitude,
-        item.li
-      ]);
-      setCoordinates(coords);
-    };
-    getData();
-  }, []);
 
   const fakeData = {
     cp: { img: 'https://example.com/cp.png', val: '10' },
@@ -36,7 +21,7 @@ const SateliteView = () => {
 
   return (
     <SateliteLayout title="Satélite" className="overflow-hidden">
-      <LocationAggregatorMap data={coordinates} />
+      <HeatMap data={mockData} />
       <GraficoContent sateliteView={""} data={fakeData} />
     </SateliteLayout>
   );
