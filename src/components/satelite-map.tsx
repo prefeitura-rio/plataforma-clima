@@ -42,15 +42,33 @@ const LocationAggregatorMap = ({
     new HexagonLayer({
       id: "heatmap",
       colorRange,
+      opacity: 0.1,
       coverage,
       data,
       elevationRange: [0, 3000],
       elevationScale: data && data.length ? 50 : 0,
-      extruded: true,
+      // extruded: true,
       getPosition: (d) => d,
       pickable: true,
-      radius: 400,
+      radius: 1000,
       upperPercentile,
+
+      getColorWeight: (point) => {
+        // Assuming each point is a coordinate with an 'li' value
+        const liValue = point[2]; // The 'li' value at the 3rd index
+        return liValue;
+      },
+
+      getColorValue: (points) => {
+        // Normalize 'li' value to a range between 0 and 1
+        const liSum = points.reduce((sum, point) => sum + point[2], 0);
+        const liAvg = liSum / points.length;
+        // Normalize liAvg to the range [0, 1] (assuming li ranges from -20 to 20)
+        const normalizedLI = (liAvg + 20) / 40;
+        return normalizedLI;
+      },
+
+      colorAggregation: 'MEAN',
       material,
 
       transitions: {
@@ -58,8 +76,6 @@ const LocationAggregatorMap = ({
       },
     }),
   ];
-
-
 
   return (
     <div style={{ position: "fixed", width: '100%', height: '100%' }}>

@@ -33,7 +33,7 @@ export const material = {
 export const INITIAL_VIEW_STATE = {
   longitude: -43.45632,
   latitude: -22.92106,
-  zoom: 10.38,
+  zoom: 7.38,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0.0,
