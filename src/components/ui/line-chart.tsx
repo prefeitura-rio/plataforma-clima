@@ -1,13 +1,10 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
-
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -18,36 +15,28 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-export const description = "A line chart with dots"
-
-const chartData = [
-  { month: "", desktop: 186, mobile: 80 },
-  { month: "", desktop: 305, mobile: 200 },
-  { month: "", desktop: 237, mobile: 120 },
-  { month: "", desktop: 73, mobile: 190 },
-  { month: "", desktop: 209, mobile: 130 },
-  { month: "", desktop: 214, mobile: 140 },
-]
-
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  value: {
+    label: "Valor",
     color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig
 
-export function LineChartComponent() {
+interface LineChartComponentProps {
+  valueRange: number[];
+  stepRange: number[];
+  name: string;
+  chartData: { time: string; value: number }[];
+}
+
+export function LineChartComponent({ valueRange, stepRange, name, chartData }: LineChartComponentProps) {
   return (
-    <Card>
+    <Card className="w-full h-full">
       <CardHeader>
-        <CardTitle>Gráfico de Linha </CardTitle>
-        <CardDescription>Fonte: GOES16</CardDescription>
+        <CardTitle>Gráfico de Linha - {name} </CardTitle>
+        <CardDescription>Fonte: GOES16 - Histórico de 12h</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-[56px] w-[60vw] absolute right-0 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
         <ChartContainer config={chartConfig}>
           <LineChart
             accessibilityLayer
@@ -57,29 +46,30 @@ export function LineChartComponent() {
               right: 12,
             }}
           >
-            <CartesianGrid vertical={false} />
+            <CartesianGrid vertical={true} />
             <XAxis
               dataKey="time"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            <YAxis
+              domain={valueRange}
+              tickLine={false}
+              axisLine={false}
+              ticks={stepRange}
+              tickMargin={8}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
             <Line
-              dataKey="desktop"
-              type="natural"
-              stroke="var(--color-desktop)"
+              dataKey="value"
+              type="linear"
+              stroke="var(--color-value)"
               strokeWidth={2}
-              dot={{
-                fill: "var(--color-desktop)",
-              }}
-              activeDot={{
-                r: 6,
-              }}
+              dot={false}
             />
           </LineChart>
         </ChartContainer>
