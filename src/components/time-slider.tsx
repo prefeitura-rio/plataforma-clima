@@ -1,69 +1,71 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { Button } from "@/components/ui/button"
-import { Slider } from "@/components/ui/slider"
-import { PlayIcon, PauseIcon } from "lucide-react"
+import { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { PlayIcon, PauseIcon } from "lucide-react";
 
 interface TimeSliderProps {
   name: string;
   onTimeChange: (time: number) => void;
+  sliderValue: number;
+  timestamps: string[];
+  imagesData: { timestamp: string, image_url: string }[];
+  isDataLoaded: boolean;
 }
 
-export function TimeSlider({ name, onTimeChange }: TimeSliderProps) {
-  const [currentTime, setCurrentTime] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(true)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+export function TimeSlider({ name, onTimeChange, sliderValue, timestamps, imagesData, isDataLoaded }: TimeSliderProps) {
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [currentValue, setCurrentValue] = useState(sliderValue);
 
-  const getCurrentDate = () => {
-    const date = new Date()
-    return date.toLocaleDateString('pt-BR', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
-  }
+  const handleSliderChange = (value: number[]) => {
+    let newValue = value[0] % timestamps.length; // loop through available timestamps
 
-  const getPreviousHours = () => {
-    const date = new Date();
-    const currentHour = date.getHours();
-    const prevHour1 = (currentHour - 1 + 24) % 24;
-    const prevHour2 = (currentHour - 2 + 24) % 24;
-    return [prevHour2, prevHour1, "Now"];
-  }
+    // verifica se o timestamp tem image_url vazio (artificial) e pula para o próximo válido
+    while (imagesData[newValue]?.image_url === "") {
+      newValue = (newValue + 1) % timestamps.length;
+    }
+
+    setCurrentValue(newValue);
+    onTimeChange(newValue);
+    // console.log("Slider value changed to", newValue ?? "");
+  };
 
   useEffect(() => {
-    if (isPlaying) {
-      intervalRef.current = setInterval(() => {
-        setCurrentTime((prevTime) => {
-          const newTime = (prevTime + 1) % 14; // Reset to 0 when reaching 13
-          console.log(`Slider value: ${newTime}`)
-          onTimeChange(newTime)
-          return newTime
-        })
-      }, 500)
-    } else if (intervalRef.current) {
-      clearInterval(intervalRef.current)
+    let interval: NodeJS.Timeout | null = null;
+
+    if (isPlaying && isDataLoaded) {
+      interval = setInterval(() => {
+        setCurrentValue((prevValue) => {
+          let newValue = (prevValue + 1) % timestamps.length;
+
+          // Pular timestamps artificiais sem image_url
+          while (imagesData[newValue]?.image_url === "") {
+            newValue = (newValue + 1) % timestamps.length;
+          }
+
+          onTimeChange(newValue);
+          return newValue;
+        });
+      }, 500);
+    } else if (interval) {
+      clearInterval(interval);
     }
 
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
-  }, [isPlaying])
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isPlaying, isDataLoaded, timestamps.length, onTimeChange, imagesData]);
+
 
   const handlePlayPause = () => {
-    setIsPlaying(!isPlaying)
-    console.log(isPlaying ? "Paused" : "Playing")
-  }
-
-  const handleSliderChange = (value: number[]) => {
-    const newValue = value[0] % 13; // Reset to 0 when reaching 13
-    setCurrentTime(newValue)
-    onTimeChange(newValue)
-  }
-
-  const formatTime = (hour: number | string) => {
-    if (hour === "Now") return "Now";
-    if (hour === 12) return "12PM";
-    if (typeof hour === "number" && hour > 12) return `${hour - 12}PM`;
-    return `${hour}AM`;
+    setIsPlaying(!isPlaying);
+    // console.log(isPlaying ? "Paused" : "Playing");
   };
+
+
 
   return (
     <div className="z-50 absolute w-[50%] py-2 px-4 rounded-lg bg-gray-800 text-white">
@@ -73,27 +75,30 @@ export function TimeSlider({ name, onTimeChange }: TimeSliderProps) {
           size="icon"
           className="text-white"
           onClick={handlePlayPause}
+          disabled={!isDataLoaded} // Disable button until data is loaded
         >
           {isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
         </Button>
         <div className="ml-2">
           <h2 className="text-md font-semibold">Histórico de 12h - {name}</h2>
-          <p className="text-sm text-gray-400">{getCurrentDate()}</p>
+          <p className="text-sm text-gray-400">
+            {new Date(timestamps[sliderValue]).toLocaleString('pt-BR')} {/* Display current timestamp */}
+          </p>
         </div>
       </div>
       <Slider
-        value={[currentTime]}
+        value={[sliderValue]}
         min={0}
-        max={13}
+        max={timestamps.length - 1}
         step={1}
         className="my-1"
         onValueChange={handleSliderChange}
+        disabled={!isDataLoaded} // Disable slider until data is loaded
       />
       <div className="flex justify-between text-xs text-gray-400">
-        {getPreviousHours().map((hour) => (
-          <span className="mt-2" key={hour}>{formatTime(hour)}</span>
-        ))}
+        <span className="mt-2">Há 12h</span>
+        <span className="mt-2">Agora</span>
       </div>
     </div>
-  )
+  );
 }
