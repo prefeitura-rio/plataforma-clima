@@ -1,6 +1,9 @@
-import { ContentLayout } from "@/components/admin-panel/content-layout";
-import SateliteContent from "../satelite-content";
-import ProductOwener from "../product-owener";
+"use client";
+
+import React from "react";
+import { SateliteLayout } from "@/components/admin-panel/satelite-layout";
+import { TabsDemo } from "@/components/tabs-demo";
+import { InfoButton } from "@/components/info-button";
 
 
 interface SateliteViewProps {
@@ -9,19 +12,16 @@ interface SateliteViewProps {
   };
 }
 
-export const revalidate = 60;
-
-export default async function SateliteView({ params }: SateliteViewProps) {
-  const response = await fetch("https://rnc.dados.rio/GetData", {
-    // cache: 'no-store',
-  });
-
-  const apiResponse = await response.json();
+const SateliteView = ({ params }: SateliteViewProps) => {
 
   return (
-    <ContentLayout title="Satélite">
-      <ProductOwener imagePaths={["/LNCC_logo_dark.png", "/RNC_logo_dark.png", "/IMPA_logo_light.png"]} />
-      <SateliteContent sateliteView={params.sateliteView} data={apiResponse} />
-    </ContentLayout>
+    <SateliteLayout title="Satélite">
+      <TabsDemo sateliteView={params.sateliteView} />
+      <div className="absolute right-[30px] bottom-5">
+        <InfoButton />
+      </div>
+    </SateliteLayout>
   );
-}
+};
+
+export default SateliteView;
