@@ -1,6 +1,4 @@
-"use client";
-
-import React from "react";
+import React from 'react'
 
 interface ColorStop {
   color: string;
@@ -14,32 +12,32 @@ interface ColorPaletteProps {
   width?: number;
 }
 
-export default function ColorLabel({
+export default function ColorBar({
   colorStops,
   unit,
   height = 450,
   width = 15,
 }: ColorPaletteProps) {
-  const sortedStops = [...colorStops].sort((a, b) => a.value - b.value);
-  const minValue = sortedStops[0]?.value;
-  const maxValue = sortedStops[sortedStops.length - 1]?.value;
+  const minValue = Math.min(...colorStops.map(item => item.value))
+  const maxValue = Math.max(...colorStops.map(item => item.value))
+  const range = maxValue - minValue
 
-  // console.log("colorStops", colorStops);
-  const range = maxValue - minValue;
   const getPosition = (value: number) => {
-    return ((value - minValue) / range) * 100;
-  };
+    return ((value - minValue) / range) * 100
+  }
 
   return (
-    <div className="fixed right-4 top-1/2 transform -translate-y-1/2 flex items-center p-6 rounded-lg">
-      <div className="relative h-full" style={{ height: `${height}px`, width: `${width}px` }}>
-        {unit &&
-          <div className="absolute top-[-45px] left-1/2 transform -translate-x-1/2 bg-black text-white font-bold text-sm px-2 py-1 rounded-full">
-            {unit}
-          </div>}
+    <div className="w-full max-w-xl mx-auto p-4 pt-10 rounded-lg">
+      <div className="relative h-5 mb-8">
+        <div className="flex justify-center absolute w-full text-center text-black font-bold -top-8">
+          {unit &&
+            <div className=" absolute bg-black text-white font-bold text-sm px-2 py-1 rounded-full">
+              {unit}
+            </div>}
+        </div>
         <svg width="100%" height="100%">
           <defs>
-            <linearGradient id="colorGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <linearGradient id="colorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
               {colorStops.map((item, index) => (
                 <stop
                   key={index}
@@ -49,18 +47,19 @@ export default function ColorLabel({
               ))}
             </linearGradient>
           </defs>
-          <rect width="100%" height="100%" fill="url(#colorGradient)" rx="7.5" ry="7.5" />
+          <rect width="100%" height="100%" fill="url(#colorGradient)" rx="10" ry="10" />
         </svg>
         {colorStops.map((item, index) => (
           <div
             key={index}
-            className="absolute right-[30px] transform -translate-y-1/2 text-black font-bold text-sm text-right"
-            style={{ top: `${getPosition(item.value)}%` }}
+            className="absolute top-full mt-1 transform -translate-x-1/2 text-xs"
+            style={{ left: `${getPosition(item.value)}%` }}
           >
-            {item.value}
+            <div className="h-2 w-px bg-gray-400 mb-1 mx-auto "></div>
+            <div className="text-black font-bold text-sm text-right">{item.value}</div>
           </div>
         ))}
       </div>
     </div>
-  );
+  )
 }

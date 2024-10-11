@@ -54,31 +54,31 @@ export function getMenuList(pathname: string): Group[] {
                 {
                   href: "/satelite/CP",
                   label: "CP",
-                  active: pathname === "/satelite/CP",
+                  active: pathname.includes("/satelite/CP"),
                   submenus: []
                 },
                 {
                   href: "/satelite/KI",
                   label: "KI",
-                  active: pathname === "/satelite/KI",
+                  active: pathname.includes("/satelite/KI"),
                   submenus: []
                 },
                 {
                   href: "/satelite/LI",
                   label: "LI",
-                  active: pathname === "/satelite/LI",
+                  active: pathname.includes("/satelite/LI"),
                   submenus: []
                 },
                 {
                   href: "/satelite/TT",
                   label: "TT",
-                  active: pathname === "/satelite/TT",
+                  active: pathname.includes("/satelite/TT"),
                   submenus: []
                 },
                 {
                   href: "/satelite/SI",
                   label: "SI",
-                  active: pathname === "/satelite/SI",
+                  active: pathname.includes("/satelite/SI"),
                   submenus: []
                 },
               

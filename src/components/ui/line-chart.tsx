@@ -51,7 +51,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
           .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
           .map(item => ({
             timestamp: new Date(item.timestamp),
-            value: item.value === null ? 0 : item.value
+            value: item.value
           }))
 
         setData(sortedData)
@@ -77,7 +77,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
 
   return (
     <Card className="w-full h-full">
-      <CardContent className="pt-[56px] w-[60vw] absolute right-0 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+      <CardContent className=" w-[70vw] absolute right-0 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
         <CardHeader>
           <CardTitle>Gráfico de Linha - {name} </CardTitle>
           <CardDescription>Fonte: GOES16 - Histórico de 12h</CardDescription>
@@ -111,6 +111,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
                 content={<ChartTooltipContent hideLabel />}
               />
               <Line
+                isAnimationActive={false}
                 dataKey="value"
                 type="linear"
                 stroke="var(--color-value)"
