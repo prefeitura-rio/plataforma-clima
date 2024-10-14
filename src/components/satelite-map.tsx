@@ -79,28 +79,30 @@ export default function SatelliteLayer({
 
   const fillMissingTimestamps = (data, startTime, endTime) => {
     const result = [];
-    const intervalMs = 10 * 60 * 1000; // 10 minutos em milissegundos
+    const intervalMs = 10 * 60 * 1000; // 10 minutes in milliseconds
     let currentTimestamp = startTime.getTime();
 
-    // Iterar sobre o intervalo de tempo, adicionando o que falta
+    // Iterate over the time interval, adding missing timestamps
     for (let i = 0; currentTimestamp <= endTime.getTime(); i++) {
       const currentDate = new Date(currentTimestamp);
 
-      // Encontra se já existe um objeto com o timestamp atual na resposta da API
-      const existingEntry = data.find(item => new Date(item.timestamp).getTime() === currentTimestamp);
+      // Find if there is already an object with the current timestamp in the API response
+      const existingEntry = data.find(item => {
+        const itemDate = new Date(item.timestamp);
+        return itemDate.getHours() === currentDate.getHours() && itemDate.getMinutes() === currentDate.getMinutes();
+      });
 
       if (existingEntry) {
-        result.push(existingEntry); // Mantém o timestamp da API
+        result.push(existingEntry); // Keep the timestamp from the API
       } else {
-        // Preenche as lacunas com novos objetos
+        // Fill gaps with new objects
         result.push({
           timestamp: currentDate.toISOString(),
           image_url: ``,
         });
       }
 
-      currentTimestamp += intervalMs; // Incrementa 10 minutos
-
+      currentTimestamp += intervalMs; // Increment by 10 minutes
     }
 
     return result;
