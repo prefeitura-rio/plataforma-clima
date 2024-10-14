@@ -10,7 +10,7 @@ const nextConfig = {
         return [
             {
                 source: '/',
-                destination: '/satelite/CP',
+                destination: '/satelite/CP/mapa',
                 permanent: true,
             },
         ];
