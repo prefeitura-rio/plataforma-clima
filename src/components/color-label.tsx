@@ -47,6 +47,7 @@ export default function ColorBar({
                   key={index}
                   offset={`${getPosition(item.value)}%`}
                   stopColor={item.color}
+                  stopOpacity="0.6"
                 />
               ))}
             </linearGradient>
