@@ -36,32 +36,35 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
   const startTime = startTimeBrasilia;
   const endTime = currentTimeBrasilia;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const product = sateliteView.toLowerCase();
+  const fetchData = async () => {
+    try {
+      const product = sateliteView.toLowerCase();
 
-        const response = await fetch(
-          `https://gw.dados.rio/plataforma-clima-staging/satellite/goes16/chart/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
-        );
-        const jsonData = await response.json()
-        // console.log(jsonData)
+      const response = await fetch(
+        `https://gw.dados.rio/plataforma-clima-staging/satellite/goes16/chart/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
+      );
+      const jsonData = await response.json()
+      // console.log(jsonData)
 
-        const sortedData = jsonData
-          .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-          .map(item => ({
-            timestamp: new Date(item.timestamp),
-            value: item.value
-          }))
+      const sortedData = jsonData
+        .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+        .map(item => ({
+          timestamp: new Date(item.timestamp),
+          value: item.value
+        }))
 
-        setData(sortedData)
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      }
+      setData(sortedData)
+    } catch (error) {
+      console.error("Error fetching data:", error)
     }
+  }
 
+  useEffect(() => {
     fetchData()
-  }, [])
+    const intervalId = setInterval(fetchData, 60000); // refresh each 1 minute 
+
+    return () => clearInterval(intervalId); // cleanup the interval on component unmount
+  }, [sateliteView])
 
   const customTickFormatter = (timestamp: number) => {
     return formatHour(new Date(timestamp))

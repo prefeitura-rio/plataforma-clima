@@ -38,43 +38,46 @@ export default function SatelliteLayer({
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  useEffect(() => {
-    const fetchImagesData = async () => {
-      try {
-        const currentTime = new Date();
+  const fetchImagesData = async () => {
+    try {
+      const currentTime = new Date();
 
-        // Aproximando o horário atual para o valor anterior de 10 minutos e 20 segundos
-        currentTime.setSeconds(20, 0);
-        const minutes = currentTime.getMinutes();
-        currentTime.setMinutes(Math.floor(minutes / 10) * 10);
+      // Aproximando o horário atual para o valor anterior de 10 minutos e 20 segundos
+      currentTime.setSeconds(20, 0);
+      const minutes = currentTime.getMinutes();
+      currentTime.setMinutes(Math.floor(minutes / 10) * 10);
 
-        // Subtrair 3 horas para ajustar para o fuso horário de Brasília (UTC-3)
-        const currentTimeBrasilia = new Date(currentTime.getTime());
-        const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 12 * 60 * 60 * 1000); // 12 horas atrás
+      // Subtrair 3 horas para ajustar para o fuso horário de Brasília (UTC-3)
+      const currentTimeBrasilia = new Date(currentTime.getTime());
+      const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 12 * 60 * 60 * 1000); // 12 horas atrás
 
-        const product = sateliteView.toLowerCase();
+      const product = sateliteView.toLowerCase();
 
-        // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
-        const response = await fetch(
-          `https://gw.dados.rio/plataforma-clima-staging/satellite/goes16/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
-        );
+      // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
+      const response = await fetch(
+        `https://gw.dados.rio/plataforma-clima-staging/satellite/goes16/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
+      );
 
-        if (!response.ok) {
-          throw new Error(`Error fetching data: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-
-        // Preencher o array com os timestamps faltantes
-        const filledData = fillMissingTimestamps(data, startTimeBrasilia, currentTimeBrasilia);
-        setImagesData(filledData);
-        setIsDataLoaded(true);
-      } catch (error) {
-        setIsDataLoaded(false);
+      if (!response.ok) {
+        throw new Error(`Error fetching data: ${response.statusText}`);
       }
-    };
 
+      const data = await response.json();
+
+      // Preencher o array com os timestamps faltantes
+      const filledData = fillMissingTimestamps(data, startTimeBrasilia, currentTimeBrasilia);
+      setImagesData(filledData);
+      setIsDataLoaded(true);
+    } catch (error) {
+      setIsDataLoaded(false);
+    }
+  };
+
+  useEffect(() => {
     fetchImagesData();
+    const intervalId = setInterval(fetchImagesData, 60000); // refresh the data each 1 minute
+
+    return () => clearInterval(intervalId); // cleanup interval on component unmount
   }, [sateliteView, toast]);
 
   const fillMissingTimestamps = (data, startTime, endTime) => {
@@ -107,6 +110,7 @@ export default function SatelliteLayer({
 
     return result;
   };
+
   const handleTimeChange = (time: number) => {
     setSliderValue(time);
   };
