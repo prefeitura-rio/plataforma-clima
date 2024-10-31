@@ -13,7 +13,7 @@ import {
 
 export default function RadarPage() {
   return (
-    <ContentLayout title="Radar">
+    <ContentLayout title="Pluviômetros">
       <PlaceholderContent />
     </ContentLayout>
   );

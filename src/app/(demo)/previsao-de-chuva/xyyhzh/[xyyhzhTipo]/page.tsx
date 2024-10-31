@@ -13,7 +13,7 @@ import {
 
 export default function ChuvaPage() {
   return (
-    <ContentLayout title="Onde está chovendo agora?">
+    <ContentLayout title="Previsão de Chuva">
       <PlaceholderContent />
     </ContentLayout>
   );

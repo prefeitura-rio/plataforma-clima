@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronDown, Dot, LucideIcon } from "lucide-react";
+import { ChevronDown, Dot, LucideIcon, LineChart, Map } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,7 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type Submenu = {
   href: string;
@@ -52,6 +53,8 @@ export function CollapseMenuButton({
 }: CollapseMenuButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive);
+  const [activeTab, setActiveTab] = useState('tab1');
+  const [indice, setIndice] = useState("");
 
   return isOpen ? (
     <Collapsible
@@ -69,7 +72,7 @@ export function CollapseMenuButton({
         >
           <div className="w-full items-center flex justify-between">
             <div className="flex items-center">
-              <span className="mr-4">
+              <span className={cn("mr-3", (label !== "Satélite" && label !== "Radar" && label !== "Pluviômetros" && label !== "Previsão de Chuva") && "mr-2 ml-6")}>
                 <Icon size={18} />
               </span>
               <p
@@ -83,6 +86,20 @@ export function CollapseMenuButton({
               >
                 {label}
               </p>
+
+              <Link href={activeTab === "tab1" ? `${indice ? indice : '/satelite/CP'}/mapa` : `${indice ? indice : '/satelite/CP'}/grafico`}>
+                {label === "Satélite" && (
+                  <div className="sm:ml-5 ml-2">
+                    <Tabs className="w-[44px]" defaultValue="tab1" onValueChange={(value) => setActiveTab(value)}>
+                      <TabsList>
+                        <TabsTrigger value="tab1"><Map className="w-4 h-4" /></TabsTrigger>
+                        <TabsTrigger value="tab2"><LineChart className="w-4 h-4" /></TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
+                )}
+              </Link>
+
             </div>
             <div
               className={cn(
@@ -119,9 +136,9 @@ export function CollapseMenuButton({
               className="w-full justify-start h-10 mb-1"
               asChild
             >
-              <Link href={href}>
-                <span className="mr-4 ">
-                  <Dot size={18} />
+              <Link href={activeTab == "tab1" ? `${href}/mapa` : `${href}/grafico`} onClick={() => setIndice(href)}>
+                <span className={cn("mr-3 ml-10", (label === "CP" || label === "KI" || label === "LI" || label === "TT" || label === "SI") && "mr-2 ml-6")}>
+                  {/* <Dot size={18} /> */}
                 </span>
                 <p className="max-w-[170px] truncate">{label}</p>
               </Link>
