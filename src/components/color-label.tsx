@@ -26,7 +26,7 @@ export default function ColorBar({
   const sortedColorStops = [...colorStops].sort((a, b) => b.value - a.value);
 
   const getPosition = (value: number) => {
-    return ((maxValue - value) / range) * 100; // Reverse the calculation
+    return ((value - minValue) / range) * 100;
   };
 
   return (
@@ -42,7 +42,7 @@ export default function ColorBar({
         <svg width="100%" height="100%">
           <defs>
             <linearGradient id="colorGradient" x1="0" y1="0%" x2="100%" y2="0%">
-              {sortedColorStops.map((item, index) => (
+              {colorStops.map((item, index) => (
                 <stop
                   key={index}
                   offset={`${getPosition(item.value)}%`}
@@ -54,7 +54,7 @@ export default function ColorBar({
           </defs>
           <rect width="100%" height="100%" fill="url(#colorGradient)" rx="10" ry="10" />
         </svg>
-        {sortedColorStops.map((item, index) => (
+        {colorStops.map((item, index) => (
           <div
             key={index}
             className="absolute top-full mt-1 transform -translate-x-1/2 text-xs"
