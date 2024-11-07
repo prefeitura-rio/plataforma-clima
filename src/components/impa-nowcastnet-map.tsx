@@ -24,15 +24,15 @@ const INITIAL_VIEW_STATE: MapViewState = {
 const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
-interface SatelliteLayerProps {
+interface ModelLayerProps {
   name: string;
   modelView: string;
 }
 
-export default function SatelliteLayer({
+export default function ModelLayer({
   name,
   modelView
-}: SatelliteLayerProps) {
+}: ModelLayerProps) {
   const { toast } = useToast()
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);

@@ -22,10 +22,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { SateliteLayout } from "@/components/admin-panel/satelite-layout";
+import { ModelLayout } from "@/components/admin-panel/model-layout";
 import { TabsDemo } from "@/components/tabs-demo";
 import { InfoButton } from "@/components/info-button";
-import SatelliteLayer from "@/components/impa-nowcastnet-map";
+import ModelLayer from "@/components/impa-nowcastnet-map";
 import ColorLabel from "@/components/color-label";
 import { LineChartComponent } from "@/components/ui/line-chart";
 
@@ -38,9 +38,10 @@ interface ModelViewProps {
 
 const ModelView = ({ params }: ModelViewProps) => {
 
-  const [indice, view] = params.modelView;
+  const [indice_, view] = params.modelView;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const indice = "li".toLowerCase();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,11 +80,11 @@ const ModelView = ({ params }: ModelViewProps) => {
   }));
 
   return (
-    <SateliteLayout title="Satélite">
+    <ModelLayout title="Modelo">
       {
         view == "mapa" ? (
           <>
-            <SatelliteLayer name={name} modelView={indice} />
+            <ModelLayer name={name} modelView={indice} />
             <ColorLabel colorStops={productLabel} unit={unit} />
           </>
         ) : (
@@ -94,7 +95,7 @@ const ModelView = ({ params }: ModelViewProps) => {
       <div className="absolute right-[30px] bottom-5">
         <InfoButton />
       </div> */}
-    </SateliteLayout>
+    </ModelLayout>
   );
 };
 
