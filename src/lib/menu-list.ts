@@ -130,43 +130,43 @@ export function getMenuList(pathname: string): Group[] {
         //     }
         //   ]
         // },
-        // {
-        //   href: "",
-        //   label: "Previsão de Chuva",
-        //   active: pathname.includes("/previsao-de-chuva"),
-        //   icon: CloudRainWind,
-        //   submenus: [
-        //     {
-        //       href: "/previsao-de-chuva/1h2h3h/",
-        //       label: "1h, 2h, 3h",
-        //       active: pathname.includes("/previsao-de-chuva/1h2h3h"),
-        //       submenus: [
-        //         {
-        //           href: "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast",
-        //           label: "Satélite (RioNowCast)",
-        //           active: pathname === "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast"
-        //         },
-        //         {
-        //           href: "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast",
-        //           label: "Estimativa de Chuva Atual",
-        //           active: pathname === "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast"
-        //         }
-        //       ]
-        //     },
-        //     {
-        //       href: "/previsao-de-chuva",
-        //       label: "xy, yh, zh",
-        //       active: pathname === "/previsao-de-chuva",
-        //       submenus: [
-        //         {
-        //           href: "/previsao-de-chuva/xyyhzh/IMPA",
-        //           label: "IMPA",
-        //           active: pathname === "/previsao-de-chuva/xyyhzh/IMPA"
-        //         }
-        //       ]
-        //     }
-        //   ]
-        // }
+        {
+          href: "",
+          label: "Previsão de Chuva",
+          active: pathname.includes("/previsao-de-chuva"),
+          icon: CloudRainWind,
+          submenus: [
+            {
+              href: "/previsao-de-chuva/1h2h3h/",
+              label: "1h, 2h, 3h",
+              active: pathname.includes("/previsao-de-chuva/1h2h3h"),
+              submenus: [
+                {
+                  href: "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast",
+                  label: "Satélite (RioNowCast)",
+                  active: pathname === "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast"
+                },
+                // {
+                //   href: "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast",
+                //   label: "Estimativa de Chuva Atual",
+                //   active: pathname === "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast"
+                // }
+              ]
+            },
+            {
+              href: "/previsao-de-chuva",
+              label: "xy, yh, zh",
+              active: pathname === "/previsao-de-chuva",
+              submenus: [
+                {
+                  href: "/previsao-de-chuva/xyyhzh/NowcastNet",
+                  label: "NowcastNet (IMPA)",
+                  active: pathname === "/previsao-de-chuva/xyyhzh/NowcastNet"
+                }
+              ]
+            }
+          ]
+        }
       ]
     }
   ];
