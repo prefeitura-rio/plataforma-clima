@@ -25,7 +25,7 @@ import React, { useEffect, useState } from "react";
 import { ModelLayout } from "@/components/admin-panel/model-layout";
 import { TabsDemo } from "@/components/tabs-demo";
 import { InfoButton } from "@/components/info-button";
-import ModelLayer from "@/components/impa-nowcastnet-map";
+import ModelLayer from "@/components/impa-map";
 import ColorLabel from "@/components/color-label";
 import { LineChartComponent } from "@/components/ui/line-chart";
 
