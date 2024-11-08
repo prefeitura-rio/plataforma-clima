@@ -38,15 +38,15 @@ interface ModelViewProps {
 
 const ModelView = ({ params }: ModelViewProps) => {
 
-  const [indice_, view] = params.modelView;
+  const [indice, view] = params.modelView;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const indice = "li".toLowerCase();
+  // const indice = "NowcastNet".toLowerCase();  // forço o valor do índice
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://gw.dados.rio/plataforma-clima-staging/satellite/info/${indice.toLowerCase()}`);
+        const response = await fetch(`https://gw.dados.rio/plataforma-clima-staging/impa_models/info/${indice.toLowerCase()}`);
         const result = await response.json();
         setData(result);
       }
@@ -82,14 +82,12 @@ const ModelView = ({ params }: ModelViewProps) => {
   return (
     <ModelLayout title="Modelo">
       {
-        view == "mapa" ? (
+        (
           <>
             <ModelLayer name={name} modelView={indice} />
             <ColorLabel colorStops={productLabel} unit={unit} />
           </>
-        ) : (
-          <LineChartComponent unit={unit} valueRange={valueRange} stepRange={stepRange} name={name} modelView={indice} />
-        )
+        )        
       }
       {/* <TabsDemo modelView={params.modelView} />
       <div className="absolute right-[30px] bottom-5">

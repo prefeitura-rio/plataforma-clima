@@ -51,12 +51,11 @@ export default function ModelLayer({
       const currentTimeBrasilia = new Date(currentTime.getTime());
       const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 12 * 60 * 60 * 1000); // 12 horas atrás
 
-      // const product = sateliteView.toLowerCase(); ##
-      const product = "li".toLowerCase();
+      const product = modelView.toLowerCase();
 
       // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
       const response = await fetch(
-        `https://gw.dados.rio/plataforma-clima-staging/satellite/goes16/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
+        `https://gw.dados.rio/plataforma-clima-staging/impa_models/impa/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
       );
 
       if (!response.ok) {
