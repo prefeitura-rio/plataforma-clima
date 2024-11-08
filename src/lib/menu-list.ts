@@ -143,7 +143,7 @@ export function getMenuList(pathname: string): Group[] {
               submenus: [
                 {
                   href: "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast",
-                  label: "Satélite (RioNowCast)",
+                  label: "v1 (RioNowcast)",
                   active: pathname === "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast"
                 },
                 // {
@@ -154,14 +154,14 @@ export function getMenuList(pathname: string): Group[] {
               ]
             },
             {
-              href: "/previsao-de-chuva",
-              label: "xy, yh, zh",
-              active: pathname === "/previsao-de-chuva",
+              href: "/previsao-de-chuva/3h",
+              label: "3h",
+              active: pathname === "/previsao-de-chuva/3h",
               submenus: [
                 {
-                  href: "/previsao-de-chuva/xyyhzh/NowcastNet",
+                  href: "/previsao-de-chuva/3h/NowcastNet",
                   label: "NowcastNet (IMPA)",
-                  active: pathname === "/previsao-de-chuva/xyyhzh/NowcastNet"
+                  active: pathname === "/previsao-de-chuva/3h/NowcastNet"
                 }
               ]
             }
