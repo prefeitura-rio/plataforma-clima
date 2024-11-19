@@ -137,7 +137,7 @@ export function CollapseMenuButton({
               asChild
             >
               <Link href={activeTab == "tab1" ? `${href}/mapa` : `${href}/grafico`} onClick={() => setIndice(href)}>
-                <span className={cn("mr-3 ml-10", (label === "CP" || label === "KI" || label === "LI" || label === "TT" || label === "SI") && "mr-2 ml-6")}>
+                <span className={cn("mr-3 ml-10", (label === "CP" || label === "KI" || label === "LI" || label === "TT" || label === "SI" || label === "RR" || label === "SST" || label === "TPW") && "mr-2 ml-6")}>
                   {/* <Dot size={18} /> */}
                 </span>
                 <p className="max-w-[170px] truncate">{label}</p>
