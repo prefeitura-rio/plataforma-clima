@@ -27,16 +27,20 @@ const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 interface ModelLayerProps {
   name: string;
   modelView: string;
+  time_horizon?: string;
 }
 
 export default function ModelLayer({
   name,
-  modelView
+  modelView,
+  time_horizon
 }: ModelLayerProps) {
   const { toast } = useToast()
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+
+  console.log('time_horizon:', time_horizon);
 
   const fetchImagesData = async () => {
     try {
@@ -51,13 +55,15 @@ export default function ModelLayer({
       const currentTimeBrasilia = new Date(currentTime.getTime());
       const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 6 * 60 * 60 * 1000); // 12 horas atrás
 
+      // const name = name.toLowerCase();
+      // const time_horizon = time_horizon.toLowerCase();
       // const product = modelView.toLowerCase();
+      // const name_ = "1h";
       const product = "v1";
 
       // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
       const response = await fetch(
-        // `https://gw.dados.rio/plataforma-clima-staging/impa_models/impa/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
-        `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
+        `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/${product}/${time_horizon}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
       );
 
       if (!response.ok) {

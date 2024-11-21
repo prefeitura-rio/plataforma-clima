@@ -70,9 +70,9 @@ export function getMenuList(pathname: string): Group[] {
                   submenus: []
                 },
                 {
-                  href: "/satelite/RR",
-                  label: "RR",
-                  active: pathname.includes("/satelite/RR"),
+                  href: "/satelite/RRQPE",
+                  label: "RRQPE",
+                  active: pathname.includes("/satelite/RRQPE"),
                   submenus: []
                 },
                 {
@@ -147,16 +147,16 @@ export function getMenuList(pathname: string): Group[] {
           icon: CloudRainWind,
           submenus: [
             {
-              href: "/previsao-de-chuva/1h2h3h/",
+              href: "/previsao-de-chuva/1h/",
               label: "1h",
               // label: "1h, 2h, 3h", só alterei o label, ver como vai ficar a rota para cada um dos modelos
               // se a troca vai ser por tabs na parte superior ou se teremos um menu para cada horário
-              active: pathname.includes("/previsao-de-chuva/1h2h3h"),
+              active: pathname.includes("/previsao-de-chuva/1h"),
               submenus: [
                 {
-                  href: "/previsao-de-chuva/1h2h3h/v1",
+                  href: "/previsao-de-chuva/1h/v1",
                   label: "v1 (RioNowcast)",
-                  active: pathname === "/previsao-de-chuva/1h2h3h/v1"
+                  active: pathname === "/previsao-de-chuva/1h/v1"
                 },
                 // {
                 //   href: "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast",
@@ -165,23 +165,23 @@ export function getMenuList(pathname: string): Group[] {
                 // }
               ]
             },
-            // {
-            //   href: "/previsao-de-chuva/2h/",
-            //   label: "2h",
-            //   active: pathname.includes("/previsao-de-chuva/2h"),
-            //   submenus: [
-            //     {
-            //       href: "/previsao-de-chuva/2h/v1",
-            //       label: "v1 (RioNowcast)",
-            //       active: pathname === "/previsao-de-chuva/2h/v1"
-            //     },
-            //   ]
-            // },
-            // {
-            //   href: "/previsao-de-chuva/3h",
-            //   label: "3h",
-            //   active: pathname === "/previsao-de-chuva/3h",
-            //   submenus: [
+            {
+              href: "/previsao-de-chuva/2h/",
+              label: "2h",
+              active: pathname.includes("/previsao-de-chuva/2h"),
+              submenus: [
+                {
+                  href: "/previsao-de-chuva/2h/v1",
+                  label: "v1 (RioNowcast)",
+                  active: pathname === "/previsao-de-chuva/2h/v1"
+                },
+              ]
+            },
+            {
+              href: "/previsao-de-chuva/3h",
+              label: "3h",
+              active: pathname === "/previsao-de-chuva/3h",
+              submenus: [
             //     {
             //       href: "/previsao-de-chuva/3h/mamba",
             //       label: "Mamba (IMPA)",
@@ -202,13 +202,13 @@ export function getMenuList(pathname: string): Group[] {
             //       label: "Unet (IMPA)",
             //       active: pathname === "/previsao-de-chuva/3h/unet"
             //     },
-            //     {
-            //       href: "/previsao-de-chuva/3h/v1",
-            //       label: "v1 (RioNowcast)",
-            //       active: pathname === "/previsao-de-chuva/3h/v1"
-            //     }
-            //   ]
-            // }
+                {
+                  href: "/previsao-de-chuva/3h/v1",
+                  label: "v1 (RioNowcast)",
+                  active: pathname === "/previsao-de-chuva/3h/v1"
+                }
+              ]
+            }
           ]
         }
       ]
