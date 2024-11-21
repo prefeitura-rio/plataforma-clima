@@ -19,7 +19,6 @@
 //   );
 // }
 
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -39,10 +38,10 @@ interface ModelViewProps {
 
 const ModelView = ({ params }: ModelViewProps) => {
 
-  const [indice_, view] = params.modelView;
+  const [indice, view] = params.modelView;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const indice = "v1".toLowerCase();  // forço o valor do índice
+  const time_horizon_ = "1h";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,7 +84,7 @@ const ModelView = ({ params }: ModelViewProps) => {
       {
         (
           <>
-            <ModelLayer name={name} modelView={indice} />
+            <ModelLayer name={name} modelView={indice} time_horizon={time_horizon_} />
             <ColorLabel colorStops={productLabel} unit={unit} />
           </>
         )        

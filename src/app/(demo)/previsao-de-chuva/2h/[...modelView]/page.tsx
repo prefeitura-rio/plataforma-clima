@@ -41,8 +41,7 @@ const ModelView = ({ params }: ModelViewProps) => {
   const [indice, view] = params.modelView;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const time_horizon_ = "3h";
-  // const indice = "NowcastNet".toLowerCase();  // forço o valor do índice
+  const time_horizon_ = "2h";
 
   useEffect(() => {
     const fetchData = async () => {

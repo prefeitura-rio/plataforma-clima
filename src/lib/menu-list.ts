@@ -70,9 +70,9 @@ export function getMenuList(pathname: string): Group[] {
                   submenus: []
                 },
                 {
-                  href: "/satelite/RR",
-                  label: "RR",
-                  active: pathname.includes("/satelite/RR"),
+                  href: "/satelite/RRQPE",
+                  label: "RRQPE",
+                  active: pathname.includes("/satelite/RRQPE"),
                   submenus: []
                 },
                 {
