@@ -88,6 +88,12 @@ export function getMenuList(pathname: string): Group[] {
                   submenus: []
                 },
                 {
+                  href: "/satelite/TPW",
+                  label: "TPW",
+                  active: pathname.includes("/satelite/TPW"),
+                  submenus: []
+                },  
+                {
                   href: "/satelite/TT",
                   label: "TT",
                   active: pathname.includes("/satelite/TT"),
