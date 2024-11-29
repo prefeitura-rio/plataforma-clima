@@ -12,9 +12,9 @@ import { TimeSlider } from './time-slider';
 import { useToast } from "@/hooks/use-toast"
 
 const INITIAL_VIEW_STATE: MapViewState = {
-  longitude: -43.465832,
-  latitude: -22.92106,
-  zoom: 9,
+  longitude: -43.52328987792129,
+  latitude: -22.824179995805,
+  zoom: 7.38,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0,
@@ -24,23 +24,19 @@ const INITIAL_VIEW_STATE: MapViewState = {
 const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
-interface ModelLayerProps {
+interface RadarLayerProps {
   name: string;
-  modelView: string;
-  time_horizon?: string;
+  radarView: string;
 }
 
-export default function ModelLayer({
+export default function RadarLayer({
   name,
-  modelView,
-  time_horizon
-}: ModelLayerProps) {
+  radarView
+}: RadarLayerProps) {
   const { toast } = useToast()
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
-
-  console.log('time_horizon:', time_horizon);
 
   const fetchImagesData = async () => {
     try {
@@ -53,17 +49,15 @@ export default function ModelLayer({
 
       // Subtrair 3 horas para ajustar para o fuso horário de Brasília (UTC-3)
       const currentTimeBrasilia = new Date(currentTime.getTime());
-      const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 6 * 60 * 60 * 1000); // 12 horas atrás
+      const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 12 * 60 * 60 * 1000); // 12 horas atrás
 
-      // const name = name.toLowerCase();
-      // const time_horizon = time_horizon.toLowerCase();
-      // const product = modelView.toLowerCase();
-      // const name_ = "1h";
-      const product = "v1";
+      const product = radarView.toLowerCase();
+      // const product = "reflectivity".toLowerCase(); // reflectivity
 
       // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
       const response = await fetch(
-        `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/${product}/${time_horizon}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
+        // `https://gw.dados.rio/plataforma-clima-staging/satellite/goes16/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
+        `https://gw.dados.rio/plataforma-clima-staging/radar/mendanha/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
       );
 
       if (!response.ok) {
@@ -86,7 +80,7 @@ export default function ModelLayer({
     const intervalId = setInterval(fetchImagesData, 60000); // refresh the data each 1 minute
 
     return () => clearInterval(intervalId); // cleanup interval on component unmount
-  }, [modelView, toast]);
+  }, [radarView, toast]);
 
   const fillMissingTimestamps = (data, startTime, endTime) => {
     const result = [];
@@ -130,7 +124,7 @@ export default function ModelLayer({
   const layer = new BitmapLayer({
     id: 'BitmapLayer',
     opacity: 0.6,
-    bounds: [-43.8894771422364, -23.13181404239338, -43.04947714223637, -22.65181404239336],
+    bounds: [-44.88549887560727, -24.07974181385155, -42.16109533159336, -21.568618096884588],
     image: getCurrentImage(sliderValue),
     pickable: true,
     textureParameters: {

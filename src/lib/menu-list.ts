@@ -88,6 +88,12 @@ export function getMenuList(pathname: string): Group[] {
                   submenus: []
                 },
                 {
+                  href: "/satelite/TPW",
+                  label: "TPW",
+                  active: pathname.includes("/satelite/TPW"),
+                  submenus: []
+                },  
+                {
                   href: "/satelite/TT",
                   label: "TT",
                   active: pathname.includes("/satelite/TT"),
@@ -95,31 +101,31 @@ export function getMenuList(pathname: string): Group[] {
                 },        
           ]
         },
-        // {
-        //   href: "",
-        //   label: "Radar",
-        //   active: pathname.includes("/radar"),
-        //   icon: Radar,
-        //   submenus: [
-        //     {
-        //       href: "",
-        //       label: "Mendanha",
-        //       active: pathname.includes("/radar/mendanha"),
-        //       submenus: [
-        //         {
-        //           href: "/radar/mendanha/refletividade-horizontal",
-        //           label: "Refletividade Horizontal",
-        //           active: pathname === "/radar/mendanha/refletividade-horizontal"
-        //         },
+        {
+          href: "",
+          label: "Radar",
+          active: pathname.includes("/radar"),
+          icon: Radar,
+          submenus: [
+            {
+              href: "",
+              label: "Mendanha",
+              active: pathname.includes("/radar/mendanha"),
+              submenus: [
+                {
+                  href: "/radar/mendanha/reflectivity",
+                  label: "Refletividade Horizontal",
+                  active: pathname === "/radar/mendanha/reflectivity"
+                },
                 // {
                 //   href: "/radar/mendanha/estimativa-de-chuva-atual-impa",
                 //   label: "Estimativa de Chuva Atual (IMPA)",
                 //   active: pathname === "/radar/mendanha/estimativa-de-chuva-atual-impa"
                 // },
-        //       ]
-        //     }
-        //   ]
-        // },
+              ]
+            }
+          ]
+        },
         // {
         //   href: "",
         //   label: "Pluviômetros",
