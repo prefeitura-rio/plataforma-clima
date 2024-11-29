@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast"
 const INITIAL_VIEW_STATE: MapViewState = {
   longitude: -43.465832,
   latitude: -22.92106,
-  zoom: 9,
+  zoom: 8.5,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0,
