@@ -10,11 +10,22 @@ import './mapbox.css';
 import { BitmapLayer } from '@deck.gl/layers';
 import { TimeSlider } from './time-slider';
 import { useToast } from "@/hooks/use-toast"
+import { useMediaQuery } from 'react-responsive';
 
-const INITIAL_VIEW_STATE: MapViewState = {
+const DESKTOP_VIEW_STATE: MapViewState = {
   longitude: -43.70632,
   latitude: -22.92106,
   zoom: 6.7,
+  minZoom: 5,
+  maxZoom: 15,
+  pitch: 0,
+  bearing: 0
+};
+
+const MOBILE_VIEW_STATE: MapViewState = {
+  longitude: -43.465832,
+  latitude: -22.92106,
+  zoom: 5.5,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0,
@@ -37,6 +48,9 @@ export default function SatelliteLayer({
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const INITIAL_VIEW_STATE = isMobile ? MOBILE_VIEW_STATE : DESKTOP_VIEW_STATE;
 
   const fetchImagesData = async () => {
     try {
