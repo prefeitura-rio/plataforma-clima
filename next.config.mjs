@@ -10,7 +10,7 @@ const nextConfig = {
         return [
             {
                 source: '/',
-                destination: '/satelite/CP/mapa',
+                destination: '/previsao-de-chuva/1h/v1/mapa',
                 permanent: true,
             },
         ];
