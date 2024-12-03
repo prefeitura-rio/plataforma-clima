@@ -80,7 +80,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
 
   return (
     <Card className="w-full h-full">
-      <CardContent className=" w-[70vw] absolute right-0 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+      <CardContent className="w-full sm:w-[70vw] absolute right-0 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
         <CardHeader>
           <CardTitle>Gráfico de Linha - {name} </CardTitle>
           <CardDescription>Fonte: GOES16 - Histórico de 12h</CardDescription>
