@@ -25,7 +25,7 @@ const DESKTOP_VIEW_STATE: MapViewState = {
 const MOBILE_VIEW_STATE: MapViewState = {
   longitude: -43.465832,
   latitude: -22.92106,
-  zoom: 5.5,
+  zoom: 5.8,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0,

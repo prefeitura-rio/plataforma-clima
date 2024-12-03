@@ -10,11 +10,21 @@ import './mapbox.css';
 import { BitmapLayer } from '@deck.gl/layers';
 import { TimeSlider } from './time-slider';
 import { useToast } from "@/hooks/use-toast"
+import { useMediaQuery } from 'react-responsive';
 
-const INITIAL_VIEW_STATE: MapViewState = {
+const DESKTOP_VIEW_STATE: MapViewState = {
   longitude: -43.52328987792129,
   latitude: -22.824179995805,
   zoom: 6.7,
+  minZoom: 5,
+  maxZoom: 15,
+  pitch: 0,
+  bearing: 0
+};
+const MOBILE_VIEW_STATE: MapViewState = {
+  longitude: -43.52328987792129,
+  latitude: -22.824179995805,
+  zoom: 5.8,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0,
@@ -37,6 +47,9 @@ export default function RadarLayer({
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const INITIAL_VIEW_STATE = isMobile ? MOBILE_VIEW_STATE : DESKTOP_VIEW_STATE;
 
   const fetchImagesData = async () => {
     try {
