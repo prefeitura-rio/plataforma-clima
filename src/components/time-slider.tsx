@@ -65,10 +65,8 @@ export function TimeSlider({ name, onTimeChange, sliderValue, timestamps, images
     // console.log(isPlaying ? "Paused" : "Playing");
   };
 
-
-
   return (
-    <div className="z-50 absolute w-[50%] py-2 px-4 rounded-lg bg-gray-800 text-white">
+    <div className="z-50 absolute w-[90%] sm:w-[50%] py-2 px-4 rounded-lg bg-gray-800 text-white">
       <div className="flex items-center mb-1">
         <Button
           variant="ghost"
