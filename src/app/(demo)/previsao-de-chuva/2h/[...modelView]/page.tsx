@@ -1,24 +1,3 @@
-// import Link from "next/link";
-
-// import PlaceholderContent from "@/components/demo/placeholder-content";
-// import { ContentLayout } from "@/components/admin-panel/content-layout";
-// import {
-//   Breadcrumb,
-//   BreadcrumbItem,
-//   BreadcrumbLink,
-//   BreadcrumbList,
-//   BreadcrumbPage,
-//   BreadcrumbSeparator
-// } from "@/components/ui/breadcrumb";
-
-// export default function ChuvaPage() {
-//   return (
-//     <ContentLayout title="Previsão de Chuva">
-//       <PlaceholderContent />
-//     </ContentLayout>
-//   );
-// }
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -87,7 +66,7 @@ const ModelView = ({ params }: ModelViewProps) => {
             <ModelLayer name={name} modelView={indice} time_horizon={time_horizon_} />
             <ColorLabel colorStops={productLabel} unit={unit} />
           </>
-        )        
+        )
       }
       {/* <TabsDemo modelView={params.modelView} />
       <div className="absolute right-[30px] bottom-5">

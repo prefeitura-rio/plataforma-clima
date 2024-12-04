@@ -9,7 +9,7 @@ import type { MapViewState } from '@deck.gl/core';
 import './mapbox.css';
 import { BitmapLayer } from '@deck.gl/layers';
 import { TimeSlider } from './time-slider';
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from 'react-responsive';
 
 const DESKTOP_VIEW_STATE: MapViewState = {
@@ -35,9 +35,9 @@ const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
 interface ModelLayerProps {
-  name: string;
-  modelView: string;
-  time_horizon?: string;
+  name: string; // Ex: Modelo de Previsão de Chuva criado pelo grupo Rionowcast (v1).
+  modelView: string; // Ex:v1
+  time_horizon?: string; // Ex:1h
 }
 
 export default function ModelLayer({
@@ -45,7 +45,7 @@ export default function ModelLayer({
   modelView,
   time_horizon
 }: ModelLayerProps) {
-  const { toast } = useToast()
+  const { toast } = useToast();
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -66,11 +66,8 @@ export default function ModelLayer({
       const currentTimeBrasilia = new Date(currentTime.getTime());
       const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 6 * 60 * 60 * 1000); // 12 horas atrás
 
-      // const name = name.toLowerCase();
-      // const time_horizon = time_horizon.toLowerCase();
-      // const product = modelView.toLowerCase();
-      // const name_ = "1h";
-      const product = "v1";
+      const timeHorizon = time_horizon?.toLowerCase();
+      const product = modelView.toLowerCase();
 
       // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
       const response = await fetch(
@@ -83,12 +80,33 @@ export default function ModelLayer({
 
       const data = await response.json();
 
+      if (data.length === 0) {
+        toast({
+          title: "Aviso",
+          description: "Nenhum dado disponível no momento.",
+          status: "warning",
+          duration: 5000,
+          isClosable: true,
+          position: isMobile ? "bottom" : "top",
+        });
+      }
+
       // Preencher o array com os timestamps faltantes
-      const filledData = fillMissingTimestamps(data, startTimeBrasilia, currentTimeBrasilia);
-      setImagesData(filledData);
-      setIsDataLoaded(true);
+      if (data.length > 0) {
+        const filledData = fillMissingTimestamps(data, startTimeBrasilia, currentTimeBrasilia);
+        setImagesData(filledData);
+        setIsDataLoaded(true);
+      }
     } catch (error) {
       setIsDataLoaded(false);
+      toast({
+        title: error.message,
+        description: "Erro ao buscar dados.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: isMobile ? "bottom" : "top",
+      });
     }
   };
 
@@ -97,7 +115,7 @@ export default function ModelLayer({
     const intervalId = setInterval(fetchImagesData, 60000); // refresh the data each 1 minute
 
     return () => clearInterval(intervalId); // cleanup interval on component unmount
-  }, [modelView, toast]);
+  }, []);
 
   const fillMissingTimestamps = (data, startTime, endTime) => {
     const result = [];
@@ -155,7 +173,7 @@ export default function ModelLayer({
       <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={[layer]}>
         <Map reuseMaps mapboxAccessToken={MAPBOX_API_KEY} mapStyle={MAP_STYLE} />
       </DeckGL>
-      {isDataLoaded &&
+      {isDataLoaded && imagesData.length > 0 &&
         <div className="flex justify-center items-end h-full pb-5">
           <TimeSlider
             name={name}
@@ -170,3 +188,4 @@ export default function ModelLayer({
     </div>
   );
 }
+

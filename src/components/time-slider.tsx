@@ -6,15 +6,22 @@ import { Slider } from "@/components/ui/slider";
 import { PlayIcon, PauseIcon } from "lucide-react";
 
 interface TimeSliderProps {
-  name: string;
-  onTimeChange: (time: number) => void;
-  sliderValue: number;
-  timestamps: string[];
-  imagesData: { timestamp: string, image_url: string }[];
-  isDataLoaded: boolean;
+  name?: string;
+  onTimeChange?: (time: number) => void;
+  sliderValue?: number;
+  timestamps?: string[];
+  imagesData?: { timestamp: string, image_url: string }[];
+  isDataLoaded?: boolean;
 }
 
-export function TimeSlider({ name, onTimeChange, sliderValue, timestamps, imagesData, isDataLoaded }: TimeSliderProps) {
+export function TimeSlider({
+  name = "Produto",
+  onTimeChange = () => { },
+  sliderValue = 0,
+  timestamps = [],
+  imagesData = [],
+  isDataLoaded = false,
+}: TimeSliderProps) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentValue, setCurrentValue] = useState(sliderValue);
 
@@ -80,7 +87,7 @@ export function TimeSlider({ name, onTimeChange, sliderValue, timestamps, images
         <div className="ml-2">
           <h2 className="text-md font-semibold">Histórico de 12h - {name}</h2>
           <p className="text-sm text-gray-400">
-            {new Date(timestamps[sliderValue]).toLocaleString('pt-BR')} {/* Display current timestamp */}
+            {timestamps.length > 0 ? new Date(timestamps[sliderValue]).toLocaleString('pt-BR') : "No data"} {/* Display current timestamp */}
           </p>
         </div>
       </div>
