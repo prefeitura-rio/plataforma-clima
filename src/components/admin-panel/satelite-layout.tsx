@@ -10,7 +10,7 @@ interface SateliteLayoutProps {
 export function SateliteLayout({ title, view, children, indice }: SateliteLayoutProps) {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <Navbar title={title} view={view} />
+      <Navbar title={title} view={view} indice={indice} />
       <div className="flex-grow relative">{children}</div>
     </div>
   );
