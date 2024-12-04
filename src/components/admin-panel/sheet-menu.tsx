@@ -15,7 +15,8 @@ export function SheetMenu() {
   return (
     <Sheet>
       <SheetTrigger className="lg:hidden fixed top-2 left-4 z-50" >
-        <Button className="h-7 w-7 rounded-full" variant="outline" size="icon">
+        <Button className="rounded-md w-7 h-7"
+          variant="outline" size="icon">
           <MenuIcon size={20} />
         </Button>
       </SheetTrigger>
