@@ -27,6 +27,7 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
   const [activeTab, setActiveTab] = useState(view == "mapa" ? 'tab1' : 'tab2');
+  const [currentIndice, setCurrentIndice] = useState(indice);
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -103,6 +104,8 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
                         isOpen={isOpen}
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
+                        indice={currentIndice}
+                        setIndice={setCurrentIndice}
                       />
                     </div>
                   )
