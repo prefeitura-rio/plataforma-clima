@@ -118,7 +118,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
                 dataKey="value"
                 type="linear"
                 stroke="var(--color-value)"
-                strokeWidth={2}
+                strokeWidth={4}
                 dot={false}
               />
             </LineChart>
