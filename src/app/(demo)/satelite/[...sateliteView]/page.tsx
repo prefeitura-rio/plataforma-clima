@@ -58,7 +58,7 @@ const SateliteView = ({ params }: SateliteViewProps) => {
   }));
 
   return (
-    <SateliteLayout title="Satélite">
+    <SateliteLayout title="Satélite" view={view} indice={indice}>
       {
         view == "mapa" ? (
           <>

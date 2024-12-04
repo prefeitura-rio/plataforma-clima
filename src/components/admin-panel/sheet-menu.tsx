@@ -11,7 +11,12 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
 
-export function SheetMenu() {
+interface SheetMenuProps {
+  view: string;
+  indice: string;
+}
+
+export function SheetMenu({ view, indice }: SheetMenuProps) {
   return (
     <Sheet>
       <SheetTrigger className="lg:hidden fixed top-2 left-4 z-50" >
@@ -33,7 +38,7 @@ export function SheetMenu() {
             </Link>
           </Button>
         </SheetHeader>
-        <Menu isOpen />
+        <Menu isOpen view={view} indice={indice} />
       </SheetContent>
     </Sheet>
   );

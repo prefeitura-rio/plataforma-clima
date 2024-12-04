@@ -42,18 +42,22 @@ interface CollapseMenuButtonProps {
   submenus: Submenu[];
   isOpen: boolean | undefined;
   labelBold?: boolean;
+  activeTab: string;
+  setActiveTab: (value: string) => void;
 }
+
 export function CollapseMenuButton({
   icon: Icon,
   label,
   active,
   submenus,
   isOpen,
-  labelBold = true
+  labelBold = true,
+  activeTab,
+  setActiveTab
 }: CollapseMenuButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive);
-  const [activeTab, setActiveTab] = useState('tab1');
   const [indice, setIndice] = useState("");
 
   return isOpen ? (
@@ -90,7 +94,7 @@ export function CollapseMenuButton({
               <Link href={activeTab === "tab1" ? `${indice ? indice : '/satelite/CP'}/mapa` : `${indice ? indice : '/satelite/CP'}/grafico`}>
                 {label === "Satélite" && (
                   <div className="sm:ml-5 ml-2">
-                    <Tabs className="w-[44px]" defaultValue="tab1" onValueChange={(value) => setActiveTab(value)}>
+                    <Tabs className="w-[44px]" value={activeTab} onValueChange={(value) => setActiveTab(value)}>
                       <TabsList>
                         <TabsTrigger value="tab1"><Map className="w-4 h-4" /></TabsTrigger>
                         <TabsTrigger value="tab2"><LineChart className="w-4 h-4" /></TabsTrigger>
@@ -128,6 +132,8 @@ export function CollapseMenuButton({
               active={active}
               submenus={nestedSubmenus}
               isOpen={isOpen}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
             />
           ) : (
             <Button
@@ -166,8 +172,7 @@ export function CollapseMenuButton({
                       className={cn(
                         "max-w-[200px] truncate",
                         isOpen === false ? "opacity-0" : "opacity-100"
-                      )}
-                    >
+                      )}>
                       {label}
                     </p>
                   </div>
@@ -217,7 +222,7 @@ export function CollapseMenuButton({
         ))}
         <DropdownMenuArrow className="fill-border" />
       </DropdownMenuContent>
-
     </DropdownMenu>
   );
 }
+

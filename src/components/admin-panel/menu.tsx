@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Ellipsis, LogOut, Info } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { getMenuList } from "@/lib/menu-list";
@@ -18,11 +19,14 @@ import {
 
 interface MenuProps {
   isOpen: boolean | undefined;
+  view: string;
+  indice: string;
 }
 
-export function Menu({ isOpen }: MenuProps) {
+export function Menu({ isOpen, view, indice }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
+  const [activeTab, setActiveTab] = useState(view == "mapa" ? 'tab1' : 'tab2');
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -97,6 +101,8 @@ export function Menu({ isOpen }: MenuProps) {
                         active={active}
                         submenus={submenus}
                         isOpen={isOpen}
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
                       />
                     </div>
                   )

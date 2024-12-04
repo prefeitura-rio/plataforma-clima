@@ -8,7 +8,12 @@ import { Menu } from "@/components/admin-panel/menu";
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import { SidebarToggle } from "@/components/admin-panel/sidebar-toggle";
 
-export function Sidebar() {
+interface SideBarProps {
+  view: string;
+  indice: string;
+}
+
+export function Sidebar({ view, indice }: SideBarProps) {
   const sidebar = useStore(useSidebarToggle, (state) => state);
 
   if (!sidebar) return null;
@@ -44,7 +49,7 @@ export function Sidebar() {
             </h1>
           </Link>
         </Button>
-        <Menu isOpen={sidebar?.isOpen} />
+        <Menu isOpen={sidebar?.isOpen} view={view} indice={indice} />
       </div>
     </aside>
   );
