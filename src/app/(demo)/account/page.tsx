@@ -16,12 +16,6 @@ export default function AccountPage() {
     <ContentLayout title="Account">
       <Breadcrumb>
         <BreadcrumbList>
-          {/* <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/">Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem> */}
-          {/* <BreadcrumbSeparator /> */}
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link href="/dashboard">Dashboard</Link>

@@ -12,8 +12,8 @@ import {
 import { Button } from "../ui/button";
 
 interface SheetMenuProps {
-  view: string;
-  indice: string;
+  view?: string;
+  indice?: string;
 }
 
 export function SheetMenu({ view, indice }: SheetMenuProps) {

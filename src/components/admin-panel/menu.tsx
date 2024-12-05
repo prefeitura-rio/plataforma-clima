@@ -19,8 +19,8 @@ import {
 
 interface MenuProps {
   isOpen: boolean | undefined;
-  view: string;
-  indice: string;
+  view?: string;
+  indice?: string;
 }
 
 export function Menu({ isOpen, view, indice }: MenuProps) {

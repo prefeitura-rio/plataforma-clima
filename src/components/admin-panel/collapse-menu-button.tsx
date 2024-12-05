@@ -45,7 +45,7 @@ interface CollapseMenuButtonProps {
   labelBold?: boolean;
   activeTab: string;
   setActiveTab: (value: string) => void;
-  indice: string;
+  indice?: string;
   setIndice: (value: string) => void;
 }
 

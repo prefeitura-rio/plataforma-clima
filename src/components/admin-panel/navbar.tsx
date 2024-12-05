@@ -5,8 +5,8 @@ import { Sidebar } from "./sidebar";
 
 interface NavbarProps {
   title: string;
-  view: string;
-  indice: string;
+  view?: string;
+  indice?: string;
 }
 
 export function Navbar({ title, view, indice }: NavbarProps) {

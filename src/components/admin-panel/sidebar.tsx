@@ -11,8 +11,8 @@ import { useSidebarToggle } from "@/hooks/use-sidebar-toggle";
 import { SidebarToggle } from "@/components/admin-panel/sidebar-toggle";
 
 interface SideBarProps {
-  view: string;
-  indice: string;
+  view?: string;
+  indice?: string;
 }
 
 export function Sidebar({ view, indice }: SideBarProps) {
