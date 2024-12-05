@@ -117,6 +117,31 @@ export function getMenuList(pathname: string): Group[] {
         },
         {
           href: "",
+          label: "Radar",
+          active: pathname.includes("/radar"),
+          icon: Radar,
+          submenus: [
+            {
+              href: "",
+              label: "Mendanha",
+              active: pathname.includes("/radar/mendanha"),
+              submenus: [
+                {
+                  href: "/radar/mendanha/reflectivity",
+                  label: "Refletividade Horizontal",
+                  active: pathname.includes("/radar/mendanha/reflectivity")
+                },
+                // {
+                //   href: "/radar/mendanha/estimativa-de-chuva-atual-impa",
+                //   label: "Estimativa de Chuva Atual (IMPA)",
+                //   active: pathname === "/radar/mendanha/estimativa-de-chuva-atual-impa"
+                // },
+              ]
+            }
+          ]
+        },
+        {
+          href: "",
           label: "Satélite",
           active: pathname.includes("/satelite/"),
           icon: Satellite,
@@ -170,31 +195,6 @@ export function getMenuList(pathname: string): Group[] {
                   active: pathname.includes("/satelite/TT"),
                   submenus: []
                 },        
-          ]
-        },
-        {
-          href: "",
-          label: "Radar",
-          active: pathname.includes("/radar"),
-          icon: Radar,
-          submenus: [
-            {
-              href: "",
-              label: "Mendanha",
-              active: pathname.includes("/radar/mendanha"),
-              submenus: [
-                {
-                  href: "/radar/mendanha/reflectivity",
-                  label: "Refletividade Horizontal",
-                  active: pathname.includes("/radar/mendanha/reflectivity")
-                },
-                // {
-                //   href: "/radar/mendanha/estimativa-de-chuva-atual-impa",
-                //   label: "Estimativa de Chuva Atual (IMPA)",
-                //   active: pathname === "/radar/mendanha/estimativa-de-chuva-atual-impa"
-                // },
-              ]
-            }
           ]
         },
         // {
