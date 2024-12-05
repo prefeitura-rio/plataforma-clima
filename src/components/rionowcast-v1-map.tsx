@@ -11,6 +11,7 @@ import { BitmapLayer } from '@deck.gl/layers';
 import { TimeSlider } from './time-slider';
 import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from 'react-responsive';
+import { TimeSliderPrevisao } from './time-slider-previsao';
 
 const DESKTOP_VIEW_STATE: MapViewState = {
   longitude: -43.465832,
@@ -62,25 +63,45 @@ export default function ModelLayer({
       const minutes = currentTime.getMinutes();
       currentTime.setMinutes(Math.floor(minutes / 10) * 10);
 
-      // Subtrair 3 horas para ajustar para o fuso horário de Brasília (UTC-3)
-      const currentTimeBrasilia = new Date(currentTime.getTime());
-      const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 6 * 60 * 60 * 1000); // 12 horas atrás
+      const currentTimeBrasilia = new Date(currentTime.getTime() - 60 * 60 * 1000);
+      const endTimeBrasilia = new Date(currentTime.getTime());
 
-      const timeHorizon = time_horizon?.toLowerCase();
-      const product = modelView.toLowerCase();
+      const endpoints = [
+        `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/v1/1h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`,
+        `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/v1/2h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`,
+        `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/v1/3h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`
+      ];
 
-      // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
-      const response = await fetch(
-        `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/${product}/${time_horizon}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
-      );
+      const responses = await Promise.all(endpoints.map(endpoint => fetch(endpoint)));
 
-      if (!response.ok) {
-        throw new Error(`Error fetching data: ${response.statusText}`);
-      }
+      const data = await Promise.all(responses.map(response => {
+        if (!response.ok) {
+          throw new Error(`Error fetching data: ${response.statusText}`);
+        }
+        return response.json();
+      }));
 
-      const data = await response.json();
+      let combinedData = data.map(items => items[0]);
 
-      if (data.length === 0) {
+      // Ajustar os timestamps conforme solicitado
+      combinedData = combinedData.map((item, index) => {
+        const newTimestamp = new Date(item.timestamp);
+        if (index === 0) {
+          newTimestamp.setHours(newTimestamp.getHours() + 1);
+        } else if (index === 1) {
+          newTimestamp.setHours(newTimestamp.getHours() + 2);
+        } else if (index === 2) {
+          newTimestamp.setHours(newTimestamp.getHours() + 3);
+        }
+        return {
+          ...item,
+          timestamp: newTimestamp.toISOString()
+        };
+      });
+
+      console.log("combinedData", combinedData);
+
+      if (combinedData.length === 0) {
         toast({
           title: "Aviso",
           description: "Nenhum dado disponível no momento.",
@@ -92,9 +113,8 @@ export default function ModelLayer({
       }
 
       // Preencher o array com os timestamps faltantes
-      if (data.length > 0) {
-        const filledData = fillMissingTimestamps(data, startTimeBrasilia, currentTimeBrasilia);
-        setImagesData(filledData);
+      if (combinedData.length > 0) {
+        setImagesData(combinedData);
         setIsDataLoaded(true);
       }
     } catch (error) {
@@ -175,7 +195,7 @@ export default function ModelLayer({
       </DeckGL>
       {isDataLoaded && imagesData.length > 0 &&
         <div className="flex justify-center items-end h-full pb-5">
-          <TimeSlider
+          <TimeSliderPrevisao
             name={name}
             onTimeChange={handleTimeChange}
             sliderValue={sliderValue}

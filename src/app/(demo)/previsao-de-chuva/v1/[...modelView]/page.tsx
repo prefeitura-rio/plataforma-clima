@@ -17,7 +17,7 @@ interface ModelViewProps {
 
 const ModelView = ({ params }: ModelViewProps) => {
 
-  const [indice, view] = params.modelView;
+  const [view] = params.modelView;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const time_horizon_ = "1h";
@@ -25,7 +25,7 @@ const ModelView = ({ params }: ModelViewProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/info/${indice.toLowerCase()}`);
+        const response = await fetch(`https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/info/v1`);
         const result = await response.json();
         setData(result);
       }
@@ -36,7 +36,7 @@ const ModelView = ({ params }: ModelViewProps) => {
     };
 
     fetchData();
-  }, [indice]);
+  }, [view]);
 
   if (error) {
     return <div>{error}</div>;
@@ -63,7 +63,7 @@ const ModelView = ({ params }: ModelViewProps) => {
       {
         (
           <>
-            <ModelLayer name={name} modelView={indice} time_horizon={time_horizon_} />
+            <ModelLayer name={name} modelView={view} time_horizon={time_horizon_} />
             <ColorLabel colorStops={productLabel} unit={unit} />
           </>
         )
