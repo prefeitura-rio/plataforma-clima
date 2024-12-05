@@ -26,7 +26,7 @@ interface MenuProps {
 export function Menu({ isOpen, view, indice }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
-  const [activeTab, setActiveTab] = useState(view == "mapa" ? 'tab1' : 'tab2');
+  const [activeTab, setActiveTab] = useState(view == "mapa" || view == null ? 'tab1' : 'tab2');
   const [currentIndice, setCurrentIndice] = useState(indice);
 
   return (
