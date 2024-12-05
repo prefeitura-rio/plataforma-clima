@@ -54,7 +54,7 @@ export function TimeSliderPrevisao({
           onTimeChange(newValue);
           return newValue;
         });
-      }, 500);
+      }, 1200);
     } else if (interval) {
       clearInterval(interval);
     }
