@@ -59,12 +59,15 @@ export default function ModelLayer({
       const currentTime = new Date();
 
       // Aproximando o horário atual para o valor anterior de 10 minutos e 20 segundos
-      currentTime.setSeconds(20, 0);
-      const minutes = currentTime.getMinutes();
-      currentTime.setMinutes(Math.floor(minutes / 10) * 10);
 
-      const currentTimeBrasilia = new Date(currentTime.getTime() - 60 * 60 * 1000);
-      const endTimeBrasilia = new Date(currentTime.getTime());
+      const hours = currentTime.getHours();
+      currentTime.setHours(hours);
+      currentTime.setMinutes(0);
+      currentTime.setSeconds(0);
+      currentTime.setMilliseconds(0);
+
+      const currentTimeBrasilia = new Date(currentTime.getTime());
+      const endTimeBrasilia = new Date(currentTime.getTime() + 1000);
 
       const endpoints = [
         `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/v1/1h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`,
@@ -98,8 +101,6 @@ export default function ModelLayer({
           timestamp: newTimestamp.toISOString()
         };
       });
-
-      console.log("combinedData", combinedData);
 
       if (combinedData.length === 0) {
         toast({

@@ -68,10 +68,6 @@ const ModelView = ({ params }: ModelViewProps) => {
           </>
         )
       }
-      {/* <TabsDemo modelView={params.modelView} />
-      <div className="absolute right-[30px] bottom-5">
-        <InfoButton />
-      </div> */}
     </ModelLayout>
   );
 };
