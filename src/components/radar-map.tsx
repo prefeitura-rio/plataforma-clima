@@ -118,7 +118,7 @@ export default function RadarLayer({
 
   const fillMissingTimestamps = (data, startTime, endTime) => {
     const result = [];
-    const intervalMs = 10 * 60 * 1000; // 10 minutes in milliseconds
+    const intervalMs = 5 * 60 * 1000; // 5 minutes in milliseconds
     let currentTimestamp = startTime.getTime();
 
     // Iterate over the time interval, adding missing timestamps
