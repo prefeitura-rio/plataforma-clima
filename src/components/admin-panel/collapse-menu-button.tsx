@@ -101,7 +101,7 @@ export function CollapseMenuButton({
                 {label}
               </p>
 
-              {label === "Satélite" && (
+              {label === "Satélite" && indice != null && (
                 <div className="sm:ml-5 ml-2">
                   <Tabs className="w-[44px]" value={activeTab} onValueChange={(value) => setActiveTab(value)}>
                     <TabsList>

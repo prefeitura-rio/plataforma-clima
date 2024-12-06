@@ -45,99 +45,39 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "Produtos",
       menus: [
         {
-          href: "",
+          href: "/previsao-de-chuva/v1/mapa",
           label: "Previsão de Chuva",
-          active: pathname.includes("/previsao-de-chuva"),
+          active: pathname.includes("/previsao-de-chuva/v1"),
           icon: CloudRainWind,
           submenus: [
-            {
-              href: "/previsao-de-chuva/v1/",
-              label: "v1 (RioNowcast)",
-              // label: "1h, 2h, 3h", só alterei o label, ver como vai ficar a rota para cada um dos modelos
-              // se a troca vai ser por tabs na parte superior ou se teremos um menu para cada horário
-              active: pathname.includes("/previsao-de-chuva/v1"),
-              submenus: [
-                // {
-                //   href: "/previsao-de-chuva/1h/v1",
-                //   label: "v1 (RioNowcast)",
-                //   active: pathname.includes("/previsao-de-chuva/1h/v1")
-                // },
-                // {
-                //   href: "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast",
-                //   label: "Estimativa de Chuva Atual",
-                //   active: pathname === "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast"
-                // }
-              ]
-            },
             // {
-            //   href: "/previsao-de-chuva/2h/",
-            //   label: "2h",
-            //   active: pathname.includes("/previsao-de-chuva/2h"),
+            //   href: "/previsao-de-chuva/v1/",
+            //   label: "v1 (RioNowcast)",
+            //   active: pathname.includes("/previsao-de-chuva/v1"),
             //   submenus: [
-            //     {
-            //       href: "/previsao-de-chuva/2h/v1",
-            //       label: "v1 (RioNowcast)",
-            //       active: pathname.includes("/previsao-de-chuva/2h/v1")
-            //     },
             //   ]
             // },
-            // {
-            //   href: "/previsao-de-chuva/3h",
-            //   label: "3h",
-            //   active: pathname.includes("/previsao-de-chuva/3h"),
-            //   submenus: [
-            //     {
-            //       href: "/previsao-de-chuva/3h/mamba",
-            //       label: "Mamba (IMPA)",
-            //       active: pathname === "/previsao-de-chuva/3h/mamba"
-            //     },
-            //     {
-            //       href: "/previsao-de-chuva/3h/metnet3",
-            //       label: "Metnet3 (IMPA)",
-            //       active: pathname === "/previsao-de-chuva/3h/metnet3"
-            //     },
-            //     {
-            //       href: "/previsao-de-chuva/3h/pysteps",
-            //       label: "Pysteps (IMPA)",
-            //       active: pathname === "/previsao-de-chuva/3h/pysteps"
-            //     },
-            //     {
-            //       href: "/previsao-de-chuva/3h/unet",
-            //       label: "Unet (IMPA)",
-            //       active: pathname === "/previsao-de-chuva/3h/unet"
-            //     },
-            //   //   {
-            //   //     href: "/previsao-de-chuva/3h/v1",
-            //   //     label: "v1 (RioNowcast)",
-            //   //     active: pathname.includes("/previsao-de-chuva/3h/v1")
-            //   //   }
-            //   // ]
-            // }
+          
           ]
         },
         {
-          href: "",
+          href: "/radar/mendanha/reflectivity/mapa",
           label: "Radar",
-          active: pathname.includes("/radar"),
+          active: pathname.includes("/radar/mendanha/reflectivity"),
           icon: Radar,
           submenus: [
-            {
-              href: "",
-              label: "Mendanha",
-              active: pathname.includes("/radar/mendanha"),
-              submenus: [
-                {
-                  href: "/radar/mendanha/reflectivity",
-                  label: "Refletividade Horizontal",
-                  active: pathname.includes("/radar/mendanha/reflectivity")
-                },
-                // {
-                //   href: "/radar/mendanha/estimativa-de-chuva-atual-impa",
-                //   label: "Estimativa de Chuva Atual (IMPA)",
-                //   active: pathname === "/radar/mendanha/estimativa-de-chuva-atual-impa"
-                // },
-              ]
-            }
+            // {
+            //   href: "",
+            //   label: "Mendanha",
+            //   active: pathname.includes("/radar/mendanha"),
+            //   submenus: [
+            //     {
+            //       href: "/radar/mendanha/reflectivity",
+            //       label: "Refletividade Horizontal",
+            //       active: pathname.includes("/radar/mendanha/reflectivity")
+            //     },
+            //   ]
+            // }
           ]
         },
         {
