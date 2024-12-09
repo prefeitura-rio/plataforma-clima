@@ -59,7 +59,6 @@ export default function ModelLayer({
       const currentTime = new Date();
 
       // Aproximando o horário atual para o valor anterior de 10 minutos e 20 segundos
-
       const hours = currentTime.getHours();
       currentTime.setHours(hours);
       currentTime.setMinutes(0);
@@ -67,7 +66,7 @@ export default function ModelLayer({
       currentTime.setMilliseconds(0);
 
       const currentTimeBrasilia = new Date(currentTime.getTime());
-      const endTimeBrasilia = new Date(currentTime.getTime() + 1000);
+      const endTimeBrasilia = new Date(currentTime.getTime() + 60 * 1000);
 
       const endpoints = [
         `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/v1/1h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`,
@@ -84,7 +83,7 @@ export default function ModelLayer({
         return response.json();
       }));
 
-      let combinedData = data.map(items => items[0]);
+      let combinedData = data.map(items => items[0]).filter(item => item !== undefined);
 
       // Ajustar os timestamps conforme solicitado
       combinedData = combinedData.map((item, index) => {
@@ -121,8 +120,8 @@ export default function ModelLayer({
     } catch (error) {
       setIsDataLoaded(false);
       toast({
-        title: error.message,
-        description: "Erro ao buscar dados.",
+        title: "Erro ao buscar dados.",
+        description: error.message,
         status: "error",
         duration: 5000,
         isClosable: true,
