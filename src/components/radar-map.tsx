@@ -67,11 +67,14 @@ export default function RadarLayer({
       const product = radarView.toLowerCase();
       // const product = "reflectivity".toLowerCase(); // reflectivity
 
+      // Determinar a URL base com base no ambiente
+      const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
+        ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
+        : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+
       // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
-      const response = await fetch(
-        // `https://gw.dados.rio/plataforma-clima-staging/satellite/goes16/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
-        `https://gw.dados.rio/plataforma-clima-staging/radar/mendanha/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
-      );
+      const apiUrl = `${rootUrl}radar/mendanha/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`;
+      const response = await fetch(apiUrl);
 
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);

@@ -68,10 +68,15 @@ export default function ModelLayer({
       const currentTimeBrasilia = new Date(currentTime.getTime());
       const endTimeBrasilia = new Date(currentTime.getTime() + 60 * 1000);
 
+      // Determinar a URL base com base no ambiente
+      const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
+        ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
+        : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+
       const endpoints = [
-        `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/v1/1h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`,
-        `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/v1/2h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`,
-        `https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/rionowcast/gif/v1/3h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`
+        `${rootUrl}nowcasting_models/rionowcast/gif/v1/1h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`,
+        `${rootUrl}nowcasting_models/rionowcast/gif/v1/2h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`,
+        `${rootUrl}nowcasting_models/rionowcast/gif/v1/3h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`
       ];
 
       const responses = await Promise.all(endpoints.map(endpoint => fetch(endpoint)));

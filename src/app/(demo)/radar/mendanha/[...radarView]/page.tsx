@@ -35,7 +35,11 @@ const RadarView = ({ params }: RadarViewProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://gw.dados.rio/plataforma-clima-staging/radar/info/${indice.toLowerCase()}`);
+        const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
+          ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
+          : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+        const apiUrl = `${rootUrl}radar/info/${indice.toLowerCase()}`;
+        const response = await fetch(apiUrl);
         const result = await response.json();
         setData(result);
       }
@@ -71,15 +75,11 @@ const RadarView = ({ params }: RadarViewProps) => {
   return (
     <RadarLayout title="Radar">
       {
-          <>
-            <RadarLayer name={name} radarView={indice} />
-            <ColorLabel colorStops={productLabel} unit={unit} />
-          </>
+        <>
+          <RadarLayer name={name} radarView={indice} />
+          <ColorLabel colorStops={productLabel} unit={unit} />
+        </>
       }
-      {/* <TabsDemo sateliteView={params.sateliteView} />
-      <div className="absolute right-[30px] bottom-5">
-        <InfoButton />
-      </div> */}
     </RadarLayout>
   );
 };

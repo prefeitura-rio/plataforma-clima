@@ -22,13 +22,15 @@ export function TabsDemo({ sateliteView }: SateliteContentProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://gw.dados.rio/plataforma-clima-staging/satellite/info/${sateliteView.toLowerCase()}`);
+        const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
+          ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
+          : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+
+        const response = await fetch(`${rootUrl}satellite/info/${sateliteView.toLowerCase()}`);
         const result = await response.json();
         setData(result);
-      }
-      catch (error) {
-        // console.error('Error fetching data:', error);
-        // setError('Failed to fetch data');
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
       }
     };
 
