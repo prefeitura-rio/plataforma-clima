@@ -69,10 +69,6 @@ const SateliteView = ({ params }: SateliteViewProps) => {
           <LineChartComponent unit={unit} valueRange={valueRange} stepRange={stepRange} name={name} sateliteView={indice} />
         )
       }
-      {/* <TabsDemo sateliteView={params.sateliteView} />
-      <div className="absolute right-[30px] bottom-5">
-        <InfoButton />
-      </div> */}
     </SateliteLayout>
   );
 };

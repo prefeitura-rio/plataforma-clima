@@ -8,7 +8,6 @@ import ModelLayer from "@/components/rionowcast-v1-map";
 import ColorLabel from "@/components/color-label";
 import { LineChartComponent } from "@/components/ui/line-chart";
 
-
 interface ModelViewProps {
   params: {
     modelView: string[];
@@ -16,7 +15,6 @@ interface ModelViewProps {
 }
 
 const ModelView = ({ params }: ModelViewProps) => {
-
   const [view] = params.modelView;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
@@ -25,13 +23,15 @@ const ModelView = ({ params }: ModelViewProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://gw.dados.rio/plataforma-clima-staging/nowcasting_models/info/v1`);
+        const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
+          ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
+          : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+        const apiUrl = `${rootUrl}nowcasting_models/info/v1`;
+        const response = await fetch(apiUrl);
         const result = await response.json();
         setData(result);
-      }
-      catch (error) {
-        // console.error('Error fetching data:', error);
-        // setError('Failed to fetch data');
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -60,14 +60,10 @@ const ModelView = ({ params }: ModelViewProps) => {
 
   return (
     <ModelLayout title="Modelo">
-      {
-        (
-          <>
-            <ModelLayer name={name} modelView={view} time_horizon={time_horizon_} />
-            <ColorLabel colorStops={productLabel} unit={unit} />
-          </>
-        )
-      }
+      <>
+        <ModelLayer name={name} modelView={view} time_horizon={time_horizon_} />
+        <ColorLabel colorStops={productLabel} unit={unit} />
+      </>
     </ModelLayout>
   );
 };
