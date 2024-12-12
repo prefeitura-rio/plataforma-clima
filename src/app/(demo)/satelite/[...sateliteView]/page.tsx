@@ -8,7 +8,6 @@ import SatelliteLayer from "@/components/satelite-map";
 import ColorLabel from "@/components/color-label";
 import { LineChartComponent } from "@/components/ui/line-chart";
 
-
 interface SateliteViewProps {
   params: {
     sateliteView: string[];
@@ -16,25 +15,26 @@ interface SateliteViewProps {
 }
 
 const SateliteView = ({ params }: SateliteViewProps) => {
-
   const [indice, view] = params.sateliteView;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true); // Start loading
       try {
-        const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
+        const rootUrl = process.env.NEXT_PUBLIC_ENV === "production"
           ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
           : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
         const apiUrl = `${rootUrl}satellite/info/${indice.toLowerCase()}`;
         const response = await fetch(apiUrl);
         const result = await response.json();
         setData(result);
-      }
-      catch (error) {
-        // console.error('Error fetching data:', error);
-        // setError('Failed to fetch data');
+      } catch (error) {
+        setError("Failed to fetch data");
+      } finally {
+        setIsLoading(false); // Stop loading
       }
     };
 
@@ -42,7 +42,17 @@ const SateliteView = ({ params }: SateliteViewProps) => {
   }, [indice]);
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-50">
+        <p className="text-white mb-4">{error}</p>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+          onClick={() => location.reload()} // Simple refresh to retry
+        >
+          Algo deu errado. Tente novamente.
+        </button>
+      </div>
+    );
   }
 
   const product = data?.product || {};
@@ -63,16 +73,25 @@ const SateliteView = ({ params }: SateliteViewProps) => {
 
   return (
     <SateliteLayout title="Satélite" view={view} indice={indice}>
-      {
-        view == "mapa" ? (
-          <>
-            <SatelliteLayer name={name} sateliteView={indice} />
-            <ColorLabel colorStops={productLabel} unit={unit} />
-          </>
-        ) : (
-          <LineChartComponent unit={unit} valueRange={valueRange} stepRange={stepRange} name={name} sateliteView={indice} />
-        )
-      }
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+        </div>
+      )}
+      {view === "mapa" ? (
+        <>
+          <SatelliteLayer name={name} sateliteView={indice} />
+          <ColorLabel colorStops={productLabel} unit={unit} />
+        </>
+      ) : (
+        <LineChartComponent
+          unit={unit}
+          valueRange={valueRange}
+          stepRange={stepRange}
+          name={name}
+          sateliteView={indice}
+        />
+      )}
     </SateliteLayout>
   );
 };
