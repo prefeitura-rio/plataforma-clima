@@ -11,7 +11,14 @@ import {
   BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 
-export default function RadarPage() {
+interface PluviometroProps {
+  params: {
+    pluviometroView: string[];
+  };
+}
+
+export default function RadarPage({ params }: PluviometroProps) {
+
   return (
     <ContentLayout title="Pluviômetros">
       <PlaceholderContent />
