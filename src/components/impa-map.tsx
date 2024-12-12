@@ -13,37 +13,35 @@ import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from 'react-responsive';
 
 const DESKTOP_VIEW_STATE: MapViewState = {
-  longitude: -43.70632,
-  latitude: -22.92106,
+  longitude: -43.52328987792129,
+  latitude: -22.824179995805,
   zoom: 6.7,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0,
   bearing: 0
 };
-
 const MOBILE_VIEW_STATE: MapViewState = {
-  longitude: -43.465832,
-  latitude: -22.92106,
+  longitude: -43.52328987792129,
+  latitude: -22.824179995805,
   zoom: 5.8,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0,
   bearing: 0
 };
-
 const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
-interface SatelliteLayerProps {
-  name: string; // CAPE (Convective Available Potential Energy)
-  sateliteView: string; // mapa, grafico
+interface ModelLayerProps {
+  name: string;
+  modelView: string;
 }
 
-export default function SatelliteLayer({
+export default function ModelLayer({
   name,
-  sateliteView
-}: SatelliteLayerProps) {
+  modelView
+}: ModelLayerProps) {
   const { toast } = useToast();
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
@@ -65,7 +63,7 @@ export default function SatelliteLayer({
       const currentTimeBrasilia = new Date(currentTime.getTime());
       const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 12 * 60 * 60 * 1000); // 12 horas atrás
 
-      const product = sateliteView.toLowerCase();
+      const product = modelView.toLowerCase();
 
       // Determinar a URL base com base no ambiente
       const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
@@ -73,7 +71,7 @@ export default function SatelliteLayer({
         : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
 
       // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
-      const apiUrl = `${rootUrl}satellite/goes16/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`;
+      const apiUrl = `${rootUrl}impa_models/impa/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`;
       const response = await fetch(apiUrl);
 
       if (!response.ok) {
@@ -81,7 +79,6 @@ export default function SatelliteLayer({
       }
 
       const data = await response.json();
-
       if (data.length === 0) {
         toast({
           title: "Aviso",
@@ -92,8 +89,9 @@ export default function SatelliteLayer({
           position: isMobile ? "bottom" : "top",
         });
       }
+
+      // Preencher o array com os timestamps faltantes
       if (data.length > 0) {
-        // Preencher o array com os timestamps faltantes
         const filledData = fillMissingTimestamps(data, startTimeBrasilia, currentTimeBrasilia);
         setImagesData(filledData);
         setIsDataLoaded(true);
@@ -116,7 +114,7 @@ export default function SatelliteLayer({
     const intervalId = setInterval(fetchImagesData, 60000); // refresh the data each 1 minute
 
     return () => clearInterval(intervalId); // cleanup interval on component unmount
-  }, [sateliteView, toast]);
+  }, [modelView, toast]);
 
   const fillMissingTimestamps = (data, startTime, endTime) => {
     const result = [];

@@ -45,6 +45,42 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "Produtos",
       menus: [
         {
+          href: "/previsao-de-chuva/v1/mapa",
+          label: "Previsão de Chuva",
+          active: pathname.includes("/previsao-de-chuva/v1"),
+          icon: CloudRainWind,
+          submenus: [
+            // {
+            //   href: "/previsao-de-chuva/v1/",
+            //   label: "v1 (RioNowcast)",
+            //   active: pathname.includes("/previsao-de-chuva/v1"),
+            //   submenus: [
+            //   ]
+            // },
+          
+          ]
+        },
+        {
+          href: "/radar/mendanha/reflectivity/mapa",
+          label: "Radar",
+          active: pathname.includes("/radar/mendanha/reflectivity"),
+          icon: Radar,
+          submenus: [
+            // {
+            //   href: "",
+            //   label: "Mendanha",
+            //   active: pathname.includes("/radar/mendanha"),
+            //   submenus: [
+            //     {
+            //       href: "/radar/mendanha/reflectivity",
+            //       label: "Refletividade Horizontal",
+            //       active: pathname.includes("/radar/mendanha/reflectivity")
+            //     },
+            //   ]
+            // }
+          ]
+        },
+        {
           href: "",
           label: "Satélite",
           active: pathname.includes("/satelite/"),
@@ -53,63 +89,54 @@ export function getMenuList(pathname: string): Group[] {
          
                 {
                   href: "/satelite/CP",
-                  label: "CP",
+                  label: "CAPE - Energia Potencial",
                   active: pathname.includes("/satelite/CP"),
                   submenus: []
                 },
                 {
                   href: "/satelite/KI",
-                  label: "KI",
+                  label: "KI - Índice K",
                   active: pathname.includes("/satelite/KI"),
                   submenus: []
                 },
                 {
                   href: "/satelite/LI",
-                  label: "LI",
+                  label: "LI - Índice de levantamento ",
                   active: pathname.includes("/satelite/LI"),
                   submenus: []
                 },
                 {
-                  href: "/satelite/TT",
-                  label: "TT",
-                  active: pathname.includes("/satelite/TT"),
+                  href: "/satelite/RRQPE",
+                  label: "RRQPE - Precipitação",
+                  active: pathname.includes("/satelite/RRQPE"),
                   submenus: []
                 },
                 {
                   href: "/satelite/SI",
-                  label: "SI",
+                  label: "SI - Showalter",
                   active: pathname.includes("/satelite/SI"),
                   submenus: []
                 },
-              
-             
+                {
+                  href: "/satelite/SST",
+                  label: "SST - Temperatura da Água do Mar",
+                  active: pathname.includes("/satelite/SST"),
+                  submenus: []
+                },
+                {
+                  href: "/satelite/TPW",
+                  label: "TPW - Água Precipitável",
+                  active: pathname.includes("/satelite/TPW"),
+                  submenus: []
+                },  
+                {
+                  href: "/satelite/TT",
+                  label: "TT - Índice Total-Totals",
+                  active: pathname.includes("/satelite/TT"),
+                  submenus: []
+                },        
           ]
         },
-        // {
-        //   href: "",
-        //   label: "Radar",
-        //   active: pathname.includes("/radar"),
-        //   icon: Radar,
-        //   submenus: [
-        //     {
-        //       href: "",
-        //       label: "Mendanha",
-        //       active: pathname.includes("/radar/mendanha"),
-        //       submenus: [
-        //         {
-        //           href: "/radar/mendanha/refletividade-horizontal",
-        //           label: "Refletividade Horizontal",
-        //           active: pathname === "/radar/mendanha/refletividade-horizontal"
-        //         },
-        //         {
-        //           href: "/radar/mendanha/estimativa-de-chuva-atual-impa",
-        //           label: "Estimativa de Chuva Atual (IMPA)",
-        //           active: pathname === "/radar/mendanha/estimativa-de-chuva-atual-impa"
-        //         },
-        //       ]
-        //     }
-        //   ]
-        // },
         // {
         //   href: "",
         //   label: "Pluviômetros",
@@ -130,43 +157,7 @@ export function getMenuList(pathname: string): Group[] {
         //     }
         //   ]
         // },
-        // {
-        //   href: "",
-        //   label: "Previsão de Chuva",
-        //   active: pathname.includes("/previsao-de-chuva"),
-        //   icon: CloudRainWind,
-        //   submenus: [
-        //     {
-        //       href: "/previsao-de-chuva/1h2h3h/",
-        //       label: "1h, 2h, 3h",
-        //       active: pathname.includes("/previsao-de-chuva/1h2h3h"),
-        //       submenus: [
-        //         {
-        //           href: "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast",
-        //           label: "Satélite (RioNowCast)",
-        //           active: pathname === "/previsao-de-chuva/1h2h3h/satelite-rio-now-cast"
-        //         },
-        //         {
-        //           href: "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast",
-        //           label: "Estimativa de Chuva Atual",
-        //           active: pathname === "/previsao-de-chuva/1h2h3h/pluv-est-met-radar-rio-now-cast"
-        //         }
-        //       ]
-        //     },
-        //     {
-        //       href: "/previsao-de-chuva",
-        //       label: "xy, yh, zh",
-        //       active: pathname === "/previsao-de-chuva",
-        //       submenus: [
-        //         {
-        //           href: "/previsao-de-chuva/xyyhzh/IMPA",
-        //           label: "IMPA",
-        //           active: pathname === "/previsao-de-chuva/xyyhzh/IMPA"
-        //         }
-        //       ]
-        //     }
-        //   ]
-        // }
+       
       ]
     }
   ];

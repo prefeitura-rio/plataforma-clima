@@ -1,25 +1,24 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { SateliteLayout } from "@/components/admin-panel/satelite-layout";
+import { ModelLayout } from "@/components/admin-panel/model-layout";
 import { TabsDemo } from "@/components/tabs-demo";
 import { InfoButton } from "@/components/info-button";
-import SatelliteLayer from "@/components/satelite-map";
+import ModelLayer from "@/components/rionowcast-v1-map";
 import ColorLabel from "@/components/color-label";
 import { LineChartComponent } from "@/components/ui/line-chart";
 
-
-interface SateliteViewProps {
+interface ModelViewProps {
   params: {
-    sateliteView: string[];
+    modelView: string[];
   };
 }
 
-const SateliteView = ({ params }: SateliteViewProps) => {
-
-  const [indice, view] = params.sateliteView;
+const ModelView = ({ params }: ModelViewProps) => {
+  const [view] = params.modelView;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const time_horizon_ = "1h";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,19 +26,17 @@ const SateliteView = ({ params }: SateliteViewProps) => {
         const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
           ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
           : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
-        const apiUrl = `${rootUrl}satellite/info/${indice.toLowerCase()}`;
+        const apiUrl = `${rootUrl}nowcasting_models/info/v1`;
         const response = await fetch(apiUrl);
         const result = await response.json();
         setData(result);
-      }
-      catch (error) {
-        // console.error('Error fetching data:', error);
-        // setError('Failed to fetch data');
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, [indice]);
+  }, [view]);
 
   if (error) {
     return <div>{error}</div>;
@@ -62,19 +59,13 @@ const SateliteView = ({ params }: SateliteViewProps) => {
   }));
 
   return (
-    <SateliteLayout title="Satélite" view={view} indice={indice}>
-      {
-        view == "mapa" ? (
-          <>
-            <SatelliteLayer name={name} sateliteView={indice} />
-            <ColorLabel colorStops={productLabel} unit={unit} />
-          </>
-        ) : (
-          <LineChartComponent unit={unit} valueRange={valueRange} stepRange={stepRange} name={name} sateliteView={indice} />
-        )
-      }
-    </SateliteLayout>
+    <ModelLayout title="Modelo">
+      <>
+        <ModelLayer name={name} modelView={view} time_horizon={time_horizon_} />
+        <ColorLabel colorStops={productLabel} unit={unit} />
+      </>
+    </ModelLayout>
   );
 };
 
-export default SateliteView;
+export default ModelView;

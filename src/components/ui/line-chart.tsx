@@ -40,10 +40,14 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
     try {
       const product = sateliteView.toLowerCase();
 
+      const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
+        ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
+        : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+
       const response = await fetch(
-        `https://gw.dados.rio/plataforma-clima-staging/satellite/goes16/chart/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
+        `${rootUrl}satellite/goes16/chart/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
       );
-      const jsonData = await response.json()
+      const jsonData = await response.json();
       // console.log(jsonData)
 
       const sortedData = jsonData
@@ -51,9 +55,9 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
         .map(item => ({
           timestamp: new Date(item.timestamp),
           value: item.value
-        }))
+        }));
 
-      setData(sortedData)
+      setData(sortedData);
     } catch (error) {
       console.error("Error fetching data:", error)
     }
@@ -80,7 +84,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
 
   return (
     <Card className="w-full h-full">
-      <CardContent className=" w-[70vw] absolute right-0 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+      <CardContent className="w-full sm:w-[70vw] absolute right-0 top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
         <CardHeader>
           <CardTitle>Gráfico de Linha - {name} </CardTitle>
           <CardDescription>Fonte: GOES16 - Histórico de 12h</CardDescription>
@@ -118,7 +122,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
                 dataKey="value"
                 type="linear"
                 stroke="var(--color-value)"
-                strokeWidth={2}
+                strokeWidth={4}
                 dot={false}
               />
             </LineChart>

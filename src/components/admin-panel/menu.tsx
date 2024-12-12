@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Ellipsis, LogOut, Info } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { getMenuList } from "@/lib/menu-list";
@@ -18,11 +19,15 @@ import {
 
 interface MenuProps {
   isOpen: boolean | undefined;
+  view?: string;
+  indice?: string;
 }
 
-export function Menu({ isOpen }: MenuProps) {
+export function Menu({ isOpen, view, indice }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
+  const [activeTab, setActiveTab] = useState(view == "mapa" || view == null ? 'tab1' : 'tab2');
+  const [currentIndice, setCurrentIndice] = useState(indice);
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -59,7 +64,7 @@ export function Menu({ isOpen }: MenuProps) {
                           <TooltipTrigger asChild>
                             <Button
                               variant={active ? "secondary" : "ghost"}
-                              className="w-full justify-start h-10 mb-1"
+                              className={cn("w-full h-10 mb-1", isOpen === false ? "justify-center" : "justify-start ")}
                               asChild
                             >
                               <Link href={href}>
@@ -72,7 +77,7 @@ export function Menu({ isOpen }: MenuProps) {
                                   className={cn(
                                     "max-w-[200px] truncate",
                                     isOpen === false
-                                      ? "-translate-x-96 opacity-0"
+                                      ? "-translate-x-96 opacity-0 hidden"
                                       : "translate-x-0 opacity-100"
                                   )}
                                 >
@@ -97,6 +102,10 @@ export function Menu({ isOpen }: MenuProps) {
                         active={active}
                         submenus={submenus}
                         isOpen={isOpen}
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
+                        indice={currentIndice}
+                        setIndice={setCurrentIndice}
                       />
                     </div>
                   )

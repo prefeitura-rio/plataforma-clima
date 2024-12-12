@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { PlayIcon, PauseIcon } from "lucide-react";
 
-interface TimeSliderProps {
+interface TimeSliderPrevisaoProps {
   name?: string;
   onTimeChange?: (time: number) => void;
   sliderValue?: number;
@@ -14,14 +14,14 @@ interface TimeSliderProps {
   isDataLoaded?: boolean;
 }
 
-export function TimeSlider({
+export function TimeSliderPrevisao({
   name = "Produto",
   onTimeChange = () => { },
   sliderValue = 0,
   timestamps = [],
   imagesData = [],
   isDataLoaded = false,
-}: TimeSliderProps) {
+}: TimeSliderPrevisaoProps) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentValue, setCurrentValue] = useState(sliderValue);
 
@@ -54,7 +54,7 @@ export function TimeSlider({
           onTimeChange(newValue);
           return newValue;
         });
-      }, 500);
+      }, 1200);
     } else if (interval) {
       clearInterval(interval);
     }
@@ -72,6 +72,15 @@ export function TimeSlider({
     // console.log(isPlaying ? "Paused" : "Playing");
   };
 
+  const [currentTimePlus3Hours, setCurrentTimePlus3Hours] = useState('');
+
+  useEffect(() => {
+    const now = new Date();
+    now.setHours(now.getHours() + 3);
+    const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    setCurrentTimePlus3Hours(formattedTime);
+  }, []);
+
   return (
     <div className="z-50 fixed bottom-2 w-[90%] sm:w-[50%] py-2 px-4 rounded-lg bg-gray-800 text-white">
       <div className="flex items-center mb-1">
@@ -85,9 +94,11 @@ export function TimeSlider({
           {isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
         </Button>
         <div className="ml-2">
-          <h2 className="text-md font-semibold">Histórico de 12h - {name}</h2>
+          <h2 className="text-md font-semibold">Previsão de Chuva - {name}</h2>
           <p className="text-sm text-gray-400">
-            {timestamps.length > 0 ? new Date(timestamps[sliderValue]).toLocaleString('pt-BR') : "No data"} {/* Display current timestamp */}
+            {timestamps.length > 0 ?
+              `${new Date(timestamps[sliderValue]).toLocaleDateString('pt-BR')} ${new Date(timestamps[sliderValue]).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}h`
+              : "No data"}
           </p>
         </div>
       </div>
@@ -101,8 +112,8 @@ export function TimeSlider({
         disabled={!isDataLoaded} // Disable slider until data is loaded
       />
       <div className="flex justify-between text-xs text-gray-400">
-        <span className="mt-2">Há 12h</span>
-        <span className="mt-2">Agora</span>
+        <span className="mt-2">Daqui a 1 hora</span>
+        <span className="mt-2">Daqui a 3 horas</span>
       </div>
     </div>
   );

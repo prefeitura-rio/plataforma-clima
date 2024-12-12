@@ -1,25 +1,36 @@
+// import PlaceholderContent from "@/components/demo/placeholder-content";
+// import { ContentLayout } from "@/components/admin-panel/content-layout";
+
+// export default function RadarPage() {
+//   return (
+//     <ContentLayout title="Radar">
+//       <PlaceholderContent />
+//     </ContentLayout>
+//   );
+// }
+
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { SateliteLayout } from "@/components/admin-panel/satelite-layout";
+import { RadarLayout } from "@/components/admin-panel/radar-layout";
 import { TabsDemo } from "@/components/tabs-demo";
 import { InfoButton } from "@/components/info-button";
-import SatelliteLayer from "@/components/satelite-map";
+import RadarLayer from "@/components/radar-map";
 import ColorLabel from "@/components/color-label";
-import { LineChartComponent } from "@/components/ui/line-chart";
 
 
-interface SateliteViewProps {
+interface RadarViewProps {
   params: {
-    sateliteView: string[];
+    radarView: string[];
   };
 }
 
-const SateliteView = ({ params }: SateliteViewProps) => {
+const RadarView = ({ params }: RadarViewProps) => {
 
-  const [indice, view] = params.sateliteView;
+  const [indice, view] = params.radarView;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  // const indice = "reflectivity".toLowerCase();  // forço o valor do índice
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +38,7 @@ const SateliteView = ({ params }: SateliteViewProps) => {
         const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
           ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
           : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
-        const apiUrl = `${rootUrl}satellite/info/${indice.toLowerCase()}`;
+        const apiUrl = `${rootUrl}radar/info/${indice.toLowerCase()}`;
         const response = await fetch(apiUrl);
         const result = await response.json();
         setData(result);
@@ -62,19 +73,15 @@ const SateliteView = ({ params }: SateliteViewProps) => {
   }));
 
   return (
-    <SateliteLayout title="Satélite" view={view} indice={indice}>
+    <RadarLayout title="Radar">
       {
-        view == "mapa" ? (
-          <>
-            <SatelliteLayer name={name} sateliteView={indice} />
-            <ColorLabel colorStops={productLabel} unit={unit} />
-          </>
-        ) : (
-          <LineChartComponent unit={unit} valueRange={valueRange} stepRange={stepRange} name={name} sateliteView={indice} />
-        )
+        <>
+          <RadarLayer name={name} radarView={indice} />
+          <ColorLabel colorStops={productLabel} unit={unit} />
+        </>
       }
-    </SateliteLayout>
+    </RadarLayout>
   );
 };
 
-export default SateliteView;
+export default RadarView;

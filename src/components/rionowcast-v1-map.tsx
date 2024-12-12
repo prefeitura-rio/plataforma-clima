@@ -11,21 +11,21 @@ import { BitmapLayer } from '@deck.gl/layers';
 import { TimeSlider } from './time-slider';
 import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from 'react-responsive';
+import { TimeSliderPrevisao } from './time-slider-previsao';
 
 const DESKTOP_VIEW_STATE: MapViewState = {
-  longitude: -43.70632,
+  longitude: -43.465832,
   latitude: -22.92106,
-  zoom: 6.7,
+  zoom: 8.5,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0,
   bearing: 0
 };
-
 const MOBILE_VIEW_STATE: MapViewState = {
   longitude: -43.465832,
   latitude: -22.92106,
-  zoom: 5.8,
+  zoom: 7.5,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0,
@@ -35,15 +35,17 @@ const MOBILE_VIEW_STATE: MapViewState = {
 const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
-interface SatelliteLayerProps {
-  name: string; // CAPE (Convective Available Potential Energy)
-  sateliteView: string; // mapa, grafico
+interface ModelLayerProps {
+  name: string; // Ex: Modelo de Previsão de Chuva criado pelo grupo Rionowcast (v1).
+  modelView: string; // Ex:v1
+  time_horizon?: string; // Ex:1h
 }
 
-export default function SatelliteLayer({
+export default function ModelLayer({
   name,
-  sateliteView
-}: SatelliteLayerProps) {
+  modelView,
+  time_horizon
+}: ModelLayerProps) {
   const { toast } = useToast();
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
@@ -57,32 +59,54 @@ export default function SatelliteLayer({
       const currentTime = new Date();
 
       // Aproximando o horário atual para o valor anterior de 10 minutos e 20 segundos
-      currentTime.setSeconds(20, 0);
-      const minutes = currentTime.getMinutes();
-      currentTime.setMinutes(Math.floor(minutes / 10) * 10);
+      const hours = currentTime.getHours();
+      currentTime.setHours(hours);
+      currentTime.setMinutes(0);
+      currentTime.setSeconds(0);
+      currentTime.setMilliseconds(0);
 
-      // Subtrair 3 horas para ajustar para o fuso horário de Brasília (UTC-3)
       const currentTimeBrasilia = new Date(currentTime.getTime());
-      const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 12 * 60 * 60 * 1000); // 12 horas atrás
-
-      const product = sateliteView.toLowerCase();
+      const endTimeBrasilia = new Date(currentTime.getTime() + 60 * 1000);
 
       // Determinar a URL base com base no ambiente
       const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
         ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
         : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
 
-      // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
-      const apiUrl = `${rootUrl}satellite/goes16/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`;
-      const response = await fetch(apiUrl);
+      const endpoints = [
+        `${rootUrl}nowcasting_models/rionowcast/gif/v1/1h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`,
+        `${rootUrl}nowcasting_models/rionowcast/gif/v1/2h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`,
+        `${rootUrl}nowcasting_models/rionowcast/gif/v1/3h?start_time=${currentTimeBrasilia.toISOString()}&end_time=${endTimeBrasilia.toISOString()}`
+      ];
 
-      if (!response.ok) {
-        throw new Error(`Error fetching data: ${response.statusText}`);
-      }
+      const responses = await Promise.all(endpoints.map(endpoint => fetch(endpoint)));
 
-      const data = await response.json();
+      const data = await Promise.all(responses.map(response => {
+        if (!response.ok) {
+          throw new Error(`Error fetching data: ${response.statusText}`);
+        }
+        return response.json();
+      }));
 
-      if (data.length === 0) {
+      let combinedData = data.map(items => items[0]).filter(item => item !== undefined);
+
+      // Ajustar os timestamps conforme solicitado
+      combinedData = combinedData.map((item, index) => {
+        const newTimestamp = new Date(item.timestamp);
+        if (index === 0) {
+          newTimestamp.setHours(newTimestamp.getHours() + 1);
+        } else if (index === 1) {
+          newTimestamp.setHours(newTimestamp.getHours() + 2);
+        } else if (index === 2) {
+          newTimestamp.setHours(newTimestamp.getHours() + 3);
+        }
+        return {
+          ...item,
+          timestamp: newTimestamp.toISOString()
+        };
+      });
+
+      if (combinedData.length === 0) {
         toast({
           title: "Aviso",
           description: "Nenhum dado disponível no momento.",
@@ -92,17 +116,17 @@ export default function SatelliteLayer({
           position: isMobile ? "bottom" : "top",
         });
       }
-      if (data.length > 0) {
-        // Preencher o array com os timestamps faltantes
-        const filledData = fillMissingTimestamps(data, startTimeBrasilia, currentTimeBrasilia);
-        setImagesData(filledData);
+
+      // Preencher o array com os timestamps faltantes
+      if (combinedData.length > 0) {
+        setImagesData(combinedData);
         setIsDataLoaded(true);
       }
     } catch (error) {
       setIsDataLoaded(false);
       toast({
-        title: error.message,
-        description: "Erro ao buscar dados.",
+        title: "Erro ao buscar dados.",
+        description: error.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -116,7 +140,7 @@ export default function SatelliteLayer({
     const intervalId = setInterval(fetchImagesData, 60000); // refresh the data each 1 minute
 
     return () => clearInterval(intervalId); // cleanup interval on component unmount
-  }, [sateliteView, toast]);
+  }, []);
 
   const fillMissingTimestamps = (data, startTime, endTime) => {
     const result = [];
@@ -160,7 +184,7 @@ export default function SatelliteLayer({
   const layer = new BitmapLayer({
     id: 'BitmapLayer',
     opacity: 0.6,
-    bounds: [-45.05290312102409, -23.801876626302175, -42.35676996062447, -21.699774257353113],
+    bounds: [-43.8894771422364, -23.13181404239338, -43.04947714223637, -22.65181404239336],
     image: getCurrentImage(sliderValue),
     pickable: true,
     textureParameters: {
@@ -176,7 +200,7 @@ export default function SatelliteLayer({
       </DeckGL>
       {isDataLoaded && imagesData.length > 0 &&
         <div className="flex justify-center items-end h-full pb-5">
-          <TimeSlider
+          <TimeSliderPrevisao
             name={name}
             onTimeChange={handleTimeChange}
             sliderValue={sliderValue}
@@ -189,3 +213,4 @@ export default function SatelliteLayer({
     </div>
   );
 }
+

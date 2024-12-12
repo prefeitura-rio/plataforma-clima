@@ -13,18 +13,17 @@ import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from 'react-responsive';
 
 const DESKTOP_VIEW_STATE: MapViewState = {
-  longitude: -43.70632,
-  latitude: -22.92106,
+  longitude: -43.52328987792129,
+  latitude: -22.824179995805,
   zoom: 6.7,
   minZoom: 5,
   maxZoom: 15,
   pitch: 0,
   bearing: 0
 };
-
 const MOBILE_VIEW_STATE: MapViewState = {
-  longitude: -43.465832,
-  latitude: -22.92106,
+  longitude: -43.52328987792129,
+  latitude: -22.824179995805,
   zoom: 5.8,
   minZoom: 5,
   maxZoom: 15,
@@ -35,15 +34,15 @@ const MOBILE_VIEW_STATE: MapViewState = {
 const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
-interface SatelliteLayerProps {
-  name: string; // CAPE (Convective Available Potential Energy)
-  sateliteView: string; // mapa, grafico
+interface RadarLayerProps {
+  name: string;
+  radarView: string;
 }
 
-export default function SatelliteLayer({
+export default function RadarLayer({
   name,
-  sateliteView
-}: SatelliteLayerProps) {
+  radarView
+}: RadarLayerProps) {
   const { toast } = useToast();
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
@@ -65,7 +64,8 @@ export default function SatelliteLayer({
       const currentTimeBrasilia = new Date(currentTime.getTime());
       const startTimeBrasilia = new Date(currentTimeBrasilia.getTime() - 12 * 60 * 60 * 1000); // 12 horas atrás
 
-      const product = sateliteView.toLowerCase();
+      const product = radarView.toLowerCase();
+      // const product = "reflectivity".toLowerCase(); // reflectivity
 
       // Determinar a URL base com base no ambiente
       const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
@@ -73,7 +73,7 @@ export default function SatelliteLayer({
         : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
 
       // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
-      const apiUrl = `${rootUrl}satellite/goes16/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`;
+      const apiUrl = `${rootUrl}radar/mendanha/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`;
       const response = await fetch(apiUrl);
 
       if (!response.ok) {
@@ -92,8 +92,9 @@ export default function SatelliteLayer({
           position: isMobile ? "bottom" : "top",
         });
       }
+
+      // Preencher o array com os timestamps faltantes
       if (data.length > 0) {
-        // Preencher o array com os timestamps faltantes
         const filledData = fillMissingTimestamps(data, startTimeBrasilia, currentTimeBrasilia);
         setImagesData(filledData);
         setIsDataLoaded(true);
@@ -116,11 +117,11 @@ export default function SatelliteLayer({
     const intervalId = setInterval(fetchImagesData, 60000); // refresh the data each 1 minute
 
     return () => clearInterval(intervalId); // cleanup interval on component unmount
-  }, [sateliteView, toast]);
+  }, [radarView, toast]);
 
   const fillMissingTimestamps = (data, startTime, endTime) => {
     const result = [];
-    const intervalMs = 10 * 60 * 1000; // 10 minutes in milliseconds
+    const intervalMs = 5 * 60 * 1000; // 5 minutes in milliseconds
     let currentTimestamp = startTime.getTime();
 
     // Iterate over the time interval, adding missing timestamps
@@ -160,7 +161,7 @@ export default function SatelliteLayer({
   const layer = new BitmapLayer({
     id: 'BitmapLayer',
     opacity: 0.6,
-    bounds: [-45.05290312102409, -23.801876626302175, -42.35676996062447, -21.699774257353113],
+    bounds: [-44.88549887560727, -24.07974181385155, -42.16109533159336, -21.568618096884588],
     image: getCurrentImage(sliderValue),
     pickable: true,
     textureParameters: {
