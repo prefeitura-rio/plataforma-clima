@@ -2,16 +2,14 @@ steps:
   # Create the .env file
   - name: "gcr.io/cloud-builders/gcloud"
     entrypoint: "bash"
-   args:
+    args:
       - "-c"
       - |
-        echo "NEXT_PUBLIC_ENV=staging" > .env.production && \
-        echo "NEXT_PUBLIC_MAPBOX_API_KEY=pk.eyJ1IjoiZXNjcml0b3Jpb2RlZGFkb3MiLCJhIjoiY2t3bWdmcHpjMmJ2cTJucWJ4MGQ1Mm1kbiJ9.4hHJX-1pSevYoBbja7Pq4w" >> .env.production && \
-        echo "NEXT_PUBLIC_ROOT_URL_DEV=https://gw.dados.rio/plataforma-clima-staging/" >> .env.production && \
-        echo "NEXT_PUBLIC_ROOT_URL_PROD=https://gw.dados.rio/plataforma-clima-staging/" >> .env.production
+        echo "APP_URL=https://staging.plataforma-clima.dados.rio" > .env.production
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/$PROJECT_ID/plataforma-clima:$COMMIT_SHA", "."]
+    args:
+      ["build", "-t", "gcr.io/$PROJECT_ID/plataforma-clima:$COMMIT_SHA", "."]
   # Push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/plataforma-clima:$COMMIT_SHA"]
