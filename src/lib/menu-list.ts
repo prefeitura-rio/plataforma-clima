@@ -89,49 +89,49 @@ export function getMenuList(pathname: string): Group[] {
          
                 {
                   href: "/satelite/CP",
-                  label: "CP",
+                  label: "CAPE - Energia Potencial",
                   active: pathname.includes("/satelite/CP"),
                   submenus: []
                 },
                 {
                   href: "/satelite/KI",
-                  label: "KI",
+                  label: "KI - Índice K",
                   active: pathname.includes("/satelite/KI"),
                   submenus: []
                 },
                 {
                   href: "/satelite/LI",
-                  label: "LI",
+                  label: "LI - Índice de levantamento ",
                   active: pathname.includes("/satelite/LI"),
                   submenus: []
                 },
                 {
                   href: "/satelite/RRQPE",
-                  label: "RRQPE",
+                  label: "RRQPE - Precipitação",
                   active: pathname.includes("/satelite/RRQPE"),
                   submenus: []
                 },
                 {
                   href: "/satelite/SI",
-                  label: "SI",
+                  label: "SI - Showalter",
                   active: pathname.includes("/satelite/SI"),
                   submenus: []
                 },
                 {
                   href: "/satelite/SST",
-                  label: "SST",
+                  label: "SST - Temperatura da Água do Mar",
                   active: pathname.includes("/satelite/SST"),
                   submenus: []
                 },
                 {
                   href: "/satelite/TPW",
-                  label: "TPW",
+                  label: "TPW - Água Precipitável",
                   active: pathname.includes("/satelite/TPW"),
                   submenus: []
                 },  
                 {
                   href: "/satelite/TT",
-                  label: "TT",
+                  label: "TT - Índice Total-Totals",
                   active: pathname.includes("/satelite/TT"),
                   submenus: []
                 },        

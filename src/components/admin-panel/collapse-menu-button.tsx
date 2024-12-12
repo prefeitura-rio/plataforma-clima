@@ -161,10 +161,10 @@ export function CollapseMenuButton({
               asChild
             >
               <Link href={activeTab === "tab1" ? `${href}/mapa` : `${href}/grafico`} onClick={() => setIndice(href)}>
-                <span className={cn("mr-3 ml-10", (label === "CP" || label === "KI" || label === "LI" || label === "TT" || label === "SI" || label === "RRQPE" || label === "SST" || label === "TPW") && "mr-2 ml-6")}>
+                <span className={cn("mr-3 ml-10", (["CAPE", "KI", "LI", "TT", "SI", "RRQPE", "SST", "TPW"].some(substring => label.includes(substring))) && "mr-2 ml-6")}>
                   {/* <Dot size={18} /> */}
                 </span>
-                <p className="max-w-[170px] truncate">{label}</p>
+                <p className="text-xs max-w-[220px]">{label}</p>
               </Link>
             </Button>
           )
@@ -183,7 +183,7 @@ export function CollapseMenuButton({
               >
                 <div className="w-full items-center flex justify-between">
                   <div className="flex items-center">
-                    <span className={cn(isOpen === false ? "" : "mr-4")}>
+                    <span className={cn(isOpen === false ? "ml-2" : "mr-4")}>
                       <Icon size={18} />
                     </span>
                     <p

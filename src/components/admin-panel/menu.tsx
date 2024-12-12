@@ -64,7 +64,7 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
                           <TooltipTrigger asChild>
                             <Button
                               variant={active ? "secondary" : "ghost"}
-                              className="w-full justify-start h-10 mb-1"
+                              className={cn("w-full h-10 mb-1", isOpen === false ? "justify-center" : "justify-start ")}
                               asChild
                             >
                               <Link href={href}>
@@ -77,7 +77,7 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
                                   className={cn(
                                     "max-w-[200px] truncate",
                                     isOpen === false
-                                      ? "-translate-x-96 opacity-0"
+                                      ? "-translate-x-96 opacity-0 hidden"
                                       : "translate-x-0 opacity-100"
                                   )}
                                 >
