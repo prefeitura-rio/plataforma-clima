@@ -133,13 +133,15 @@ export function TimeSliderPrevisao({
         </Button>
         <div className="ml-2">
           <h2 className="text-md font-semibold">Previsão de Chuva - {name}</h2>
-          <p className="text-sm text-gray-400">
+          {/* <p className="text-sm text-gray-400">
             {timestamps.length > 0
-              ? `${new Date(timestamps[sliderValue]).toLocaleDateString("pt-BR")} ${new Date(
-                timestamps[sliderValue]
-              ).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}h`
+              ? new Date(timestamps[sliderValue]).toLocaleDateString("pt-BR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })
               : "No data"}
-          </p>
+          </p> */}
         </div>
       </div>
       <Slider
@@ -152,8 +154,19 @@ export function TimeSliderPrevisao({
         disabled={!isDataLoaded}
       />
       <div className="flex justify-between text-xs text-gray-400">
-        <span className="mt-2">Daqui a 1 hora</span>
-        <span className="mt-2">Daqui a 3 horas</span>
+        <span className="mt-2">{new Date(timestamps[0]).toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}h</span>
+        <span className="mt-2">{new Date(timestamps[1]).toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}h</span>
+        <span className="mt-2">{new Date(timestamps[2]).toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}h</span>
+
       </div>
     </div>
   );
