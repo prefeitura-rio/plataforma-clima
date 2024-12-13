@@ -40,12 +40,10 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
     try {
       const product = sateliteView.toLowerCase();
 
-      const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
-        ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
-        : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+      const rootUrl = process.env.NEXT_PUBLIC_ROOT_URL;
 
       const response = await fetch(
-        `${rootUrl}satellite/goes16/chart/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
+        `${rootUrl}/satellite/goes16/chart/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
       );
       const jsonData = await response.json();
       // console.log(jsonData)

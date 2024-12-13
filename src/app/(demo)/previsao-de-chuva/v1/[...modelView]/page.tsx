@@ -25,10 +25,8 @@ const ModelView = ({ params }: ModelViewProps) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
-          ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
-          : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
-        const apiUrl = `${rootUrl}nowcasting_models/info/v1`;
+        const rootUrl = process.env.NEXT_PUBLIC_ROOT_URL;
+        const apiUrl = `${rootUrl}/nowcasting_models/info/v1`;
         const response = await fetch(apiUrl);
         const result = await response.json();
         setData(result);

@@ -66,12 +66,10 @@ export default function ModelLayer({
       const product = modelView.toLowerCase();
 
       // Determinar a URL base com base no ambiente
-      const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
-        ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
-        : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+      const rootUrl = process.env.NEXT_PUBLIC_ROOT_URL;
 
       // Ajustar os timestamps para o fuso horário de Brasília antes de enviar ao backend
-      const apiUrl = `${rootUrl}impa_models/impa/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`;
+      const apiUrl = `${rootUrl}/impa_models/impa/gif/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`;
       const response = await fetch(apiUrl);
 
       if (!response.ok) {
