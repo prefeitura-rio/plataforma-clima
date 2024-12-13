@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { PlayIcon, PauseIcon } from "lucide-react";
@@ -10,7 +10,7 @@ interface TimeSliderProps {
   onTimeChange?: (time: number) => void;
   sliderValue?: number;
   timestamps?: string[];
-  imagesData?: { timestamp: string, image_url: string }[];
+  imagesData?: { timestamp: string; image_url: string }[];
   isDataLoaded?: boolean;
 }
 
@@ -26,16 +26,16 @@ export function TimeSlider({
   const [currentValue, setCurrentValue] = useState(sliderValue);
 
   const handleSliderChange = (value: number[]) => {
-    let newValue = value[0] % timestamps.length; // loop through available timestamps
+    let newValue = value[0] % timestamps.length;
 
     // verifica se o timestamp tem image_url vazio (artificial) e pula para o próximo válido
     while (imagesData[newValue]?.image_url === "") {
       newValue = (newValue + 1) % timestamps.length;
     }
 
+    setIsPlaying(false); // Pause playback when slider is moved
     setCurrentValue(newValue);
     onTimeChange(newValue);
-    // console.log("Slider value changed to", newValue ?? "");
   };
 
   useEffect(() => {
@@ -66,10 +66,8 @@ export function TimeSlider({
     };
   }, [isPlaying, isDataLoaded, timestamps.length, onTimeChange, imagesData]);
 
-
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
-    // console.log(isPlaying ? "Paused" : "Playing");
   };
 
   return (
@@ -80,14 +78,20 @@ export function TimeSlider({
           size="icon"
           className="text-white"
           onClick={handlePlayPause}
-          disabled={!isDataLoaded} // Disable button until data is loaded
+          disabled={!isDataLoaded}
         >
-          {isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
+          {isPlaying ? (
+            <PauseIcon className="h-4 w-4" />
+          ) : (
+            <PlayIcon className="h-4 w-4" />
+          )}
         </Button>
         <div className="ml-2">
           <h2 className="text-md font-semibold">Histórico de 12h - {name}</h2>
           <p className="text-sm text-gray-400">
-            {timestamps.length > 0 ? new Date(timestamps[sliderValue]).toLocaleString('pt-BR') : "No data"} {/* Display current timestamp */}
+            {timestamps.length > 0
+              ? new Date(timestamps[sliderValue]).toLocaleString("pt-BR")
+              : "No data"}
           </p>
         </div>
       </div>
@@ -98,7 +102,7 @@ export function TimeSlider({
         step={1}
         className="my-1"
         onValueChange={handleSliderChange}
-        disabled={!isDataLoaded} // Disable slider until data is loaded
+        disabled={!isDataLoaded}
       />
       <div className="flex justify-between text-xs text-gray-400">
         <span className="mt-2">Há 12h</span>
