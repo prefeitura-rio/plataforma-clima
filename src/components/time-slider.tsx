@@ -24,16 +24,23 @@ export function TimeSlider({
 }: TimeSliderProps) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentValue, setCurrentValue] = useState(sliderValue);
+  const [currentTimePlus3Hours, setCurrentTimePlus3Hours] = useState("");
+
+  useEffect(() => {
+    const now = new Date();
+    now.setHours(now.getHours() + 3);
+    const formattedTime = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    setCurrentTimePlus3Hours(formattedTime);
+  }, []);
 
   const handleSliderChange = (value: number[]) => {
     let newValue = value[0] % timestamps.length;
 
-    // verifica se o timestamp tem image_url vazio (artificial) e pula para o próximo válido
     while (imagesData[newValue]?.image_url === "") {
       newValue = (newValue + 1) % timestamps.length;
     }
 
-    setIsPlaying(false); // Pause playback when slider is moved
+    setIsPlaying(false);
     setCurrentValue(newValue);
     onTimeChange(newValue);
   };
@@ -46,7 +53,6 @@ export function TimeSlider({
         setCurrentValue((prevValue) => {
           let newValue = (prevValue + 1) % timestamps.length;
 
-          // Pular timestamps artificiais sem image_url
           while (imagesData[newValue]?.image_url === "") {
             newValue = (newValue + 1) % timestamps.length;
           }
@@ -70,6 +76,48 @@ export function TimeSlider({
     setIsPlaying(!isPlaying);
   };
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (!isDataLoaded) return;
+
+    switch (event.key) {
+      case "ArrowRight":
+        setIsPlaying(false);
+        setCurrentValue((prevValue) => {
+          let newValue = (prevValue + 1) % timestamps.length;
+          while (imagesData[newValue]?.image_url === "") {
+            newValue = (newValue + 1) % timestamps.length;
+          }
+          onTimeChange(newValue);
+          return newValue;
+        });
+        break;
+      case "ArrowLeft":
+        setIsPlaying(false);
+        setCurrentValue((prevValue) => {
+          let newValue = (prevValue - 1 + timestamps.length) % timestamps.length;
+          while (imagesData[newValue]?.image_url === "") {
+            newValue = (newValue - 1 + timestamps.length) % timestamps.length;
+          }
+          onTimeChange(newValue);
+          return newValue;
+        });
+        break;
+      case " ":
+        setIsPlaying((prev) => !prev);
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isDataLoaded, timestamps.length, imagesData]);
+
   return (
     <div className="z-50 fixed bottom-2 w-[90%] sm:w-[50%] py-2 px-4 rounded-lg bg-gray-800 text-white">
       <div className="flex items-center mb-1">
@@ -80,11 +128,7 @@ export function TimeSlider({
           onClick={handlePlayPause}
           disabled={!isDataLoaded}
         >
-          {isPlaying ? (
-            <PauseIcon className="h-4 w-4" />
-          ) : (
-            <PlayIcon className="h-4 w-4" />
-          )}
+          {isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
         </Button>
         <div className="ml-2">
           <h2 className="text-md font-semibold">Histórico de 12h - {name}</h2>
@@ -106,7 +150,7 @@ export function TimeSlider({
       />
       <div className="flex justify-between text-xs text-gray-400">
         <span className="mt-2">Há 12h</span>
-        <span className="mt-2">Agora</span>
+        <span className="mt-2">{currentTimePlus3Hours}</span>
       </div>
     </div>
   );

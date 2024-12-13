@@ -10,7 +10,7 @@ interface TimeSliderPrevisaoProps {
   onTimeChange?: (time: number) => void;
   sliderValue?: number;
   timestamps?: string[];
-  imagesData?: { timestamp: string, image_url: string }[];
+  imagesData?: { timestamp: string; image_url: string }[];
   isDataLoaded?: boolean;
 }
 
@@ -28,7 +28,6 @@ export function TimeSliderPrevisao({
   const handleSliderChange = (value: number[]) => {
     let newValue = value[0] % timestamps.length;
 
-    // verifica se o timestamp tem image_url vazio (artificial) e pula para o próximo válido
     while (imagesData[newValue]?.image_url === "") {
       newValue = (newValue + 1) % timestamps.length;
     }
@@ -46,7 +45,6 @@ export function TimeSliderPrevisao({
         setCurrentValue((prevValue) => {
           let newValue = (prevValue + 1) % timestamps.length;
 
-          // Pular timestamps artificiais sem image_url
           while (imagesData[newValue]?.image_url === "") {
             newValue = (newValue + 1) % timestamps.length;
           }
@@ -69,6 +67,48 @@ export function TimeSliderPrevisao({
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (!isDataLoaded) return;
+
+    switch (event.key) {
+      case "ArrowRight":
+        setIsPlaying(false); // Pause playback
+        setCurrentValue((prevValue) => {
+          let newValue = (prevValue + 1) % timestamps.length;
+          while (imagesData[newValue]?.image_url === "") {
+            newValue = (newValue + 1) % timestamps.length;
+          }
+          onTimeChange(newValue);
+          return newValue;
+        });
+        break;
+      case "ArrowLeft":
+        setIsPlaying(false); // Pause playback
+        setCurrentValue((prevValue) => {
+          let newValue = (prevValue - 1 + timestamps.length) % timestamps.length;
+          while (imagesData[newValue]?.image_url === "") {
+            newValue = (newValue - 1 + timestamps.length) % timestamps.length;
+          }
+          onTimeChange(newValue);
+          return newValue;
+        });
+        break;
+      case " ":
+        setIsPlaying((prev) => !prev); // Toggle play/pause
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isDataLoaded, timestamps.length, imagesData]);
 
   const [currentTimePlus3Hours, setCurrentTimePlus3Hours] = useState("");
 
