@@ -18,10 +18,12 @@ const ModelView = ({ params }: ModelViewProps) => {
   const [view] = params.modelView;
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const time_horizon_ = "1h";
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
           ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
@@ -31,7 +33,9 @@ const ModelView = ({ params }: ModelViewProps) => {
         const result = await response.json();
         setData(result);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        setError("Failed to fetch data");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -39,7 +43,17 @@ const ModelView = ({ params }: ModelViewProps) => {
   }, [view]);
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-50">
+        <p className="text-white mb-4">{error}</p>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+          onClick={() => location.reload()} // Simple refresh to retry
+        >
+          Algo deu errado. Tente novamente.
+        </button>
+      </div>
+    );
   }
 
   const product = data?.product || {};
@@ -60,6 +74,11 @@ const ModelView = ({ params }: ModelViewProps) => {
 
   return (
     <ModelLayout title="Modelo">
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+        </div>
+      )}
       <>
         <ModelLayer name={name} modelView={view} time_horizon={time_horizon_} />
         <ColorLabel colorStops={productLabel} unit={unit} />
