@@ -133,15 +133,7 @@ export function TimeSliderPrevisao({
         </Button>
         <div className="ml-2">
           <h2 className="text-md font-semibold">Previsão de Chuva - {name}</h2>
-          {/* <p className="text-sm text-gray-400">
-            {timestamps.length > 0
-              ? new Date(timestamps[sliderValue]).toLocaleDateString("pt-BR", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              })
-              : "No data"}
-          </p> */}
+
         </div>
       </div>
       <Slider
