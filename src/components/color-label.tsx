@@ -53,7 +53,7 @@ export default function ColorBar({
             </linearGradient>
           </defs>
           <rect width="100%" height="100%" fill="url(#colorGradient)" rx="10" ry="10" />
-          {colorStops.map((item, index) => {
+          {unit == "mm/h" && colorStops.map((item, index) => {
             const getImageSrc = (value: any) => {
               if (value === 0.02) return '/rain.svg';
               if (value === 15.05) return '/moderate_rain.svg';
