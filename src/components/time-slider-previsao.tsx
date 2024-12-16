@@ -143,7 +143,7 @@ export function TimeSliderPrevisao({
         className={`absolute w-full bottom-full mb-2 ml-[-16px] transition-opacity duration-5000 ${showImage && !isMobile ? "opacity-100" : "opacity-0"
           }`}
       >
-        <Image src="/arrows_buttons.png" width={250} height={250} className="mx-auto" alt="Imagem" />
+        <Image src="/arrows_buttons.svg" width={250} height={250} className="mx-auto" alt="Imagem" />
       </div>
       <div className="flex items-center mb-1">
         <Button
