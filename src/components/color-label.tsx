@@ -65,7 +65,7 @@ export default function ColorBar({
               <image
                 key={index}
                 href={getImageSrc(item.value)}
-                x={`${getPosition(item.value == 10 ? 7.5 : item.value == 30 ? 25 : item.value)}%`}
+                x={`${getPosition(item.value == 10 ? 9 : item.value == 30 ? 25 : item.value)}%`}
                 y="50%"
                 width="20"
                 height="20"

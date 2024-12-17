@@ -46,7 +46,7 @@ export function getMenuList(pathname: string): Group[] {
       menus: [
         {
           href: "/previsao-de-chuva/v1/mapa",
-          label: "Previsão de Chuva",
+          label: "Modelo de Previsão ConvLSTM (em teste)",
           active: pathname.includes("/previsao-de-chuva/v1"),
           icon: CloudRainWind,
           submenus: [

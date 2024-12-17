@@ -156,7 +156,7 @@ export function TimeSliderPrevisao({
           {isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
         </Button>
         <div className="ml-2">
-          <h2 className="text-md font-semibold">Previsão de Chuva - {name}</h2>
+          <h2 className="text-md font-semibold">{name}</h2>
         </div>
       </div>
       <Slider
