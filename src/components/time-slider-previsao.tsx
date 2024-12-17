@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { PlayIcon, PauseIcon } from "lucide-react";
+import { PlayIcon, PauseIcon, InfoIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import { useMediaQuery } from 'react-responsive';
 
@@ -28,6 +28,7 @@ export function TimeSliderPrevisao({
   const [currentValue, setCurrentValue] = useState(sliderValue);
   const [showImage, setShowImage] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [showInfo, setShowInfo] = useState(true);
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
   const handleShowControls = () => {
@@ -135,8 +136,20 @@ export function TimeSliderPrevisao({
     setCurrentTimePlus3Hours(formattedTime);
   }, []);
 
-  return (
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowInfo(false);
+    }, 15000);
 
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleInfoMouseEnter = () => {
+    setShowInfo(true);
+    setTimeout(() => setShowInfo(false), 10000);
+  };
+
+  return (
     <div className="z-50 fixed bottom-2 w-[90%] sm:w-[50%] py-2 px-4 rounded-lg bg-gray-800 text-white">
       <div
         className={`absolute w-full bottom-full mb-2 ml-[-16px] transition-opacity duration-[1500ms] ${showImage && !isMobile ? "opacity-100" : "opacity-0"
@@ -144,7 +157,37 @@ export function TimeSliderPrevisao({
       >
         <Image src="/arrows_buttons.svg" width={250} height={250} alt="Imagem" />
       </div>
+      <div
+        className={`absolute bottom-full mb-2 transition-opacity duration-[3000ms] ${showInfo ? "opacity-100" : "opacity-0"}`}
+        style={{ right: 0 }}
+      >
+        <div className="relative w-64 p-2 rounded-lg bg-[#21293633]">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-0 right-0 text-white hover:bg-red-transparent"
+            onClick={() => setShowInfo(false)}
+          >
+            <XIcon className="h-3 w-3 transform transition-transform duration-200 hover:scale-150" />
+          </Button>
+          <div className="ml-2">
+            <h2 className="text-sm">
+              Modelo ConvLSTM do grupo <a href="https://rionowcast.dexl.lncc.br/" target="_blank" className="text-blue-500 underline">Rionowcast</a>, em fase de testes. Para dados mais confiáveis, consulte o <a href="https://alertario.rio.rj.gov.br/24-horas/" target="_blank" className="text-blue-500 underline">Alerta Rio</a>.
+            </h2>
+          </div>
+        </div>
+      </div>
 
+      {!showInfo && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute bottom-full mb-0 right-0 text-gray-800"
+          onMouseEnter={handleInfoMouseEnter}
+        >
+          <InfoIcon className="h-4 w-4" />
+        </Button>
+      )}
       <div className="flex items-center mb-1">
         <Button
           variant="ghost"
