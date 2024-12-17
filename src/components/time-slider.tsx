@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { PlayIcon, PauseIcon } from "lucide-react";
+import { useMediaQuery } from "react-responsive";
+import Image from "next/image";
 
 interface TimeSliderProps {
   name?: string;
@@ -25,15 +27,27 @@ export function TimeSlider({
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentValue, setCurrentValue] = useState(sliderValue);
   const [currentTimePlus3Hours, setCurrentTimePlus3Hours] = useState("");
+  const [showImage, setShowImage] = useState(false);
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
+
+  const handleShowControls = () => {
+    if (!showImage) {
+      setShowImage(true);
+      setTimeout(() => setShowImage(false), 3000);
+    }
+  };
 
   useEffect(() => {
     const now = new Date();
-    now.setHours(now.getHours() + 3);
-    const formattedTime = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    const utcNow = now.getTime() + now.getTimezoneOffset() * 60000; // Convert to UTC
+    const utcMinus3 = new Date(utcNow - 3 * 60 * 60 * 1000); // Adjust to UTC-3
+    const formattedTime = utcMinus3.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     setCurrentTimePlus3Hours(formattedTime);
-  }, []);
+  }, [timestamps]);
+
 
   const handleSliderChange = (value: number[]) => {
+    handleShowControls();
     let newValue = value[0] % timestamps.length;
 
     while (imagesData[newValue]?.image_url === "") {
@@ -72,8 +86,10 @@ export function TimeSlider({
     };
   }, [isPlaying, isDataLoaded, timestamps.length, onTimeChange, imagesData]);
 
-  const handlePlayPause = () => {
+  const handlePlayPause = (event: React.MouseEvent<HTMLButtonElement>) => {
+    handleShowControls();
     setIsPlaying(!isPlaying);
+    event.currentTarget.blur(); // Remove focus from the button
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -81,7 +97,7 @@ export function TimeSlider({
 
     switch (event.key) {
       case "ArrowRight":
-        setIsPlaying(false);
+        setIsPlaying(false); // Pause playback
         setCurrentValue((prevValue) => {
           let newValue = (prevValue + 1) % timestamps.length;
           while (imagesData[newValue]?.image_url === "") {
@@ -92,7 +108,7 @@ export function TimeSlider({
         });
         break;
       case "ArrowLeft":
-        setIsPlaying(false);
+        setIsPlaying(false); // Pause playback
         setCurrentValue((prevValue) => {
           let newValue = (prevValue - 1 + timestamps.length) % timestamps.length;
           while (imagesData[newValue]?.image_url === "") {
@@ -103,7 +119,7 @@ export function TimeSlider({
         });
         break;
       case " ":
-        setIsPlaying((prev) => !prev);
+        setIsPlaying((prev) => !prev); // Toggle play/pause
         break;
       default:
         break;
@@ -120,6 +136,12 @@ export function TimeSlider({
 
   return (
     <div className="z-50 fixed bottom-2 w-[90%] sm:w-[50%] py-2 px-4 rounded-lg bg-gray-800 text-white">
+      <div
+        className={`absolute w-full bottom-full mb-2 ml-[-16px] transition-opacity duration-[1500ms] ${showImage && !isMobile ? "opacity-100" : "opacity-0"
+          }`}
+      >
+        <Image src="/arrows_buttons.svg" width={250} height={250} alt="Imagem" />
+      </div>
       <div className="flex items-center mb-1">
         <Button
           variant="ghost"
@@ -127,6 +149,7 @@ export function TimeSlider({
           className="text-white"
           onClick={handlePlayPause}
           disabled={!isDataLoaded}
+          onMouseDown={handleShowControls}
         >
           {isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
         </Button>
@@ -147,6 +170,7 @@ export function TimeSlider({
         className="my-1"
         onValueChange={handleSliderChange}
         disabled={!isDataLoaded}
+        onMouseDown={handleShowControls}
       />
       <div className="flex justify-between text-xs text-gray-400">
         <span className="mt-2">Há 12h</span>

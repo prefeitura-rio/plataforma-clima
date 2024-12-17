@@ -30,14 +30,15 @@ export function TimeSliderPrevisao({
   const [hasInteracted, setHasInteracted] = useState(false);
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
-  const handleShowImage = () => {
+  const handleShowControls = () => {
     if (!showImage) {
       setShowImage(true);
       setTimeout(() => setShowImage(false), 3000);
     }
   };
+
   const handleSliderChange = (value: number[]) => {
-    handleShowImage();
+    handleShowControls();
 
     let newValue = value[0] % timestamps.length;
 
@@ -78,7 +79,7 @@ export function TimeSliderPrevisao({
   }, [isPlaying, isDataLoaded, timestamps.length, onTimeChange, imagesData]);
 
   const handlePlayPause = (event: React.MouseEvent<HTMLButtonElement>) => {
-    handleShowImage();
+    handleShowControls();
     setIsPlaying(!isPlaying);
     event.currentTarget.blur(); // Remove focus from the button
   };
@@ -140,7 +141,7 @@ export function TimeSliderPrevisao({
         className={`absolute w-full bottom-full mb-2 ml-[-16px] transition-opacity duration-[1500ms] ${showImage && !isMobile ? "opacity-100" : "opacity-0"
           }`}
       >
-        <Image src="/arrows_buttons.svg" width={250} height={250} className="mx-auto" alt="Imagem" />
+        <Image src="/arrows_buttons.svg" width={250} height={250} alt="Imagem" />
       </div>
 
       <div className="flex items-center mb-1">
@@ -150,7 +151,7 @@ export function TimeSliderPrevisao({
           className="text-white"
           onClick={handlePlayPause}
           disabled={!isDataLoaded}
-          onMouseDown={handleShowImage}
+          onMouseDown={handleShowControls}
         >
           {isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
         </Button>
@@ -166,7 +167,7 @@ export function TimeSliderPrevisao({
         className="my-1"
         onValueChange={handleSliderChange}
         disabled={!isDataLoaded}
-        onMouseDown={handleShowImage}
+        onMouseDown={handleShowControls}
       />
       <div className="flex justify-between text-xs text-gray-400">
         <span className="mt-2">

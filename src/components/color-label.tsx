@@ -56,8 +56,8 @@ export default function ColorBar({
           {unit == "mm/h" && colorStops.map((item, index) => {
             const getImageSrc = (value: any) => {
               if (value === 0.02) return '/rain.svg';
-              if (value === 15.05) return '/moderate_rain.svg';
-              if (value === 27.55) return '/heavy_rain.svg';
+              if (value === 10) return '/moderate_rain.svg';
+              if (value === 30) return '/heavy_rain.svg';
               if (value === 50) return '/very_heavy_rain.svg';
               return '';
             };
@@ -65,7 +65,7 @@ export default function ColorBar({
               <image
                 key={index}
                 href={getImageSrc(item.value)}
-                x={`${getPosition(item.value)}%`}
+                x={`${getPosition(item.value == 10 ? 7.5 : item.value == 30 ? 25 : item.value)}%`}
                 y="50%"
                 width="20"
                 height="20"
@@ -88,7 +88,7 @@ export default function ColorBar({
               }}
             >
               <div className="h-2 w-px bg-gray-400 mb-1 mx-auto"></div>
-              <div className="text-black font-bold text-sm text-right">
+              <div className="text-black text-sm text-right">
                 {item.value}
                 {item.value == 90 && '+'}
               </div>
