@@ -31,15 +31,11 @@ export function TimeSliderPrevisao({
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
   const handleShowImage = () => {
-    if (!hasInteracted) {
-      setHasInteracted(true);
+    if (!showImage) {
       setShowImage(true);
-      setTimeout(() => {
-        setShowImage(false);
-      }, 5000);
+      setTimeout(() => setShowImage(false), 3000);
     }
   };
-
   const handleSliderChange = (value: number[]) => {
     handleShowImage();
 
@@ -81,9 +77,10 @@ export function TimeSliderPrevisao({
     };
   }, [isPlaying, isDataLoaded, timestamps.length, onTimeChange, imagesData]);
 
-  const handlePlayPause = () => {
+  const handlePlayPause = (event: React.MouseEvent<HTMLButtonElement>) => {
     handleShowImage();
     setIsPlaying(!isPlaying);
+    event.currentTarget.blur(); // Remove focus from the button
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -140,11 +137,12 @@ export function TimeSliderPrevisao({
   return (
     <div className="relative z-50 fixed bottom-2 w-[90%] sm:w-[50%] py-2 px-4 rounded-lg bg-gray-800 text-white">
       <div
-        className={`absolute w-full bottom-full mb-2 ml-[-16px] transition-opacity duration-5000 ${showImage && !isMobile ? "opacity-100" : "opacity-0"
+        className={`absolute w-full bottom-full mb-2 ml-[-16px] transition-opacity duration-[1500ms] ${showImage && !isMobile ? "opacity-100" : "opacity-0"
           }`}
       >
         <Image src="/arrows_buttons.svg" width={250} height={250} className="mx-auto" alt="Imagem" />
       </div>
+
       <div className="flex items-center mb-1">
         <Button
           variant="ghost"
