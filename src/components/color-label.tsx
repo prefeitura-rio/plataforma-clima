@@ -100,7 +100,7 @@ export default function ColorBar({
                 left: `${getPosition(item.value)}%`,
               }}
             >
-              <div className="h-2 w-px bg-gray-400 mb-1 mx-auto"></div>
+              <div className="h-2 w-px bg-gray-600 mb-1 mx-auto"></div>
               <div className="text-black text-sm text-right">
                 {item.value}
                 {item.value == 90 && '+'}
