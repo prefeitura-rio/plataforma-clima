@@ -31,6 +31,7 @@ export function TimeSliderPrevisao({
   const [hasInteracted, setHasInteracted] = useState(false);
   const [showInfo, setShowInfo] = useState(true);
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const isShortScreen = useMediaQuery({ query: '(max-width: 1119px)' });
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleShowControls = () => {
@@ -155,7 +156,7 @@ export function TimeSliderPrevisao({
   return (
     <div className="z-50 fixed bottom-2 w-[90%] sm:w-[50%] py-2 px-4 rounded-lg bg-gray-800 text-white">
       <div
-        className={`absolute w-72 bottom-full mb-2 ml-[-16px] transition-opacity duration-[1500ms] ${showImage && !isMobile ? "opacity-100" : "opacity-0 pointer-events-none"
+        className={`absolute w-72 bottom-full mb-[13px] ml-[-16px] transition-opacity duration-[1500ms] ${showImage && !isMobile ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
       >
         <ControlButtons
@@ -190,10 +191,13 @@ export function TimeSliderPrevisao({
         />
       </div>
       <div
-        className={`absolute bottom-full mb-2 transition-opacity duration-[3000ms] ${showInfo ? "opacity-100" : "opacity-0"}`}
-        style={{ right: 0 }}
+        className={`absolute bottom-full mb-${showImage && !isMobile && isShortScreen && showInfo ? 20 : 2} transition-opacity duration-[3000ms] ${showInfo ? "opacity-100" : "opacity-0"}`}
+        style={{
+          left: showImage && !isMobile && isShortScreen && showInfo ? 0 : "auto",
+          right: showImage && !isMobile && isShortScreen && showInfo ? "auto" : 0,
+        }}
       >
-        <div className="relative w-64 p-2 rounded-lg bg-[#21293633]">
+        <div className="relative max-w-64 p-2 rounded-lg bg-[#21293633]">
           <Button
             variant="ghost"
             size="icon"
