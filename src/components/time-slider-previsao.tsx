@@ -191,7 +191,7 @@ export function TimeSliderPrevisao({
         />
       </div>
       <div
-        className={`absolute bottom-full mb-${showImage && !isMobile && isShortScreen && showInfo ? 20 : 2} transition-opacity duration-[3000ms] ${showInfo ? "opacity-100" : "opacity-0"}`}
+        className={`absolute bottom-full ${showImage && !isMobile && isShortScreen && showInfo ? 'mb-20' : 'mb-2'} transition-opacity duration-[3000ms] ${showInfo ? "opacity-100" : "opacity-0"}`}
         style={{
           left: showImage && !isMobile && isShortScreen && showInfo ? 0 : "auto",
           right: showImage && !isMobile && isShortScreen && showInfo ? "auto" : 0,
