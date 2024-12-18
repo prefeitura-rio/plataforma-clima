@@ -232,7 +232,7 @@ export function CollapseMenuButton({
             </DropdownMenuItem>
           ) : (
             <DropdownMenuItem key={index} asChild>
-              <Link className="cursor-pointer" href={href}>
+              <Link className="cursor-pointer" href={`${href}/${activeTab === 'tab1' ? 'mapa' : 'grafico'}`}>
                 <p className="max-w-[180px] truncate">{label}</p>
               </Link>
             </DropdownMenuItem>
