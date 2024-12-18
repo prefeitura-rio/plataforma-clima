@@ -85,7 +85,7 @@ export default function ColorBar({
                 />
               );
             })}
-          <text x="98.5%" y="50%" dy="0.35em" textAnchor="end" fill="black" fontSize="13" fontWeight="bold">
+          <text x="98.5%" y="50%" dy="0.35em" textAnchor="end" fill="#FFFFFF" fontSize="13" fontWeight="bold">
             {unit}
           </text>
         </svg>
