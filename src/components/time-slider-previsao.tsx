@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { PlayIcon, PauseIcon, InfoIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import { useMediaQuery } from 'react-responsive';
+import ControlButtons from "./controls-buttons";
 
 interface TimeSliderPrevisaoProps {
   name?: string;
@@ -30,12 +31,14 @@ export function TimeSliderPrevisao({
   const [hasInteracted, setHasInteracted] = useState(false);
   const [showInfo, setShowInfo] = useState(true);
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleShowControls = () => {
-    if (!showImage) {
-      setShowImage(true);
-      setTimeout(() => setShowImage(false), 3000);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
+    setShowImage(true);
+    timeoutRef.current = setTimeout(() => setShowImage(false), 15000);
   };
 
   const handleSliderChange = (value: number[]) => {
@@ -152,10 +155,39 @@ export function TimeSliderPrevisao({
   return (
     <div className="z-50 fixed bottom-2 w-[90%] sm:w-[50%] py-2 px-4 rounded-lg bg-gray-800 text-white">
       <div
-        className={`absolute w-full bottom-full mb-2 ml-[-16px] transition-opacity duration-[1500ms] ${showImage && !isMobile ? "opacity-100" : "opacity-0"
+        className={`absolute w-72 bottom-full mb-2 ml-[-16px] transition-opacity duration-[1500ms] ${showImage && !isMobile ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
       >
-        <Image src="/arrows_buttons.svg" width={250} height={250} alt="Imagem" />
+        <ControlButtons
+          onPlayPause={() => {
+            handleShowControls();
+            setIsPlaying((prev) => !prev);
+          }}
+          onBackward={() => {
+            handleShowControls();
+            setIsPlaying(false);
+            setCurrentValue((prevValue) => {
+              let newValue = (prevValue - 1 + timestamps.length) % timestamps.length;
+              while (imagesData[newValue]?.image_url === "") {
+                newValue = (newValue - 1 + timestamps.length) % timestamps.length;
+              }
+              onTimeChange(newValue);
+              return newValue;
+            });
+          }}
+          onForward={() => {
+            handleShowControls();
+            setIsPlaying(false);
+            setCurrentValue((prevValue) => {
+              let newValue = (prevValue + 1) % timestamps.length;
+              while (imagesData[newValue]?.image_url === "") {
+                newValue = (newValue + 1) % timestamps.length;
+              }
+              onTimeChange(newValue);
+              return newValue;
+            });
+          }}
+        />
       </div>
       <div
         className={`absolute bottom-full mb-2 transition-opacity duration-[3000ms] ${showInfo ? "opacity-100" : "opacity-0"}`}
