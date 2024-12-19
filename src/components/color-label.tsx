@@ -35,20 +35,20 @@ export default function ColorBar({
 
   return (
     <div
-      className="w-full max-w-xl mx-auto px-5 py-3 md:mt-2 pt-10 rounded-xl"
+      className="w-full max-w-xl mx-auto px-5 py-3 md:mt-2 rounded-xl"
       style={{
         backgroundColor: 'rgba(33, 41, 54, 0.2)', // Set the background color
         position: 'relative',   // Ensure the position is set for z-index to take effect
         zIndex: 0,           // Higher z-index to place it above the Mapbox map
       }}
     >
-      <div className="relative h-5 mb-8">
+      <div className="relative h-6 mb-8">
         <div className="flex justify-center absolute w-full text-center text-black font-bold -top-8">
-          {unit && (
+          {/* {unit && (
             <div className="absolute bg-black text-white font-bold text-sm px-2 py-1 rounded-full">
               {unit}
             </div>
-          )}
+          )} */}
         </div>
         <svg width="100%" height="100%">
           <defs>
@@ -85,6 +85,9 @@ export default function ColorBar({
                 />
               );
             })}
+          <text x="98.5%" y="50%" dy="0.35em" textAnchor="end" fill="#FFFFFF" fontSize="13" fontWeight="bold">
+            {unit}
+          </text>
         </svg>
         {colorStops.map((item, index) => {
           const isFirst = index === 0;
@@ -97,7 +100,7 @@ export default function ColorBar({
                 left: `${getPosition(item.value)}%`,
               }}
             >
-              <div className="h-2 w-px bg-gray-400 mb-1 mx-auto"></div>
+              <div className="h-2 w-px bg-gray-600 mb-1 mx-auto"></div>
               <div className="text-black text-sm text-right">
                 {item.value}
                 {item.value == 90 && '+'}
