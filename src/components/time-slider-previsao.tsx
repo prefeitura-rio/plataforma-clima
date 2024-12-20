@@ -154,7 +154,7 @@ export function TimeSliderPrevisao({
   };
 
   return (
-    <div className="z-50 fixed bottom-2 w-[90%] max-w-xl py-2 px-4 rounded-lg bg-gray-800 text-white">
+    <div className="z-50 fixed sm:bottom-2 bottom-0 w-full sm:w-[90%] md:max-w-3xl py-2 px-4 sm:rounded-lg bg-gray-800 text-white">
       <div
         className={`absolute w-72 bottom-full mb-[13px] ml-[-16px] transition-opacity duration-[1500ms] ${showImage && !isMobile ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
