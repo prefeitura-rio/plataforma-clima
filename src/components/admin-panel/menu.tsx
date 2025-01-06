@@ -74,18 +74,31 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
                                 <span className={cn(isOpen === false ? "" : "mr-4")}>
                                   <Icon size={18} />
                                 </span>
-                                <p
-                                  className={cn(
-                                    "max-w-[200px] truncate relative overflow-hidden",
-                                    isOpen === false
-                                      ? "-translate-x-96 opacity-0 hidden"
-                                      : "translate-x-0 opacity-100"
-                                  )}
-                                >
-                                  <span className="inline-block whitespace-nowrap transition-transform duration-500 hover:-translate-x-24">
+                                {label.length > 23 ? (
+                                  <p
+                                    className={cn(
+                                      "max-w-[200px] truncate relative overflow-hidden",
+                                      isOpen === false
+                                        ? "-translate-x-96 opacity-0 hidden"
+                                        : "translate-x-0 opacity-100"
+                                    )}
+                                  >
+                                    <span className="inline-block whitespace-nowrap transition-transform duration-500 hover:-translate-x-24">
+                                      {label}
+                                    </span>
+                                  </p>
+                                ) : (
+                                  <p
+                                    className={cn(
+                                      "max-w-[200px] truncate",
+                                      isOpen === false
+                                        ? "-translate-x-96 opacity-0 hidden"
+                                        : "translate-x-0 opacity-100"
+                                    )}
+                                  >
                                     {label}
-                                  </span>
-                                </p>
+                                  </p>
+                                )}
                               </Link>
                             </Button>
                           </TooltipTrigger>
