@@ -35,7 +35,7 @@ export default function ColorBar({
 
   return (
     <div
-      className="w-full max-w-xl mx-auto px-5 py-3 md:mt-2 rounded-xl"
+      className="w-full max-w-xl mx-auto px-5 py-3 sm:mt-2 sm:rounded-xl"
       style={{
         backgroundColor: 'rgba(33, 41, 54, 0.2)', // Set the background color
         position: 'relative',   // Ensure the position is set for z-index to take effect
