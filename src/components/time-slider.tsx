@@ -171,7 +171,9 @@ export function TimeSlider({
               return newValue;
             });
           }}
+          onClose={() => setShowImage(false)} // Close handler
         />
+
       </div>
       <div className="flex items-center mb-1">
         <Button

@@ -188,7 +188,9 @@ export function TimeSliderPrevisao({
               return newValue;
             });
           }}
+          onClose={() => setShowImage(false)} // Close handler
         />
+
       </div>
       <div
         className={`absolute bottom-full ${showImage && !isMobile && isShortScreen && showInfo ? 'mb-20' : 'mb-2'} transition-opacity duration-[3000ms] ${showInfo ? "opacity-100" : "opacity-0"}`}
