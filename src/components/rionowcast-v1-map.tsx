@@ -12,6 +12,8 @@ import { TimeSlider } from './time-slider';
 import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from 'react-responsive';
 import { TimeSliderPrevisao } from './time-slider-previsao';
+import { MapControllers } from './map-controllers';
+import { FlyToInterpolator } from '@deck.gl/core';
 
 const DESKTOP_VIEW_STATE: MapViewState = {
   longitude: -43.465832,
@@ -191,10 +193,28 @@ export default function ModelLayer({
     }
   });
 
+  const [mapStyle, setMapStyle] = useState(MAP_STYLE);
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+
+  const handleStyleChange = (newStyle: string) => {
+    setMapStyle(newStyle);
+    console.log(`Map style changed to: ${newStyle}`);
+  };
+
+  const handleNavigationCenter = () => {
+    const viewState = isMobile ? MOBILE_VIEW_STATE : DESKTOP_VIEW_STATE;
+    setViewState({
+      ...viewState,
+      transitionDuration: 500,
+      transitionInterpolator: new FlyToInterpolator(),
+    });
+  };
+
+
   return (
     <div className="mt-0 absolute w-full h-full">
-      <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={[layer]}>
-        <Map reuseMaps mapboxAccessToken={MAPBOX_API_KEY} mapStyle={MAP_STYLE} />
+      <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={[layer]} viewState={viewState} onViewStateChange={({ viewState }) => setViewState(viewState)}>
+        <Map reuseMaps mapboxAccessToken={MAPBOX_API_KEY} mapStyle={mapStyle} />
       </DeckGL>
       {isDataLoaded && imagesData.length > 0 &&
         <div className="flex justify-center items-end h-full pb-5">
@@ -208,6 +228,7 @@ export default function ModelLayer({
           />
         </div>
       }
+      <MapControllers onStyleChange={handleStyleChange} onNavigationCenter={handleNavigationCenter} />
     </div>
   );
 }
