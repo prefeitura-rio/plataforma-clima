@@ -114,7 +114,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
 
               <ChartTooltip
                 cursor={true}
-                content={<ChartTooltipContent unit={unit} />}
+                content={<ChartTooltipContent unit={unit} hideLabel />}
               />
               <Line
                 isAnimationActive={false}
