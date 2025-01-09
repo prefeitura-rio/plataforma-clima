@@ -14,6 +14,7 @@ import { useMediaQuery } from 'react-responsive';
 import { TimeSliderPrevisao } from './time-slider-previsao';
 import { MapControllers } from './map-controllers';
 import { FlyToInterpolator } from '@deck.gl/core';
+import { useMapStyle } from "@/context/MapStyleContext";
 
 const DESKTOP_VIEW_STATE: MapViewState = {
   longitude: -43.465832,
@@ -34,7 +35,7 @@ const MOBILE_VIEW_STATE: MapViewState = {
   bearing: 0
 };
 
-const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
+const MAP_STYLE = 'mapbox://styles/escritoriodedados/cm5mtyaev00bn01qpd39j2o97';
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
 interface ModelLayerProps {
@@ -49,6 +50,7 @@ export default function ModelLayer({
   time_horizon
 }: ModelLayerProps) {
   const { toast } = useToast();
+  const { mapStyle, setMapStyle } = useMapStyle(MAP_STYLE);
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -193,7 +195,7 @@ export default function ModelLayer({
     }
   });
 
-  const [mapStyle, setMapStyle] = useState(MAP_STYLE);
+  // const [mapStyle, setMapStyle] = useState(MAP_STYLE);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
   const handleStyleChange = (newStyle: string) => {

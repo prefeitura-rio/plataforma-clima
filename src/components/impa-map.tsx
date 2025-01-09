@@ -30,7 +30,7 @@ const MOBILE_VIEW_STATE: MapViewState = {
   pitch: 0,
   bearing: 0
 };
-const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
+const MAP_STYLE = 'mapbox://styles/escritoriodedados/cm5mtyaev00bn01qpd39j2o97';
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
 interface ModelLayerProps {

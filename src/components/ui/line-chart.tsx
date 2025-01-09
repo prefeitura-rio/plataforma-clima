@@ -122,7 +122,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
                 type="linear"
                 stroke="var(--color-value)"
                 strokeWidth={4}
-                dot={false}
+                dot={true}
               />
             </LineChart>
           </ResponsiveContainer>
