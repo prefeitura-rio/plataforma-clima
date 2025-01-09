@@ -49,11 +49,12 @@ export default function SatelliteLayer({
   sateliteView
 }: SatelliteLayerProps) {
   const { toast } = useToast();
-  const { mapStyle, setMapStyle } = useMapStyle(MAP_STYLE);
+  const { mapStyle, setMapStyle, opacity, setOpacity } = useMapStyle();
 
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+
 
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const INITIAL_VIEW_STATE = isMobile ? MOBILE_VIEW_STATE : DESKTOP_VIEW_STATE;
@@ -163,7 +164,7 @@ export default function SatelliteLayer({
 
   const layer = new BitmapLayer({
     id: 'BitmapLayer',
-    opacity: 0.6,
+    opacity: opacity,
     bounds: [-45.05290312102409, -23.801876626302175, -42.35676996062447, -21.699774257353113],
     image: getCurrentImage(sliderValue),
     pickable: true,
@@ -189,7 +190,9 @@ export default function SatelliteLayer({
       transitionInterpolator: new FlyToInterpolator(),
     });
   };
-
+  const handleOpacityChange = (newOpacity: number) => {
+    setOpacity(newOpacity);
+  };
 
   return (
     <div className="mt-0 absolute w-full h-full">
@@ -208,7 +211,7 @@ export default function SatelliteLayer({
           />
         </div>
       }
-      <MapControllers onStyleChange={handleStyleChange} onNavigationCenter={handleNavigationCenter} />
+      <MapControllers onStyleChange={handleStyleChange} onNavigationCenter={handleNavigationCenter} onOpacityChange={handleOpacityChange} opacity={opacity} />
     </div>
   );
 }

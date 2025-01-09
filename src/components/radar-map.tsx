@@ -47,7 +47,7 @@ export default function RadarLayer({
   radarView
 }: RadarLayerProps) {
   const { toast } = useToast();
-  const { mapStyle, setMapStyle } = useMapStyle(MAP_STYLE);
+  const { mapStyle, setMapStyle, opacity, setOpacity } = useMapStyle();
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -162,7 +162,7 @@ export default function RadarLayer({
 
   const layer = new BitmapLayer({
     id: 'BitmapLayer',
-    opacity: 0.6,
+    opacity: opacity,
     bounds: [-44.88549887560727, -24.07974181385155, -42.16109533159336, -21.568618096884588],
     image: getCurrentImage(sliderValue),
     pickable: true,
@@ -189,6 +189,9 @@ export default function RadarLayer({
     });
   };
 
+  const handleOpacityChange = (newOpacity: number) => {
+    setOpacity(newOpacity);
+  };
 
   return (
     <div className="mt-0 absolute w-full h-full">
@@ -207,7 +210,7 @@ export default function RadarLayer({
           />
         </div>
       }
-      <MapControllers onStyleChange={handleStyleChange} onNavigationCenter={handleNavigationCenter} />
+      <MapControllers onStyleChange={handleStyleChange} onNavigationCenter={handleNavigationCenter} onOpacityChange={handleOpacityChange} opacity={opacity} />
     </div>
   );
 }

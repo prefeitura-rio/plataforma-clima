@@ -50,10 +50,11 @@ export default function ModelLayer({
   time_horizon
 }: ModelLayerProps) {
   const { toast } = useToast();
-  const { mapStyle, setMapStyle } = useMapStyle(MAP_STYLE);
+  const { mapStyle, setMapStyle, opacity, setOpacity } = useMapStyle();
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+
 
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const INITIAL_VIEW_STATE = isMobile ? MOBILE_VIEW_STATE : DESKTOP_VIEW_STATE;
@@ -185,7 +186,7 @@ export default function ModelLayer({
 
   const layer = new BitmapLayer({
     id: 'BitmapLayer',
-    opacity: 0.6,
+    opacity: opacity,
     bounds: [-43.8894771422364, -23.13181404239338, -43.04947714223637, -22.65181404239336],
     image: getCurrentImage(sliderValue),
     pickable: true,
@@ -211,7 +212,9 @@ export default function ModelLayer({
       transitionInterpolator: new FlyToInterpolator(),
     });
   };
-
+  const handleOpacityChange = (newOpacity: number) => {
+    setOpacity(newOpacity);
+  };
 
   return (
     <div className="mt-0 absolute w-full h-full">
@@ -230,7 +233,7 @@ export default function ModelLayer({
           />
         </div>
       }
-      <MapControllers onStyleChange={handleStyleChange} onNavigationCenter={handleNavigationCenter} />
+      <MapControllers onStyleChange={handleStyleChange} onNavigationCenter={handleNavigationCenter} onOpacityChange={handleOpacityChange} opacity={opacity} />
     </div>
   );
 }

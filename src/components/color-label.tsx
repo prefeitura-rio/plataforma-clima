@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMapStyle } from "@/context/MapStyleContext";
 
 interface ColorStop {
   color: string;
@@ -18,6 +19,9 @@ export default function ColorBar({
   height = 450,
   width = 15,
 }: ColorPaletteProps) {
+
+  const { opacity } = useMapStyle();
+
   if (!colorStops || colorStops.length === 0) {
     return null; // Return null or a loading spinner if data is not available
   }
@@ -58,7 +62,7 @@ export default function ColorBar({
                   key={index}
                   offset={`${getPosition(item.value)}%`}
                   stopColor={item.color}
-                  stopOpacity="0.6"
+                  stopOpacity={opacity}
                 />
               ))}
             </linearGradient>
