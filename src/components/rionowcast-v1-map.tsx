@@ -12,6 +12,9 @@ import { TimeSlider } from './time-slider';
 import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from 'react-responsive';
 import { TimeSliderPrevisao } from './time-slider-previsao';
+import { MapControllers } from './map-controllers';
+import { FlyToInterpolator } from '@deck.gl/core';
+import { useMapStyle } from "@/context/MapStyleContext";
 
 const DESKTOP_VIEW_STATE: MapViewState = {
   longitude: -43.465832,
@@ -32,7 +35,7 @@ const MOBILE_VIEW_STATE: MapViewState = {
   bearing: 0
 };
 
-const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
+const MAP_STYLE = 'mapbox://styles/escritoriodedados/cm5mtyaev00bn01qpd39j2o97';
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
 interface ModelLayerProps {
@@ -47,9 +50,11 @@ export default function ModelLayer({
   time_horizon
 }: ModelLayerProps) {
   const { toast } = useToast();
+  const { mapStyle, setMapStyle, opacity, setOpacity } = useMapStyle();
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+
 
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const INITIAL_VIEW_STATE = isMobile ? MOBILE_VIEW_STATE : DESKTOP_VIEW_STATE;
@@ -181,7 +186,7 @@ export default function ModelLayer({
 
   const layer = new BitmapLayer({
     id: 'BitmapLayer',
-    opacity: 0.6,
+    opacity: opacity,
     bounds: [-43.8894771422364, -23.13181404239338, -43.04947714223637, -22.65181404239336],
     image: getCurrentImage(sliderValue),
     pickable: true,
@@ -191,10 +196,30 @@ export default function ModelLayer({
     }
   });
 
+  // const [mapStyle, setMapStyle] = useState(MAP_STYLE);
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+
+  const handleStyleChange = (newStyle: string) => {
+    setMapStyle(newStyle);
+    console.log(`Map style changed to: ${newStyle}`);
+  };
+
+  const handleNavigationCenter = () => {
+    const viewState = isMobile ? MOBILE_VIEW_STATE : DESKTOP_VIEW_STATE;
+    setViewState({
+      ...viewState,
+      transitionDuration: 500,
+      transitionInterpolator: new FlyToInterpolator(),
+    });
+  };
+  const handleOpacityChange = (newOpacity: number) => {
+    setOpacity(newOpacity);
+  };
+
   return (
     <div className="mt-0 absolute w-full h-full">
-      <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={[layer]}>
-        <Map reuseMaps mapboxAccessToken={MAPBOX_API_KEY} mapStyle={MAP_STYLE} />
+      <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={[layer]} viewState={viewState} onViewStateChange={({ viewState }) => setViewState(viewState)}>
+        <Map reuseMaps mapboxAccessToken={MAPBOX_API_KEY} mapStyle={mapStyle} />
       </DeckGL>
       {isDataLoaded && imagesData.length > 0 &&
         <div className="flex justify-center items-end h-full pb-5">
@@ -208,6 +233,7 @@ export default function ModelLayer({
           />
         </div>
       }
+      <MapControllers onStyleChange={handleStyleChange} onNavigationCenter={handleNavigationCenter} onOpacityChange={handleOpacityChange} opacity={opacity} />
     </div>
   );
 }

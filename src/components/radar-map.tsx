@@ -11,6 +11,9 @@ import { BitmapLayer } from '@deck.gl/layers';
 import { TimeSlider } from './time-slider';
 import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from 'react-responsive';
+import { MapControllers } from './map-controllers';
+import { FlyToInterpolator } from '@deck.gl/core';
+import { useMapStyle } from "@/context/MapStyleContext";
 
 const DESKTOP_VIEW_STATE: MapViewState = {
   longitude: -43.52328987792129,
@@ -31,7 +34,7 @@ const MOBILE_VIEW_STATE: MapViewState = {
   bearing: 0
 };
 
-const MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
+const MAP_STYLE = 'mapbox://styles/escritoriodedados/cm5mtyaev00bn01qpd39j2o97';
 const MAPBOX_API_KEY = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
 interface RadarLayerProps {
@@ -44,6 +47,7 @@ export default function RadarLayer({
   radarView
 }: RadarLayerProps) {
   const { toast } = useToast();
+  const { mapStyle, setMapStyle, opacity, setOpacity } = useMapStyle();
   const [sliderValue, setSliderValue] = useState(0);
   const [imagesData, setImagesData] = useState<{ timestamp: string, image_url: string }[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -158,7 +162,7 @@ export default function RadarLayer({
 
   const layer = new BitmapLayer({
     id: 'BitmapLayer',
-    opacity: 0.6,
+    opacity: opacity,
     bounds: [-44.88549887560727, -24.07974181385155, -42.16109533159336, -21.568618096884588],
     image: getCurrentImage(sliderValue),
     pickable: true,
@@ -168,10 +172,31 @@ export default function RadarLayer({
     }
   });
 
+  // const [mapStyle, setMapStyle] = useState(MAP_STYLE);
+  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+
+  const handleStyleChange = (newStyle: string) => {
+    setMapStyle(newStyle);
+    console.log(`Map style changed to: ${newStyle}`);
+  };
+
+  const handleNavigationCenter = () => {
+    const viewState = isMobile ? MOBILE_VIEW_STATE : DESKTOP_VIEW_STATE;
+    setViewState({
+      ...viewState,
+      transitionDuration: 500,
+      transitionInterpolator: new FlyToInterpolator(),
+    });
+  };
+
+  const handleOpacityChange = (newOpacity: number) => {
+    setOpacity(newOpacity);
+  };
+
   return (
     <div className="mt-0 absolute w-full h-full">
-      <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={[layer]}>
-        <Map reuseMaps mapboxAccessToken={MAPBOX_API_KEY} mapStyle={MAP_STYLE} />
+      <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={[layer]} viewState={viewState} onViewStateChange={({ viewState }) => setViewState(viewState)}>
+        <Map reuseMaps mapboxAccessToken={MAPBOX_API_KEY} mapStyle={mapStyle} />
       </DeckGL>
       {isDataLoaded && imagesData.length > 0 &&
         <div className="flex justify-center items-end h-full pb-5">
@@ -185,6 +210,7 @@ export default function RadarLayer({
           />
         </div>
       }
+      <MapControllers onStyleChange={handleStyleChange} onNavigationCenter={handleNavigationCenter} onOpacityChange={handleOpacityChange} opacity={opacity} />
     </div>
   );
 }
