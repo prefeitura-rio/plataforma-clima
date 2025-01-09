@@ -31,7 +31,7 @@ export function MapControllers({ onStyleChange, onNavigationCenter, onOpacityCha
               <Settings className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="left" align="center" className="w-48">
+          <DropdownMenuContent side="left" align="start" className="w-48">
             <DropdownMenuLabel>Ajustes</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Tema</DropdownMenuLabel>
@@ -50,7 +50,6 @@ export function MapControllers({ onStyleChange, onNavigationCenter, onOpacityCha
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-
         <Button variant="outline" size="icon" className="h-8 w-8 rounded-full shadow-lg" onClick={onNavigationCenter}>
           <Navigation2 className="h-4 w-4" />
         </Button>
