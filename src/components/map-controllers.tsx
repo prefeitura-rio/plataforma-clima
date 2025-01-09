@@ -46,7 +46,7 @@ export function MapControllers({ onStyleChange, onNavigationCenter, onOpacityCha
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Opacidade</DropdownMenuLabel>
             <DropdownMenuItem asChild>
-              <Slider min={0.1} max={1} step={0.1} value={[opacity]} onValueChange={onOpacityChange} />
+              <Slider min={0.1} max={1} step={0.1} value={[opacity]} onValueChange={(value) => onOpacityChange(value[0])} />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
