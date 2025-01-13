@@ -37,9 +37,7 @@ const RadarView = ({ params }: RadarViewProps) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
-          ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
-          : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+        const rootUrl = process.env.NEXT_PUBLIC_ROOT_URL;
         const apiUrl = `${rootUrl}radar/info/${indice.toLowerCase()}`;
         const response = await fetch(apiUrl);
         const result = await response.json();

@@ -86,7 +86,7 @@ export function CollapseMenuButton({
         >
           <div className="w-full items-center flex justify-between">
             <div className="flex items-center">
-              <span className={cn("mr-3", (label !== "Satélite" && label !== "Radar" && label !== "Pluviômetros" && label !== "Previsão de Chuva") && "mr-2 ml-6")}>
+              <span className={cn("mr-3", (label !== "Satélite" && label !== "Radar" && label !== "Pluviômetros" && label !== "Modelo de Previsão ConvLSTM (em teste)") && "mr-2 ml-6")}>
                 <Icon size={18} />
               </span>
               <p
@@ -232,7 +232,7 @@ export function CollapseMenuButton({
             </DropdownMenuItem>
           ) : (
             <DropdownMenuItem key={index} asChild>
-              <Link className="cursor-pointer" href={href}>
+              <Link className="cursor-pointer" href={`${href}/${activeTab === 'tab1' ? 'mapa' : 'grafico'}`}>
                 <p className="max-w-[180px] truncate">{label}</p>
               </Link>
             </DropdownMenuItem>

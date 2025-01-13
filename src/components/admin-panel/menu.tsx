@@ -64,25 +64,41 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
                           <TooltipTrigger asChild>
                             <Button
                               variant={active ? "secondary" : "ghost"}
-                              className={cn("w-full h-10 mb-1", isOpen === false ? "justify-center" : "justify-start ")}
+                              className={cn(
+                                "w-full h-10 mb-1",
+                                isOpen === false ? "justify-center" : "justify-start "
+                              )}
                               asChild
                             >
                               <Link href={href}>
-                                <span
-                                  className={cn(isOpen === false ? "" : "mr-4")}
-                                >
+                                <span className={cn(isOpen === false ? "" : "mr-4")}>
                                   <Icon size={18} />
                                 </span>
-                                <p
-                                  className={cn(
-                                    "max-w-[200px] truncate",
-                                    isOpen === false
-                                      ? "-translate-x-96 opacity-0 hidden"
-                                      : "translate-x-0 opacity-100"
-                                  )}
-                                >
-                                  {label}
-                                </p>
+                                {label.length > 23 ? (
+                                  <p
+                                    className={cn(
+                                      "max-w-[200px] truncate relative overflow-hidden",
+                                      isOpen === false
+                                        ? "-translate-x-96 opacity-0 hidden"
+                                        : "translate-x-0 opacity-100"
+                                    )}
+                                  >
+                                    <span className="inline-block whitespace-nowrap transition-transform duration-500 hover:-translate-x-24">
+                                      {label}
+                                    </span>
+                                  </p>
+                                ) : (
+                                  <p
+                                    className={cn(
+                                      "max-w-[200px] truncate",
+                                      isOpen === false
+                                        ? "-translate-x-96 opacity-0 hidden"
+                                        : "translate-x-0 opacity-100"
+                                    )}
+                                  >
+                                    {label}
+                                  </p>
+                                )}
                               </Link>
                             </Button>
                           </TooltipTrigger>

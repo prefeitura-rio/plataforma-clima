@@ -22,11 +22,9 @@ export function TabsDemo({ sateliteView }: SateliteContentProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
-          ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
-          : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+        const rootUrl = process.env.NEXT_PUBLIC_ROOT_URL;
 
-        const response = await fetch(`${rootUrl}satellite/info/${sateliteView.toLowerCase()}`);
+        const response = await fetch(`${rootUrl}/satellite/info/${sateliteView.toLowerCase()}`);
         const result = await response.json();
         setData(result);
       } catch (error) {

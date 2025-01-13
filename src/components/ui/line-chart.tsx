@@ -40,9 +40,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
     try {
       const product = sateliteView.toLowerCase();
 
-      const rootUrl = process.env.NEXT_PUBLIC_ENV === 'production'
-        ? process.env.NEXT_PUBLIC_ROOT_URL_PROD
-        : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
+      const rootUrl = process.env.NEXT_PUBLIC_ROOT_URL;
 
       const response = await fetch(
         `${rootUrl}satellite/goes16/chart_last_hours/${product}`
@@ -97,8 +95,9 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
         <ChartContainer config={chartConfig}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data} margin={{
-              left: 12,
+              left: 24,
               right: 12,
+              bottom: 24,
             }}>
               <CartesianGrid vertical={true} />
               <XAxis
@@ -107,7 +106,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
                 domain={[startTime.getTime(), endTime.getTime()]}
                 tickFormatter={customTickFormatter}
                 ticks={customTicks().map(d => d.getTime())}
-                label={{ value: "Horas", position: "center", dy: 10 }}
+                label={{ value: "Horas", position: "center", dy: 24 }}
               />
               <YAxis
                 domain={valueRange}
@@ -115,12 +114,12 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
                 axisLine={false}
                 ticks={stepRange}
                 tickMargin={8}
-                label={{ value: unit, angle: -90, position: "insideLeft", }}
+                label={{ value: unit, angle: -90, dx: -15, position: "insideLeft", }}
               />
 
               <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
+                cursor={true}
+                content={<ChartTooltipContent unit={unit} hideLabel />}
               />
               <Line
                 isAnimationActive={false}
@@ -128,7 +127,7 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
                 type="linear"
                 stroke="var(--color-value)"
                 strokeWidth={4}
-                dot={false}
+                dot={true}
               />
             </LineChart>
           </ResponsiveContainer>
