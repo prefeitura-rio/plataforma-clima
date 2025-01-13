@@ -45,8 +45,13 @@ export function LineChartComponent({ valueRange, stepRange, name, sateliteView, 
         : process.env.NEXT_PUBLIC_ROOT_URL_DEV;
 
       const response = await fetch(
-        `${rootUrl}satellite/goes16/chart/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
+        `${rootUrl}satellite/goes16/chart_last_hours/${product}`
       );
+
+      // const response = await fetch(
+      //   `${rootUrl}satellite/goes16/chart/${product}?start_time=${startTimeBrasilia.toISOString()}&end_time=${currentTimeBrasilia.toISOString()}`
+      // );
+      // https://gw.dados.rio/plataforma-clima-staging/satellite/goes16/chart_last_hours/rrqpe
       const jsonData = await response.json();
       // console.log(jsonData)
 
