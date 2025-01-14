@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Layers, Sun, Moon, Navigation2, Settings } from 'lucide-react'
+import { Layers, Sun, Moon, Navigation2, Settings, Satellite } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
 import {
@@ -42,6 +42,10 @@ export function MapControllers({ onStyleChange, onNavigationCenter, onOpacityCha
             <DropdownMenuItem onClick={() => onStyleChange('mapbox://styles/escritoriodedados/cm5mtyaev00bn01qpd39j2o97')}>
               <Moon className="mr-2 h-4 w-4" />
               <span>Escuro</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onStyleChange('mapbox://styles/escritoriodedados/cm5wpz1qi006u01qvfounbvl1')}>
+              <Satellite className="mr-2 h-4 w-4" />
+              <span>Satélite</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Opacidade</DropdownMenuLabel>
