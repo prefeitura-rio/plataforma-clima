@@ -19,9 +19,10 @@ interface MapControllersProps {
   onNavigationCenter: () => void
   onOpacityChange: (opacity: number) => void
   opacity: number
+  currentStyle: string
 }
 
-export function MapControllers({ onStyleChange, onNavigationCenter, onOpacityChange, opacity }: MapControllersProps) {
+export function MapControllers({ onStyleChange, onNavigationCenter, onOpacityChange, opacity, currentStyle }: MapControllersProps) {
   return (
     <div className="absolute top-24 sm:inset-y-0 right-2 z-10 flex items-center">
       <div className="flex flex-row sm:flex-col space-x-2 sm:space-x-0 sm:space-y-2">
@@ -35,15 +36,15 @@ export function MapControllers({ onStyleChange, onNavigationCenter, onOpacityCha
             <DropdownMenuLabel>Ajustes</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Tema</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => onStyleChange('mapbox://styles/mapbox/streets-v12')}>
+            <DropdownMenuItem onClick={() => onStyleChange('mapbox://styles/mapbox/streets-v12')} className={currentStyle === 'mapbox://styles/mapbox/streets-v12' ? 'font-bold' : ''}>
               <Sun className="mr-2 h-4 w-4" />
               <span>Claro</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onStyleChange('mapbox://styles/escritoriodedados/cm5mtyaev00bn01qpd39j2o97')}>
+            <DropdownMenuItem onClick={() => onStyleChange('mapbox://styles/escritoriodedados/cm5mtyaev00bn01qpd39j2o97')} className={currentStyle === 'mapbox://styles/escritoriodedados/cm5mtyaev00bn01qpd39j2o97' ? 'font-bold' : ''}>
               <Moon className="mr-2 h-4 w-4" />
               <span>Escuro</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onStyleChange('mapbox://styles/escritoriodedados/cm5wpz1qi006u01qvfounbvl1')}>
+            <DropdownMenuItem onClick={() => onStyleChange('mapbox://styles/escritoriodedados/cm5wpz1qi006u01qvfounbvl1')} className={currentStyle === 'mapbox://styles/escritoriodedados/cm5wpz1qi006u01qvfounbvl1' ? 'font-bold' : ''}>
               <Satellite className="mr-2 h-4 w-4" />
               <span>Satélite</span>
             </DropdownMenuItem>
