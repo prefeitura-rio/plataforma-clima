@@ -12,6 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
+import { useMediaQuery } from 'react-responsive';
 import { Slider } from "@/components/ui/slider"
 
 interface MapControllersProps {
@@ -23,8 +24,9 @@ interface MapControllersProps {
 }
 
 export function MapControllers({ onStyleChange, onNavigationCenter, onOpacityChange, opacity, currentStyle }: MapControllersProps) {
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
   return (
-    <div className="absolute top-24 sm:inset-y-0 right-2 z-10 flex items-center">
+    <div className="absolute top-24 sm:inset-y-0 right-2 z-10 flex items-end mb-2">
       <div className="flex flex-row sm:flex-col space-x-2 sm:space-x-0 sm:space-y-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -32,7 +34,7 @@ export function MapControllers({ onStyleChange, onNavigationCenter, onOpacityCha
               <Settings className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="left" align="start" className="w-48">
+          <DropdownMenuContent side="left" align={isMobile ? "start" : "end"} className="w-48">
             <DropdownMenuLabel>Ajustes</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Tema</DropdownMenuLabel>
