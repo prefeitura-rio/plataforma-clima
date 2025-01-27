@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Ellipsis, LogOut, Info } from "lucide-react";
+import { Ellipsis, LogOut, Info, MessageSquareText } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -128,14 +128,50 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
               )}
             </li>
           ))}
-          <li className="w-full grow flex items-end">
+          <li className="w-full grow flex justify-end flex-col items-center">
+            <TooltipProvider disableHoverableContent>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center mb-4">
+                    <span className={cn(isOpen === false ? "" : "mr-3")}>
+                      {isOpen === false ? (
+                        <Button variant="ghost" onClick={() => {/* ação ao clicar */ }}>
+                          <MessageSquareText size={18} />
+                        </Button>
+                      ) : (
+                        <MessageSquareText size={18} />
+                      )}
+                    </span>
+                    <p
+                      className={cn(
+                        "text-xs text-muted-foreground",
+                        isOpen === false ? "opacity-0 hidden" : "opacity-100"
+                      )}
+                    >
+                      Plataforma em teste! Envie seus comentários para nos ajudar a melhorar.{" "}
+                      <span
+                        className="font-bold underline cursor-pointer"
+                        onClick={() => {/* ação ao clicar */ }}
+                      >
+                        Click aqui.
+                      </span>
+                    </p>
+                  </div>
+                </TooltipTrigger>
+                {isOpen === false && (
+                  <TooltipContent side="right">
+                    Plataforma em teste!<br /> Envie seus comentários para nos ajudar a melhorar.
+                  </TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <Link href="/sobre" className="w-full">
                     <Button
                       variant="outline"
-                      className="w-full justify-center h-10 mt-5"
+                      className="w-full justify-center h-10"
                     >
                       <span className={cn(isOpen === false ? "" : "mr-4")}>
                         <Info size={18} />
@@ -159,6 +195,6 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
           </li>
         </ul>
       </nav>
-    </ScrollArea>
+    </ScrollArea >
   );
 }

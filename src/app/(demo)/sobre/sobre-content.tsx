@@ -45,6 +45,11 @@ const mockData = [
     imageDark: "",
     description: "O Data Extreme Lab (DEXL) é um grupo de pesquisa do Laboratório Nacional de Computação Científica (LNCC), focado em ciência de dados, inteligência artificial e big data. Aplicamos técnicas da ciência da computação para resolver problemas em áreas como astronomia, biodiversidade, petróleo e gás, cidades inteligentes, entre outras."
   },
+  {
+    imageLight: "/iplan_logo.png",
+    imageDark: "",
+    description: "A IPLANRIO é a empresa municipal responsável pela administração dos recursos de Tecnologia da Informação e Comunicação da cidade do Rio de Janeiro."
+  },
 ];
 
 export default function SobreContent() {
@@ -56,7 +61,7 @@ export default function SobreContent() {
           <h2 className="text-xl font-semibold mb-4">Sobre</h2>
           <p className="text-base">
             Em um esforço conjunto para aprimorar a previsão de eventos climáticos, a Prefeitura do Rio de Janeiro está lançando a Plataforma Clima, uma nova ferramenta voltada para os meteorologistas acompanharem a evolução de chuvas e condições atmosféricas em tempo real. Esta plataforma combina dados de satélites, radares e estações meteorológicas com modelos avançados de nowcasting (previsão em curto prazo) movidos por inteligência artificial, possibilitando um monitoramento preciso e atualizado dos fenômenos meteorológicos.<br /><br />
-            A Plataforma Clima é fruto de uma parceria estratégica entre organizações governamentais e centros de pesquisa de ponta do Rio de Janeiro, reunindo uma ampla rede de especialistas para enfrentar os desafios da previsão meteorológica. Entre os parceiros deste projeto estão o grupo RioNowcast — uma aliança composta por pesquisadores do LNCC (Laboratório Nacional de Computação Científica), CEFET/RJ, UFF e DEXL —, o Centro Pi do IMPA, além de órgãos fundamentais como o COR, o Alertario e o INEA, e o Escritório de Dados.<br /><br />
+            A Plataforma Clima é fruto de uma parceria estratégica entre organizações governamentais e centros de pesquisa de ponta do Rio de Janeiro, reunindo uma ampla rede de especialistas para enfrentar os desafios da previsão meteorológica. Entre os parceiros deste projeto estão o grupo RioNowcast — uma aliança composta por pesquisadores do LNCC (Laboratório Nacional de Computação Científica), CEFET/RJ, UFF e DEXL —, o Centro Pi do IMPA, além de órgãos fundamentais como o COR, o Alertario e o INEA, Escritório de Dados e IPLANRIO.<br /><br />
             A criação da Plataforma Clima marca um novo patamar no monitoramento climático e na colaboração entre centros de pesquisa e órgãos governamentais no Brasil. Com o suporte de tecnologias de inteligência artificial e a expertise de instituições renomadas, a plataforma surge como uma ferramenta indispensável para meteorologistas e gestores de risco, capacitando-os a tomar decisões informadas e em tempo hábil.
 
           </p>
@@ -80,7 +85,7 @@ export default function SobreContent() {
         </div>
 
         <div className="mt-8 pt-4 border-t border-gray-200 text-center text-sm text-gray-500">
-          Desenvolvido por Escritório de Dados da Cidade do Rio de Janeiro <span className="align-top text-xs">®</span>
+          Desenvolvido por Escritório de Dados da Cidade do Rio de Janeiro<span className="align-top text-xs">®</span> e IPLANRIO<span className="align-top text-xs">®</span>
         </div>
       </CardContent>
     </Card>
