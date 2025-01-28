@@ -101,7 +101,7 @@ export function getMenuList(pathname: string): Group[] {
                 },
                 {
                   href: "/satelite/LI",
-                  label: "LI - Índice de levantamento ",
+                  label: "LI - Índice de Levantamento ",
                   active: pathname.includes("/satelite/LI"),
                   submenus: []
                 },

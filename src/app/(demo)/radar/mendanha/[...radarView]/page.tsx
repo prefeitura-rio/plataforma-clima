@@ -17,6 +17,7 @@ import { TabsDemo } from "@/components/tabs-demo";
 import { InfoButton } from "@/components/info-button";
 import RadarLayer from "@/components/radar-map";
 import ColorLabel from "@/components/color-label";
+import { Button } from "@/components/ui/button";
 
 
 interface RadarViewProps {
@@ -57,12 +58,12 @@ const RadarView = ({ params }: RadarViewProps) => {
     return (
       <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-50">
         <p className="text-white mb-4">{error}</p>
-        <button
+        <Button
           className="px-4 py-2 bg-blue-500 text-white rounded"
           onClick={() => location.reload()} // Simple refresh to retry
         >
           Algo deu errado. Tente novamente.
-        </button>
+        </Button>
       </div>
     );
   }

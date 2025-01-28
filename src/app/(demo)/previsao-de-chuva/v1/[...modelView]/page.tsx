@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ModelLayout } from "@/components/admin-panel/model-layout";
 import ModelLayer from "@/components/rionowcast-v1-map";
 import ColorLabel from "@/components/color-label";
+import { Button } from "@/components/ui/button";
 
 interface ModelViewProps {
   params: {
@@ -41,12 +42,12 @@ const ModelView = ({ params }: ModelViewProps) => {
     return (
       <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-50">
         <p className="text-white mb-4">{error}</p>
-        <button
+        <Button
           className="px-4 py-2 bg-blue-500 text-white rounded"
           onClick={() => location.reload()} // Simple refresh to retry
         >
           Algo deu errado. Tente novamente.
-        </button>
+        </Button>
       </div>
     );
   }

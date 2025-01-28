@@ -7,6 +7,7 @@ import { InfoButton } from "@/components/info-button";
 import SatelliteLayer from "@/components/satelite-map";
 import ColorLabel from "@/components/color-label";
 import { LineChartComponent } from "@/components/ui/line-chart";
+import { Button } from "@/components/ui/button";
 
 interface SateliteViewProps {
   params: {
@@ -43,12 +44,12 @@ const SateliteView = ({ params }: SateliteViewProps) => {
     return (
       <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-50">
         <p className="text-white mb-4">{error}</p>
-        <button
+        <Button
           className="px-4 py-2 bg-blue-500 text-white rounded"
           onClick={() => location.reload()} // Simple refresh to retry
         >
           Algo deu errado. Tente novamente.
-        </button>
+        </Button>
       </div>
     );
   }

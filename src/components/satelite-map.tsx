@@ -211,7 +211,13 @@ export default function SatelliteLayer({
           />
         </div>
       }
-      <MapControllers onStyleChange={handleStyleChange} onNavigationCenter={handleNavigationCenter} onOpacityChange={handleOpacityChange} opacity={opacity} />
+      <MapControllers
+        onStyleChange={handleStyleChange}
+        onNavigationCenter={handleNavigationCenter}
+        onOpacityChange={handleOpacityChange}
+        opacity={opacity}
+        currentStyle={mapStyle}
+      />
     </div>
   );
 }
