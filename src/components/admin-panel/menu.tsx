@@ -160,7 +160,7 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
                 </TooltipTrigger>
                 {isOpen === false && (
                   <TooltipContent side="right">
-                    Plataforma em teste!<br /> Envie seus comentários para nos ajudar a melhorar.
+                    Plataforma em teste!<br /> Envie seus comentários para nos ajudar a melhorar clicando no botão de Feedback.
                   </TooltipContent>
                 )}
               </Tooltip>
