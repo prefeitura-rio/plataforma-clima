@@ -148,7 +148,7 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
                         isOpen === false ? "opacity-0 hidden" : "opacity-100"
                       )}
                     >
-                      Plataforma em teste! Envie seus comentários para nos ajudar a melhorar cliando no botão de Feedback.{" "}
+                      Plataforma em teste! Envie seus comentários para nos ajudar a melhorar clicando no botão de Feedback.{" "}
                       {/* <span */}
                       {/* className="font-bold underline cursor-pointer" */}
                       {/*onClick={() => {/* ação ao clicar */}
