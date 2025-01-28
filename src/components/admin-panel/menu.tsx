@@ -148,13 +148,13 @@ export function Menu({ isOpen, view, indice }: MenuProps) {
                         isOpen === false ? "opacity-0 hidden" : "opacity-100"
                       )}
                     >
-                      Plataforma em teste! Envie seus comentários para nos ajudar a melhorar.{" "}
-                      <span
-                        className="font-bold underline cursor-pointer"
-                        onClick={() => {/* ação ao clicar */ }}
-                      >
-                        Click aqui.
-                      </span>
+                      Plataforma em teste! Envie seus comentários para nos ajudar a melhorar cliando no botão de Feedback.{" "}
+                      {/* <span */}
+                      {/* className="font-bold underline cursor-pointer" */}
+                      {/*onClick={() => {/* ação ao clicar */}
+                      {/* > */}
+                      {/* Click aqui. */}
+                      {/* </span> */}
                     </p>
                   </div>
                 </TooltipTrigger>
