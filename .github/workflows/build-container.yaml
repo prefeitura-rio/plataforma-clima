@@ -1,0 +1,70 @@
+name: Build and push image
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - staging
+    paths-ignore:
+      - k8s/**
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: iplanrio-runners
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set image tags and build environment
+        id: meta
+        env:
+          NEXT_PUBLIC_MAPBOX_API_KEY: ${{ secrets.NEXT_PUBLIC_MAPBOX_API_KEY }}
+        run: |
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}"
+          TAGS="$IMAGE:$GITHUB_SHA"
+          if [ "$GITHUB_REF_NAME" = "master" ]; then
+            TAGS="$TAGS,$IMAGE:stable,$IMAGE:prod-$GITHUB_RUN_NUMBER"
+            HOTJAR_ID=5282846
+            GOOGLE_ANALYTICS_ID=G-WTRXKLLKJ8
+            GOOGLE_TAG_MANAGER_ID=GTM-W56VTH2Z
+          else
+            HOTJAR_ID=5282787
+            GOOGLE_ANALYTICS_ID=G-2QZP1M5FHK
+            GOOGLE_TAG_MANAGER_ID=GTM-PJ93VG2N
+            if [ "$GITHUB_REF_NAME" = "staging" ]; then
+              TAGS="$TAGS,$IMAGE:latest,$IMAGE:staging-$GITHUB_RUN_NUMBER"
+            fi
+          fi
+          echo "tags=$TAGS" >> "$GITHUB_OUTPUT"
+          {
+            echo "NEXT_PUBLIC_ROOT_URL=https://gw.dados.rio/plataforma-clima-staging"
+            echo "NEXT_PUBLIC_MAPBOX_API_KEY=$NEXT_PUBLIC_MAPBOX_API_KEY"
+            echo "HOTJAR_ID=$HOTJAR_ID"
+            echo "GOOGLE_ANALYTICS_ID=$GOOGLE_ANALYTICS_ID"
+            echo "GOOGLE_TAG_MANAGER_ID=$GOOGLE_TAG_MANAGER_ID"
+          } > .env.production
+
+      - name: Build and push image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.6.0
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
