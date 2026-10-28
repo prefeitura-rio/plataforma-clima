@@ -1,0 +1,80 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: prefeitura-rio-prod
+spec:
+  type: oci
+  interval: 10m
+  url: oci://ghcr.io/prefeitura-rio/charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: plataforma-clima-prod
+spec:
+  interval: 10m
+  releaseName: plataforma-clima-prod
+  chart:
+    spec:
+      chart: base-chart
+      version: 2.4.20
+      sourceRef:
+        kind: HelmRepository
+        name: prefeitura-rio-prod
+  values:
+    fullnameOverride: plataforma-clima-prod
+    image:
+      repository: ghcr.io/prefeitura-rio/plataforma-clima
+      tag: prod-3 # {"$imagepolicy": "plataforma-clima-frontend:plataforma-clima-prod:tag"}
+      pullPolicy: IfNotPresent
+    service:
+      port: 80
+      containerPort: 3000
+    livenessProbe:
+      httpGet:
+        path: /dashboard
+        port: 3000
+      initialDelaySeconds: 5
+      periodSeconds: 60
+      timeoutSeconds: 5
+      successThreshold: 1
+      failureThreshold: 3
+    readinessProbe:
+      httpGet:
+        path: /dashboard
+        port: 3000
+      initialDelaySeconds: 5
+      periodSeconds: 60
+      timeoutSeconds: 5
+      successThreshold: 1
+      failureThreshold: 3
+    resources:
+      requests:
+        cpu: 250m
+        memory: 1Gi
+      limits:
+        cpu: 250m
+        memory: 1Gi
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 1001
+    replicaCount: 1
+    autoscaling:
+      enabled: false
+    istio:
+      enabled: false
+    ingress:
+      enabled: false
+    podDisruptionBudget:
+      enabled: false
+    flux:
+      policy:
+        semver: null
+        numerical:
+          order: asc
+      filterTags:
+        pattern: ^prod-(?P<n>[0-9]+)$
+        extract: $n
+      imageUpdateOverwrite:
+        git:
+          branch: master
